@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import TopNav from "@/components/top-nav";
+import Link from "next/link";
+import { ArrowUp } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +26,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-foreground text-background min-h-[200vh]`}
+        suppressHydrationWarning
       >
+        <TopNav />
         {children}
+        <Link href="#backtop" className="fixed right-10 bottom-10 rounded-full py-2 px-2 bg-background backdrop-blur-3xl">
+          <ArrowUp className="text-foreground" />
+        </Link>
       </body>
     </html>
   );
