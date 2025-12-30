@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import TopNav from "@/components/top-nav";
 import Link from "next/link";
@@ -36,6 +37,7 @@ export default function RootLayout({
         <Link href="#backtop" className="fixed right-10 bottom-10 rounded-full py-2 px-2 bg-background backdrop-blur-3xl">
           <ArrowUp className="text-foreground" />
         </Link>
+        <Analytics />
       </body>
     </html>
   );
