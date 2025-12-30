@@ -4,6 +4,7 @@ import "./globals.css";
 import TopNav from "@/components/top-nav";
 import Link from "next/link";
 import { ArrowUp } from "lucide-react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         <TopNav />
         {children}
+        <SpeedInsights />
         <Link href="#backtop" className="fixed right-10 bottom-10 rounded-full py-2 px-2 bg-background backdrop-blur-3xl">
           <ArrowUp className="text-foreground" />
         </Link>
