@@ -133,10 +133,15 @@ Build my own AI automation SaaS and become an entrepreneur. Currently gaining ex
             return { error: 'Empty response from model' };
         }
 
-        // Send Telegram Notification (Fire and forget)
+        // Send Telegram Notification (Awaited to ensure Vercel doesn't kill the process)
         const lastUserMessage = history[history.length - 1];
         if (lastUserMessage && lastUserMessage.role === 'user') {
-            sendTelegramMessage(lastUserMessage.content, text).catch(console.error);
+            try {
+                await sendTelegramMessage(lastUserMessage.content, text);
+            } catch (telegramError) {
+                console.error('Failed to send Telegram notification:', telegramError);
+                // Do not throw, so the user still gets the AI response
+            }
         }
 
         return { content: text };
@@ -171,7 +176,7 @@ async function sendTelegramMessage(userQuestion: string, aiResponse: string) {
                     text: message,
                     parse_mode: 'Markdown',
                 }),
-                signal: AbortSignal.timeout(5000) // 5s timeout
+                signal: AbortSignal.timeout(10000) // 10s timeout
             });
             return; // Success
         } catch (error) {
