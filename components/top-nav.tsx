@@ -14,27 +14,36 @@ export default function TopNav() {
         };
 
         window.addEventListener("scroll", handleScroll);
+        // Trigger once on mount to set initial state
+        handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     return (
-        <div className="relative">
-            {isScrolled ? <BottomNav /> : <UpperNav />}
-        </div>
+        <>
+            <UpperNav/>
+            <BottomNav isScrolled={isScrolled} />
+        </>
     )
 }
 
 function UpperNav() {
     return (
-        <nav className="flex justify-between items-center container mx-auto p-6 fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav className={cn(
+            "flex justify-between items-center container mx-auto p-6 transition-all duration-300",
+        )}>
             <div className="flex items-center gap-2">
-                <Image src={'/profile.jpg'} alt="profile" width={50} height={50} className="rounded-full" />
+                <Image src={'/profile.jpg'} alt="profile" width={40} height={40} className="rounded-full" />
                 <div>
-                    <h1 className="font-bold tracking-tight text-xl">Amartuvshin Surenjav</h1>
-                    <h1 className="text-sm text-muted-foreground font-medium">Software Developer | Cybersecurity Student</h1>
+                    <h1 className="font-bold tracking-tight text-lg md:text-xl">Amartuvshin Surenjav</h1>
+                    <h1 className="text-xs md:text-sm text-muted-foreground font-medium">Software Developer | Cybersecurity Student</h1>
                 </div>
             </div>
-            <ul className="flex items-center gap-8">
+
+            {/* Desktop Navigation Links - Hidden on Mobile or when Scrolled */}
+            <ul className={cn(
+                "hidden md:flex items-center gap-8 transition-opacity duration-300",
+            )}>
                 {['Home', 'Projects', 'Skills', 'Contact'].map((item) => (
                     <li key={item} className="relative group">
                         <Link
@@ -51,10 +60,19 @@ function UpperNav() {
     )
 }
 
-function BottomNav() {
+function BottomNav({ isScrolled }: { isScrolled: boolean }) {
     return (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom-10 fade-in duration-500">
-            <div className="flex items-center gap-2 p-2 rounded-full border border-white/10 bg-background backdrop-blur-xl shadow-2xl ring-1 ring-white/5">
+        <div className={cn(
+            "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500",
+            // Mobile: Always visible (translate-y-0)
+            // Desktop: Visible only when scrolled. If not scrolled, hide it (translate-y-20)
+            !isScrolled ? "translate-y-24 opacity-0 md:translate-y-24 md:opacity-0 pointer-events-none md:pointer-events-none" : "translate-y-0 opacity-100",
+            // OVERRIDE: On mobile, always visible
+            "max-md:translate-y-0 max-md:opacity-100 max-md:pointer-events-auto"
+        )}>
+            <div className={cn(
+                "flex items-center gap-2 p-2 rounded-full border border-white/10 bg-background/80 backdrop-blur-xl shadow-2xl ring-1 ring-white/5"
+            )}>
                 <NavIcon href="#backtop" icon={<Home size={20} />} label="Home" />
                 <NavIcon href="#projects" icon={<FolderGit2 size={20} />} label="Projects" />
                 <NavIcon href="#skills" icon={<Sparkles size={20} />} label="Skills" />

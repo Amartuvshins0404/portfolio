@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Hero() {
     return (
-        <section id="backtop" className="min-h-screen flex items-center justify-center pt-20 pb-10">
+        <section id="backtop" className="min-h-screen flex items-center justify-center pt-24 md:pt-32 pb-10">
             <div className="container px-4 md:px-6 flex flex-col items-center text-center space-y-8">
                 <div className="space-y-4 max-w-3xl">
                     <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-clip-text text-transparent bg-linear-to-r from-background to-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-1000">

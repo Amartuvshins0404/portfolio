@@ -11,7 +11,6 @@ export default function About() {
         { name: "AI Automation", icon: <Sparkles className="h-5 w-5" /> },
         { name: "UI/UX Design", icon: <Layers className="h-5 w-5" /> },
         { name: "Cybersecurity", icon: <Lock className="h-5 w-5" /> },
-        { name: "Data Science", icon: <Cpu className="h-5 w-5" /> },
     ];
 
     return (
@@ -41,20 +40,20 @@ export default function About() {
                             I leverage AI tools to enhance my coding efficiency, but I am far from an "AI-driven" developer with no foundational knowledge. With extensive experience in the industry predating the AI explosion, I remain the lead developer of my projects—guided by my expertise, not AI.
                         </p>
                         <div className="flex flex-wrap gap-2 pt-4">
-                            <Badge className="px-4 py-1 text-sm bg-indigo-500/10 text-indigo-500 hover:bg-indigo-500/20 border-indigo-500/50">Full Stack</Badge>
-                            <Badge className="px-4 py-1 text-sm bg-pink-500/10 text-pink-500 hover:bg-pink-500/20 border-pink-500/50">AI Native</Badge>
-                            <Badge className="px-4 py-1 text-sm bg-cyan-500/10 text-cyan-500 hover:bg-cyan-500/20 border-cyan-500/50">Rapid Prototyping</Badge>
+                            <Badge className="px-8 py-2 text-sm shadow-2xl shadow-zinc-800">Full Stack</Badge>
+                            <Badge className="px-8 py-2 text-sm shadow-2xl shadow-zinc-800">AI Native</Badge>
+                            <Badge className="px-8 py-2 text-sm shadow-2xl shadow-zinc-800">Rapid Prototyping</Badge>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         {skills.map((skill, i) => (
-                            <Card key={i} className="bg-background backdrop-blur-sm border-border/50 transition-colors">
+                            <Card key={i} className="bg-linear-to-br from-primary to-zinc-950  border-none transition-colors">
                                 <CardContent className="flex items-center gap-4 p-4">
-                                    <div className="p-2 rounded-full bg-primary/10 text-primary">
+                                    <div className="p-2 rounded-full bg-background/10 text-secondary">
                                         {skill.icon}
                                     </div>
-                                    <span className="font-medium">{skill.name}</span>
+                                    <span className="font-medium text-secondary">{skill.name}</span>
                                 </CardContent>
                             </Card>
                         ))}

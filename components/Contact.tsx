@@ -20,7 +20,7 @@ export default function Contact() {
                         whileInView={{ scale: 1, rotate: 0 }}
                         viewport={{ once: true }}
                         transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                        className="text-6xl md:text-7xl mb-4"
+                        className="text-4xl md:text-7xl mb-4"
                     >
                         👋
                     </motion.div>
@@ -40,7 +40,7 @@ export default function Contact() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 }}
-                            className="text-xl text-muted-foreground max-w-[600px] mx-auto leading-relaxed"
+                            className="text-lg md:text-xl text-muted-foreground max-w-[600px] mx-auto leading-relaxed"
                         >
                             I'm currently available for freelance projects and open source collaborations. If you want a premium website that converts, I'm your guy.
                         </motion.p>
