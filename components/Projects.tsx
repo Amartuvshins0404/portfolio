@@ -13,7 +13,7 @@ const projects = [
     {
         title: "Voices",
         description: "This is technically newspaper website where you can see political news and opinion of citizen at one place. Each category and page is fully customizable. Each page is managed by seperate admin account. Admin accounts created by super admin. It was complex nested user privelege system.",
-        tags: ["React", "Vite.js", "Express.js", "Shadcn", "PostgreSQL", "Typescript", "Stripe"],
+        tags: ["React", "Vite.js", "Express.js", "Shadcn", "PostgreSQL", "Typescript", "Minio Bucket"],
         category: "Full Stack",
         image: "/voices.png",
         demo: "https://voices.mn",
@@ -46,8 +46,8 @@ const projects = [
         tags: ["React", "Tailwind CSS", "Recharts", "Supabase"],
         category: "Frontend",
         image: "/portfolio.png",
-        demo: "#",
-        github: "#",
+        demo: "https://amaraa.vercel.app",
+        github: "https://github.com/Amartuvshins0404/portfolio",
         color: "from-orange-500/20 to-red-500/20"
     },
     {
@@ -56,8 +56,8 @@ const projects = [
         tags: ["Vite.js", "React", "Express.js", "Supabase", "Tailwind CSS", "Google AI", "Shadcn", "Stripe", "PostgreSQL"],
         category: "Personal Project",
         image: "/brandvoice.png",
-        demo: "#",
-        github: "#",
+        demo: "https://ourlab.fun",
+        github: "https://github.com/Amartuvshins0404/SaaS-Architect",
         color: "from-indigo-500/20 to-cyan-500/20"
     }
 ];
