@@ -11,6 +11,16 @@ import { cn } from "@/lib/utils";
 
 const projects = [
     {
+        title: "Voices",
+        description: "This is technically newspaper website where you can see political news and opinion of citizen at one place. Each category and page is fully customizable. Each page is managed by seperate admin account. Admin accounts created by super admin. It was complex nested user privelege system.",
+        tags: ["React", "Vite.js", "Express.js", "Shadcn", "PostgreSQL", "Typescript", "Stripe"],
+        category: "Full Stack",
+        image: "/voices.png",
+        demo: "https://voices.mn",
+        github: "#",
+        color: "from-orange-500/20 to-red-500/20"
+    },
+    {
         title: "E-Commerce Platform",
         description: "A full-stack e-commerce solution with Stripe integration, featuring a persistent cart, admin dashboard, and responsive design. Built in just 2 hours.",
         tags: ["Next.js", "Supabase", "Stripe", "Tailwind CSS"],
