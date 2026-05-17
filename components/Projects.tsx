@@ -52,6 +52,17 @@ const projects: Project[] = [
         accent: "from-emerald-500/40 via-teal-500/20 to-transparent",
     },
     {
+        title: "Piano.mn",
+        url: "piano.mn",
+        description:
+            "Official platform for the Mongolian Piano Association — competition registration, member directory, course listings, and news. Headless Strapi CMS feeds a public site and an internal admin console for organizers.",
+        tags: ["Next.js", "TypeScript", "Strapi", "Tailwind", "PostgreSQL"],
+        category: "Association · CMS",
+        image: "/piano.jpg",
+        demo: "https://piano.mn",
+        accent: "from-amber-500/40 via-yellow-500/20 to-transparent",
+    },
+    {
         title: "Personal Portfolio",
         url: "amartuvshin.com",
         description:
