@@ -8,7 +8,7 @@ export default function BackToTop({ scrollToTop, className }: { scrollToTop: () 
         <button
             onClick={scrollToTop}
             className={cn(
-                "rounded-full p-3 bg-background/80 backdrop-blur-md border border-white/10 shadow-lg text-foreground transition-all duration-300 z-40 hover:scale-110 hover:bg-background",
+                "rounded-full p-3 bg-background/80 backdrop-blur-md border border-border shadow-lg text-foreground transition-all duration-300 z-40 hover:scale-110 hover:bg-background",
                 className
             )}
             aria-label="Back to top"

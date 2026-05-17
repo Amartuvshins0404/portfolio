@@ -1,242 +1,190 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, Github, Play, Pause } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Globe } from "lucide-react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const projects = [
+type Project = {
+    title: string;
+    url: string;
+    description: string;
+    tags: string[];
+    category: string;
+    image: string;
+    demo: string;
+    accent: string;
+};
+
+const projects: Project[] = [
+    {
+        title: "Flint",
+        url: "flint.mn",
+        description:
+            "A modern dating platform built for the Mongolian audience. Swipe-based discovery, voice-note prompts, real-time messaging, and a fully customizable profile builder — all wrapped in a focused, distraction-free UI.",
+        tags: ["Next.js", "TypeScript", "PostgreSQL", "WebSockets", "Tailwind", "Shadcn"],
+        category: "Full Stack · Social",
+        image: "/flint.png",
+        demo: "https://flint.mn",
+        accent: "from-rose-500/40 via-pink-500/20 to-transparent",
+    },
     {
         title: "Voices",
-        description: "This is technically newspaper website where you can see political news and opinion of citizen at one place. Each category and page is fully customizable. Each page is managed by seperate admin account. Admin accounts created by super admin. It was complex nested user privelege system.",
-        tags: ["React", "Vite.js", "Express.js", "Shadcn", "PostgreSQL", "Typescript", "Minio Bucket"],
-        category: "Full Stack",
+        url: "voices.mn",
+        description:
+            "A digital newsroom platform where political journalism meets citizen opinion. Multi-tenant CMS with nested admin roles managed by a super admin, fully customizable category pages, and media stored on MinIO.",
+        tags: ["React", "Vite", "Express", "PostgreSQL", "MinIO", "TypeScript"],
+        category: "Full Stack · Newsroom",
         image: "/voices.png",
         demo: "https://voices.mn",
-        github: "#",
-        color: "from-orange-500/20 to-red-500/20"
+        accent: "from-orange-500/40 via-red-500/20 to-transparent",
     },
     {
-        title: "E-Commerce Platform",
-        description: "A full-stack e-commerce solution with Stripe integration, featuring a persistent cart, admin dashboard, and responsive design. Built in just 2 hours.",
-        tags: ["Next.js", "Supabase", "Stripe", "Tailwind CSS"],
-        category: "Full Stack",
-        image: "/video-ecom.mp4",
-        demo: "/video-ecom.mp4",
-        github: "#",
-        color: "from-blue-500/20 to-purple-500/20"
-    },
-    {
-        title: "AI Chatbot",
-        description: "An AI-powered chatbot that can handle customer support 24/7",
-        tags: ["n8n", "OpenAI", "Webhook", "Facebook API"],
-        category: "AI Automation",
-        image: "/chatbot.png",
-        demo: "#",
-        github: "#",
-        color: "from-emerald-500/20 to-teal-500/20"
+        title: "DevsComm",
+        url: "devscomm.com",
+        description:
+            "A community hub for the Mongolian developer scene — articles, event listings, hackathon registrations, and code challenges. Built for fast browsing and zero-friction sign-up.",
+        tags: ["Next.js", "TypeScript", "Tailwind", "PostgreSQL", "Auth.js"],
+        category: "Community Platform",
+        image: "/devscomm.png",
+        demo: "https://devscomm.com",
+        accent: "from-emerald-500/40 via-teal-500/20 to-transparent",
     },
     {
         title: "Personal Portfolio",
-        description: "A modern portfolio website built with Next.js and Tailwind CSS. Features a responsive design, smooth animations, and a clean, professional look.",
-        tags: ["React", "Tailwind CSS", "Recharts", "Supabase"],
-        category: "Frontend",
-        image: "/portfolio.png",
-        demo: "https://amaraa.vercel.app",
-        github: "https://github.com/Amartuvshins0404/portfolio",
-        color: "from-orange-500/20 to-red-500/20"
+        url: "amartuvshin.com",
+        description:
+            "This site. Built with Next.js 16, React 19, and Tailwind v4. Premium typography, subtle motion, static-first delivery — designed to load instantly and stay out of the way.",
+        tags: ["Next.js 16", "React 19", "Tailwind v4", "Framer Motion", "TypeScript"],
+        category: "Personal · Portfolio",
+        image: "/amartuvshin.png",
+        demo: "https://amartuvshin.com",
+        accent: "from-violet-500/40 via-indigo-500/20 to-transparent",
     },
-    {
-        title: "Brand Voice SaaS",
-        description: "A SaaS platform for people to write tweet or enhance already written tweets with personality. It features to build your own personality you want to have for AI.",
-        tags: ["Vite.js", "React", "Express.js", "Supabase", "Tailwind CSS", "Google AI", "Shadcn", "Stripe", "PostgreSQL"],
-        category: "Personal Project",
-        image: "/brandvoice.png",
-        demo: "https://ourlab.fun",
-        github: "https://github.com/Amartuvshins0404/SaaS-Architect",
-        color: "from-indigo-500/20 to-cyan-500/20"
-    }
 ];
 
-const categories = ["All", "Full Stack", "Frontend", "AI Automation"];
-
 export default function Projects() {
-    const [activeTab, setActiveTab] = useState("All");
-
-    const filteredProjects = activeTab === "All"
-        ? projects
-        : projects.filter(p => p.category === activeTab);
-
     return (
-        <section id="projects" className="py-24 relative overflow-hidden">
-            {/* Background Decorations */}
+        <section id="projects" className="py-24 md:py-32 relative overflow-hidden">
+            {/* Background decorations */}
             <div className="absolute top-1/4 -left-64 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
             <div className="absolute bottom-1/4 -right-64 w-96 h-96 bg-purple-500/10 rounded-full blur-[128px] pointer-events-none" />
 
-            <div className="container px-4 md:px-6 mx-auto relative z-10">
-                <div className="text-center space-y-4 mb-16">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                        className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
-                    >
-                        Featured Projects
-                    </motion.h2>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
-                        className="max-w-[700px] mx-auto text-muted-foreground text-lg"
-                    >
-                        A selection of my recent work, showcasing rapid development and premium quality.
-                    </motion.p>
-                </div>
+            <div className="container px-4 md:px-6 mx-auto relative z-10 max-w-7xl">
+                {/* Section header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6 }}
+                    className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16"
+                >
+                    <div className="space-y-3">
+                        <div className="inline-flex items-center gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                            <span className="h-px w-8 bg-muted-foreground/50" />
+                            Featured Work
+                        </div>
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter">
+                            Recent projects.
+                        </h2>
+                    </div>
+                    <p className="max-w-md text-muted-foreground text-base md:text-right">
+                        Live products shipped end-to-end — from design system to deployment.
+                    </p>
+                </motion.div>
 
-                <div className="flex flex-col items-center space-y-12">
-                    {/* Custom Tabs */}
-                    {/* <div className="flex flex-wrap justify-center gap-2 p-1.5 bg-foreground backdrop-blur-md rounded-full border border-border/50">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => setActiveTab(cat)}
-                                className={cn(
-                                    "relative px-6 py-2.5 text-sm font-medium rounded-full transition-colors duration-300",
-                                    activeTab === cat ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                                )}
-                            >
-                                {activeTab === cat && (
-                                    <motion.div
-                                        layoutId="activeTab"
-                                        className="absolute inset-0 bg-background rounded-full shadow-sm"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-                                <span className="relative z-10">{cat}</span>
-                            </button>
-                        ))}
-                    </div> */}
-
-                    {/* Project Grid */}
-                    <motion.div
-                        layout
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl"
-                    >
-                        <AnimatePresence mode="popLayout">
-                            {filteredProjects.map((project, index) => (
-                                <ProjectCard key={project.title} project={project} index={index} />
-                            ))}
-                        </AnimatePresence>
-                    </motion.div>
+                {/* Project grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    {projects.map((p, i) => (
+                        <ProjectCard key={p.title} project={p} index={i} />
+                    ))}
                 </div>
             </div>
         </section>
     );
 }
 
-function ProjectCard({ project, index }: { project: any, index: number }) {
-    const isVideo = project.image.endsWith(".mp4");
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-
-    const handleMouseEnter = () => {
-        if (isVideo && videoRef.current) {
-            videoRef.current.play().catch(() => { });
-            setIsPlaying(true);
-        }
-    };
-
-    const handleMouseLeave = () => {
-        if (isVideo && videoRef.current) {
-            videoRef.current.pause();
-            videoRef.current.currentTime = 0;
-            setIsPlaying(false);
-        }
-    };
-
+function ProjectCard({ project, index }: { project: Project; index: number }) {
     return (
         <motion.div
-            layout
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.3 }}
-            className="group relative h-[420px] rounded-3xl overflow-hidden bg-background/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="group relative"
         >
-            {/* Background Gradient */}
-            <div className={cn("absolute inset-0 bg-linear-to-tr opacity-0 group-hover:opacity-100 transition-opacity duration-700", project.color)} />
-
-            {/* Media Container */}
-            <div className="absolute inset-0 h-full w-full">
-                {isVideo ? (
-                    <video
-                        ref={videoRef}
-                        src={project.image}
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            <Link
+                href={project.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-3xl"
+            >
+                <div className="relative rounded-3xl border border-border/40 bg-card overflow-hidden transition-all duration-500 group-hover:border-border/80 group-hover:shadow-2xl group-hover:shadow-primary/5 group-hover:-translate-y-1">
+                    {/* Glow accent */}
+                    <div
+                        className={cn(
+                            "absolute -inset-px rounded-3xl bg-linear-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 blur-2xl",
+                            project.accent
+                        )}
                     />
-                ) : (
-                    <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                )}
-                {/* Overlay Gradient for readability */}
-                <div className="absolute inset-0 bg-linear-to-t from-foreground to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-70" />
-            </div>
 
-            {/* Content Content - Re-ordered for better UX */}
-            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <div className="space-y-3">
-                    {/* Top Meta */}
-                    <div className="flex items-center justify-between mb-2">
-                        <Badge variant="secondary" className="bg-background/80 backdrop-blur-md border-white/10 text-xs font-medium px-2.5 py-1">
-                            {project.category}
-                        </Badge>
-                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full hover:bg-background/40 backdrop-blur-md" asChild>
-                                <Link href={project.github} target="_blank">
-                                    <Github className="h-4 w-4 text-background" />
-                                </Link>
-                            </Button>
-                            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full hover:bg-background/40 backdrop-blur-md" asChild>
-                                <Link href={project.demo} target="_blank">
-                                    <ExternalLink className="h-4 w-4 text-background" />
-                                </Link>
-                            </Button>
+                    {/* Browser chrome */}
+                    <div className="flex items-center gap-1.5 px-4 py-3 border-b border-border/40 bg-muted/30">
+                        <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
+                        <div className="ml-3 flex-1 flex items-center gap-2 text-xs text-muted-foreground font-mono px-3 py-1 rounded-md bg-background/50 border border-border/30">
+                            <Globe className="h-3 w-3" />
+                            <span className="truncate">{project.url}</span>
                         </div>
                     </div>
 
-                    <h3 className="text-2xl font-bold tracking-tight text-white transition-colors duration-300">
-                        {project.title}
-                    </h3>
+                    {/* Screenshot */}
+                    <div className="relative aspect-[16/10] overflow-hidden bg-muted/20">
+                        <Image
+                            src={project.image}
+                            alt={`${project.title} screenshot`}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
+                            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                        />
+                        <div className="absolute inset-0 bg-linear-to-t from-card/30 via-transparent to-transparent pointer-events-none" />
+                    </div>
 
-                    <p className="text-background line-clamp-2 group-hover:line-clamp-none transition-all duration-300 text-sm leading-relaxed">
-                        {project.description}
-                    </p>
+                    {/* Body */}
+                    <div className="p-6 md:p-8 space-y-5">
+                        <div className="flex items-start justify-between gap-4">
+                            <div className="space-y-1.5 min-w-0">
+                                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                                    {project.category}
+                                </div>
+                                <h3 className="text-2xl md:text-3xl font-semibold tracking-tight">
+                                    {project.title}
+                                </h3>
+                            </div>
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/40 backdrop-blur-sm transition-all duration-300 group-hover:rotate-45 group-hover:bg-foreground group-hover:text-background group-hover:border-foreground">
+                                <ArrowUpRight className="h-4 w-4" />
+                            </div>
+                        </div>
 
-                    {/* Tags - Appear on hover */}
-                    <div className="flex flex-wrap gap-2 pt-4 h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-500 overflow-hidden">
-                        {project.tags.map((tag: string) => (
-                            <span key={tag} className="text-[10px] uppercase tracking-wider font-semibold text-white/70">
-                                #{tag}
-                            </span>
-                        ))}
+                        <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed">
+                            {project.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                            {project.tags.map((tag) => (
+                                <span
+                                    key={tag}
+                                    className="text-[11px] font-medium text-muted-foreground/90 px-2.5 py-1 rounded-full bg-muted/60 border border-border/30"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Link>
         </motion.div>
     );
 }

@@ -1,116 +1,158 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Github, Linkedin, Mail, Twitter, ArrowRight, InstagramIcon, Phone } from "lucide-react";
+import { ArrowUpRight, Github, Instagram, Linkedin, Mail, Phone, Twitter } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function Contact() {
     return (
-        <section id="contact" className="py-24 relative overflow-hidden container mx-auto">
-            {/* Background Decorations */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+        <section id="contact" className="py-24 md:py-32 relative overflow-hidden">
+            {/* Subtle radial backdrop */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
-            <div className="container px-4 md:px-6 relative z-10">
-                <div className="mx-auto max-w-3xl flex flex-col items-center text-center space-y-8">
+            <div className="container px-4 md:px-6 mx-auto relative z-10 max-w-4xl">
+                <div className="flex flex-col items-center text-center space-y-10">
 
-                    {/* Cute Handbook/Emoji Element */}
+                    {/* Availability status — replaces the wave emoji */}
                     <motion.div
-                        initial={{ scale: 0, rotate: -20 }}
-                        whileInView={{ scale: 1, rotate: 0 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                        className="text-4xl md:text-7xl mb-4"
+                        transition={{ duration: 0.5 }}
+                        className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-border bg-card/50 backdrop-blur-sm"
                     >
-                        👋
+                        <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                        </span>
+                        <span className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                            Available for new projects
+                        </span>
                     </motion.div>
 
-                    <div className="space-y-4">
+                    {/* Headline */}
+                    <div className="space-y-5 max-w-2xl">
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-linear-to-r from-background to-background/70"
+                            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-foreground"
                         >
-                            Let's Build Something<br />Amazing Together!
+                            Let&apos;s build something <span className="text-muted-foreground">worth shipping.</span>
                         </motion.h2>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 }}
-                            className="text-lg md:text-xl text-muted-foreground max-w-[600px] mx-auto leading-relaxed"
+                            className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed"
                         >
-                            I'm currently available for freelance projects and open source collaborations. If you want a premium website that converts, I'm your guy.
+                            Freelance projects, security audits, AI-native tooling, or just a sharp second opinion — reach out and let&apos;s talk shape, scope, and timeline.
                         </motion.p>
                     </div>
 
-                    {/* Main CTA */}
+                    {/* Primary contact lines — email + phone */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.15 }}
+                        className="flex flex-col sm:flex-row items-stretch gap-3 pt-2 w-full max-w-xl"
+                    >
+                        <ContactLine
+                            href="mailto:amaraaamka0404@gmail.com"
+                            icon={<Mail className="h-4 w-4" />}
+                            label="Email"
+                            value="amaraaamka0404@gmail.com"
+                        />
+                        <ContactLine
+                            href="tel:+97680360420"
+                            icon={<Phone className="h-4 w-4" />}
+                            label="Phone"
+                            value="+976 8036-0420"
+                        />
+                    </motion.div>
+
+                    {/* Primary CTA */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.96 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className="pt-4"
+                        transition={{ duration: 0.4, delay: 0.2 }}
                     >
                         <Button
                             size="lg"
-                            className="h-14 px-8 rounded-full text-lg font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-105 transition-all duration-300"
+                            className="h-12 px-7 rounded-full text-base font-semibold gap-2 transition-all duration-300 hover:scale-[1.02]"
                             asChild
                         >
                             <Link href="mailto:amaraaamka0404@gmail.com">
-                                <Mail className="mr-2 h-5 w-5 text-background" />
-                                Hire Me Now
+                                Start a conversation
+                                <ArrowUpRight className="h-4 w-4" />
                             </Link>
                         </Button>
                     </motion.div>
 
-                    {/* Social Links */}
-                    <div className="flex items-center gap-4 pt-8">
-                        <SocialButton href="https://github.com/Amartuvshins0404" icon={<Github className="h-5 w-5 text-background" />} label="Github" delay={0.3} />
-                        <SocialButton href="https://www.instagram.com/amartovision/" icon={<InstagramIcon className="h-5 w-5 text-background" />} label="LinkedIn" delay={0.4} />
-                        <SocialButton href="https://x.com/Amaraa2404" icon={<Twitter className="h-5 w-5 text-background" />} label="Twitter" delay={0.5} />
-                    </div>
-
-                    <Link href="tel:+97680360420" className="flex items-center gap-2">
-                        <Phone className="h-5 w-5 text-background" />
-                        <span className="font-bold">+976 8036-0420</span>
-                    </Link>
-
+                    {/* Social row — minimal text links */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.6 }}
-                        className="text-sm text-muted-foreground pt-12"
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-6"
                     >
-                        © {new Date().getFullYear()} Amartuvshin Surenjav. All rights reserved.
+                        <SocialLink href="https://www.linkedin.com/in/amartuvshins/" icon={<Linkedin className="h-3.5 w-3.5" />} label="LinkedIn" />
+                        <SocialLink href="https://github.com/Amartuvshins0404" icon={<Github className="h-3.5 w-3.5" />} label="GitHub" />
+                        <SocialLink href="https://x.com/Amaraa2404" icon={<Twitter className="h-3.5 w-3.5" />} label="Twitter" />
+                        <SocialLink href="https://www.instagram.com/amartovision/" icon={<Instagram className="h-3.5 w-3.5" />} label="Instagram" />
                     </motion.div>
+
+                    {/* Hairline + footer */}
+                    <div className="w-full max-w-md pt-10 mt-2 border-t border-border/60">
+                        <p className="text-xs text-muted-foreground pt-6">
+                            © {new Date().getFullYear()} Amartuvshin Surenjav. Built in Ulaanbaatar.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
     );
 }
 
-function SocialButton({ href, icon, label, delay }: { href: string; icon: React.ReactNode; label: string; delay: number }) {
+function ContactLine({ href, icon, label, value }: { href: string; icon: React.ReactNode; label: string; value: string }) {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay, duration: 0.4 }}
+        <Link
+            href={href}
+            className="group flex-1 flex items-center gap-3 px-5 py-3 rounded-2xl border border-border bg-card/40 backdrop-blur-sm hover:border-foreground/40 hover:bg-card transition-all duration-300 text-left"
         >
-            <Button
-                variant="default"
-                size="icon"
-                className="h-12 w-12 bg-foreground rounded-full"
-                asChild
-            >
-                <Link href={href} aria-label={label} target="_blank">
-                    {icon}
-                </Link>
-            </Button>
-        </motion.div>
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-foreground">
+                {icon}
+            </span>
+            <span className="flex flex-col min-w-0">
+                <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                    {label}
+                </span>
+                <span className="text-sm font-medium text-foreground truncate">
+                    {value}
+                </span>
+            </span>
+            <ArrowUpRight className="ml-auto h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:text-foreground group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </Link>
+    );
+}
+
+function SocialLink({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
+    return (
+        <Link
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors"
+        >
+            {icon}
+            <span>{label}</span>
+            <span className="h-px w-0 bg-foreground transition-all duration-300 group-hover:w-3" />
+        </Link>
     );
 }

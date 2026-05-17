@@ -1,9 +1,10 @@
 'use client'
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Briefcase, FolderGit2, Home, Mail, Sparkles } from "lucide-react";
+import { FolderGit2, Home, Mail, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function TopNav() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -14,14 +15,13 @@ export default function TopNav() {
         };
 
         window.addEventListener("scroll", handleScroll);
-        // Trigger once on mount to set initial state
         handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     return (
         <>
-            <UpperNav/>
+            <UpperNav />
             <BottomNav isScrolled={isScrolled} />
         </>
     )
@@ -36,26 +36,28 @@ function UpperNav() {
                 <Image src={'/profile.jpg'} alt="profile" width={40} height={40} className="rounded-full" />
                 <div>
                     <h1 className="font-bold tracking-tight text-lg md:text-xl">Amartuvshin Surenjav</h1>
-                    <h1 className="text-xs md:text-sm text-muted-foreground font-medium">Software Developer | Cybersecurity Student</h1>
+                    <h1 className="text-xs md:text-sm text-muted-foreground font-medium">Security Engineer @ erxes · Cybersecurity Student</h1>
                 </div>
             </div>
 
-            {/* Desktop Navigation Links - Hidden on Mobile or when Scrolled */}
-            <ul className={cn(
-                "hidden md:flex items-center gap-8 transition-opacity duration-300",
-            )}>
-                {['Home', 'Projects', 'Skills', 'Contact'].map((item) => (
-                    <li key={item} className="relative group">
-                        <Link
-                            href={item === 'Home' ? '#backtop' : `#${item.toLowerCase()}`}
-                            className="font-medium text-muted-foreground hover:text-background transition-colors duration-300"
-                        >
-                            {item}
-                        </Link>
-                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-foreground transition-all duration-300 group-hover:w-full" />
-                    </li>
-                ))}
-            </ul>
+            <div className="flex items-center gap-6">
+                <ul className={cn(
+                    "hidden md:flex items-center gap-8 transition-opacity duration-300",
+                )}>
+                    {['Home', 'Projects', 'Skills', 'Contact'].map((item) => (
+                        <li key={item} className="relative group">
+                            <Link
+                                href={item === 'Home' ? '#backtop' : `#${item.toLowerCase()}`}
+                                className="font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
+                            >
+                                {item}
+                            </Link>
+                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-foreground transition-all duration-300 group-hover:w-full" />
+                        </li>
+                    ))}
+                </ul>
+                <ThemeToggle />
+            </div>
         </nav>
     )
 }
@@ -64,14 +66,11 @@ function BottomNav({ isScrolled }: { isScrolled: boolean }) {
     return (
         <div className={cn(
             "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500",
-            // Mobile: Always visible (translate-y-0)
-            // Desktop: Visible only when scrolled. If not scrolled, hide it (translate-y-20)
             !isScrolled ? "translate-y-24 opacity-0 md:translate-y-24 md:opacity-0 pointer-events-none md:pointer-events-none" : "translate-y-0 opacity-100",
-            // OVERRIDE: On mobile, always visible
             "max-md:translate-y-0 max-md:opacity-100 max-md:pointer-events-auto"
         )}>
             <div className={cn(
-                "flex items-center gap-2 p-2 rounded-full border border-white/10 bg-background/80 backdrop-blur-xl shadow-2xl ring-1 ring-white/5"
+                "flex items-center gap-2 p-2 rounded-full border border-border bg-background/80 backdrop-blur-xl shadow-2xl ring-1 ring-border/50"
             )}>
                 <NavIcon href="#backtop" icon={<Home size={20} />} label="Home" />
                 <NavIcon href="#projects" icon={<FolderGit2 size={20} />} label="Projects" />
@@ -88,7 +87,7 @@ function NavIcon({ href, icon, label }: { href: string, icon: React.ReactNode, l
             href={href}
             className={cn(
                 "relative group flex items-center justify-center w-12 h-12 rounded-full",
-                "text-muted-foreground hover:text-foreground hover:bg-white/10",
+                "text-muted-foreground hover:text-foreground hover:bg-accent",
                 "transition-all duration-300 hover:scale-110"
             )}
             title={label}
