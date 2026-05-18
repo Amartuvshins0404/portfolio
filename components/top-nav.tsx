@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FolderGit2, Home, Mail, Sparkles } from "lucide-react";
+dimport { FolderGit2, GraduationCap, Home, Mail, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -44,13 +44,20 @@ function UpperNav() {
                 <ul className={cn(
                     "hidden md:flex items-center gap-8 transition-opacity duration-300",
                 )}>
-                    {['Home', 'Projects', 'Skills', 'Contact'].map((item) => (
-                        <li key={item} className="relative group">
+                    {[
+                        { label: 'Home', href: '#backtop' },
+                        { label: 'Projects', href: '#projects' },
+                        { label: 'Skills', href: '#skills' },
+                        { label: 'Learn', href: 'https://learn.amartuvshin.com', external: true },
+                        { label: 'Contact', href: '#contact' },
+                    ].map((item) => (
+                        <li key={item.label} className="relative group">
                             <Link
-                                href={item === 'Home' ? '#backtop' : `#${item.toLowerCase()}`}
+                                href={item.href}
+                                {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                                 className="font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
                             >
-                                {item}
+                                {item.label}
                             </Link>
                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-foreground transition-all duration-300 group-hover:w-full" />
                         </li>
@@ -75,16 +82,18 @@ function BottomNav({ isScrolled }: { isScrolled: boolean }) {
                 <NavIcon href="#backtop" icon={<Home size={20} />} label="Home" />
                 <NavIcon href="#projects" icon={<FolderGit2 size={20} />} label="Projects" />
                 <NavIcon href="#skills" icon={<Sparkles size={20} />} label="Skills" />
+                <NavIcon href="https://learn.amartuvshin.com" icon={<GraduationCap size={20} />} label="Learn" external />
                 <NavIcon href="#contact" icon={<Mail size={20} />} label="Contact" />
             </div>
         </div>
     )
 }
 
-function NavIcon({ href, icon, label }: { href: string, icon: React.ReactNode, label: string }) {
+function NavIcon({ href, icon, label, external }: { href: string, icon: React.ReactNode, label: string, external?: boolean }) {
     return (
         <Link
             href={href}
+            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             className={cn(
                 "relative group flex items-center justify-center w-12 h-12 rounded-full",
                 "text-muted-foreground hover:text-foreground hover:bg-accent",
