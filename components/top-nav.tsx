@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import { useEffect, useState } from "react";
-dimport { FolderGit2, GraduationCap, Home, Mail, Sparkles } from "lucide-react";
+import { FolderGit2, GraduationCap, Home, Mail, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
