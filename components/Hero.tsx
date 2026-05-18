@@ -30,11 +30,11 @@ export default function Hero() {
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 animate-in fade-in slide-in-from-bottom-7 duration-1000 delay-500">
                     <div className="flex flex-col items-center space-y-2">
-                        <span className="text-3xl font-bold">5+ years</span>
+                        <span className="text-3xl font-bold">3+ years</span>
                         <span className="text-sm text-muted-foreground">Experience</span>
                     </div>
                     <div className="flex flex-col items-center space-y-2">
-                        <span className="text-3xl font-bold">25+</span>
+                        <span className="text-3xl font-bold">20+</span>
                         <span className="text-sm text-muted-foreground">Projects</span>
                     </div>
                     <div className="flex flex-col items-center space-y-2">
