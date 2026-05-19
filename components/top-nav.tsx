@@ -32,13 +32,20 @@ function UpperNav() {
         <nav className={cn(
             "flex justify-between items-center container mx-auto p-6 transition-all duration-300",
         )}>
-            <div className="flex items-center gap-2">
-                <Image src={'/profile.jpg'} alt="profile" width={40} height={40} className="rounded-full" />
+            <Link href="#backtop" aria-label="Amartuvshin Surenjav — Home" className="flex items-center gap-2">
+                <Image
+                    src="/profile.jpg"
+                    alt="Amartuvshin Surenjav portrait"
+                    width={40}
+                    height={40}
+                    priority
+                    className="rounded-full"
+                />
                 <div>
-                    <h1 className="font-bold tracking-tight text-lg md:text-xl">Amartuvshin Surenjav</h1>
-                    <h1 className="text-xs md:text-sm text-muted-foreground font-medium">Security Engineer @ erxes · Cybersecurity Student</h1>
+                    <span className="block font-bold tracking-tight text-lg md:text-xl">Amartuvshin Surenjav</span>
+                    <span className="block text-xs md:text-sm text-muted-foreground font-medium">Security Engineer @ erxes · Cybersecurity Student</span>
                 </div>
-            </div>
+            </Link>
 
             <div className="flex items-center gap-6">
                 <ul className={cn(
