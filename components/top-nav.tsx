@@ -1,5 +1,6 @@
 'use client'
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FolderGit2, GraduationCap, Home, Mail, Sparkles, BookOpen, HelpCircle, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,8 +19,31 @@ const iconMap: Record<string, React.ReactNode> = {
   Contact: <Mail size={20} />,
 };
 
+function buildNavItems(
+  homeHref: (hash: string) => string,
+  withLearn: boolean,
+): { label: string; href: string; external?: boolean }[] {
+  const items: { label: string; href: string; external?: boolean }[] = [
+    { label: "Home", href: homeHref("#backtop") },
+    { label: "Services", href: homeHref("#services") },
+    { label: "Projects", href: homeHref("#projects") },
+    { label: "Blog", href: "/blog" },
+    { label: "Skills", href: homeHref("#skills") },
+    { label: "FAQ", href: homeHref("#faq") },
+  ];
+  if (withLearn) {
+    items.push({ label: "Learn", href: "https://learn.amartuvshin.com", external: true });
+  }
+  items.push({ label: "Contact", href: homeHref("#contact") });
+  return items;
+}
+
 export default function TopNav({ profile }: { profile: CMSProfile | null }) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const homeHref = (hash: string) => (isHome ? hash : `/${hash}`);
+  const homeLinkHref = homeHref("#backtop");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,29 +57,28 @@ export default function TopNav({ profile }: { profile: CMSProfile | null }) {
 
   return (
     <>
-      <UpperNav profile={profile} />
-      <BottomNav isScrolled={isScrolled} />
+      <UpperNav profile={profile} homeHref={homeHref} homeLinkHref={homeLinkHref} />
+      <BottomNav isScrolled={isScrolled || !isHome} homeHref={homeHref} />
     </>
   )
 }
 
-function UpperNav({ profile }: { profile: CMSProfile | null }) {
-  const navItems: { label: string; href: string; external?: boolean }[] = [
-    { label: "Home", href: "#backtop" },
-    { label: "Services", href: "#services" },
-    { label: "Projects", href: "#projects" },
-    { label: "Blog", href: "/blog" },
-    { label: "Skills", href: "#skills" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Learn", href: "https://learn.amartuvshin.com", external: true },
-    { label: "Contact", href: "#contact" },
-  ];
+function UpperNav({
+  profile,
+  homeHref,
+  homeLinkHref,
+}: {
+  profile: CMSProfile | null;
+  homeHref: (hash: string) => string;
+  homeLinkHref: string;
+}) {
+  const navItems = buildNavItems(homeHref, true);
 
   return (
     <nav className={cn(
       "flex justify-between items-center container mx-auto p-6 transition-all duration-300",
     )}>
-      <Link href="#backtop" aria-label="Amartuvshin Surenjav — Home" className="flex items-center gap-2">
+      <Link href={homeLinkHref} aria-label="Amartuvshin Surenjav — Home" className="flex items-center gap-2">
         <Image
           src={profile?.profile_image ?? "/profile.jpg"}
           alt="Amartuvshin Surenjav — Security Engineer & freelance web developer Ulaanbaatar Mongolia"
@@ -93,16 +116,14 @@ function UpperNav({ profile }: { profile: CMSProfile | null }) {
   )
 }
 
-function BottomNav({ isScrolled }: { isScrolled: boolean }) {
-  const navItems: { label: string; href: string; external?: boolean }[] = [
-    { label: "Home", href: "#backtop" },
-    { label: "Services", href: "#services" },
-    { label: "Projects", href: "#projects" },
-    { label: "Blog", href: "/blog" },
-    { label: "Skills", href: "#skills" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Contact", href: "#contact" },
-  ];
+function BottomNav({
+  isScrolled,
+  homeHref,
+}: {
+  isScrolled: boolean;
+  homeHref: (hash: string) => string;
+}) {
+  const navItems = buildNavItems(homeHref, false);
 
   return (
     <div className={cn(
