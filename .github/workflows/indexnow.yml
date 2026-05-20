@@ -1,0 +1,17 @@
+name: IndexNow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for Vercel deploy
+        run: sleep 90
+      - name: Submit URLs to IndexNow
+        run: node scripts/indexnow.mjs
