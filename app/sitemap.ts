@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
+import { fetchPosts } from "@/lib/directus";
 
 const SITE_URL = "https://amartuvshin.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
-  return [
+  const staticEntries: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
       lastModified,
@@ -21,5 +22,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       },
     },
+    {
+      url: `${SITE_URL}/blog`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
   ];
+
+  try {
+    const posts = await fetchPosts();
+    const postEntries: MetadataRoute.Sitemap = posts.map((p) => ({
+      url: `${SITE_URL}/blog/${p.slug}`,
+      lastModified: new Date(p.date_updated ?? p.published_at ?? p.date_created),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    }));
+    return [...staticEntries, ...postEntries];
+  } catch {
+    return staticEntries;
+  }
 }
