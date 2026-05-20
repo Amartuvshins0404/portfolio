@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
     getSiteSettings().catch(() => null),
   ]);
 
-  const title = settings?.site_title ?? profile?.name ?? "Amartuvshin Surenjav";
+  const title = "Amartuvshin Surenjav — Web Developer";
   const description =
     settings?.site_description ??
     "Website hiine Mongolia — Amartuvshin Surenjav. Веб сайт хийх, web hogjuuleh, AI-native tooling. Хямд, хурдан, найдвартай freelance web development from Ulaanbaatar.";
