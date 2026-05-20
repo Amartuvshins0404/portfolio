@@ -125,7 +125,7 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
-      <article className="relative pt-32 pb-24 md:pt-40 md:pb-32">
+      <article className="relative overflow-hidden pt-32 pb-24 md:pt-40 md:pb-32">
         <div className="absolute top-0 -left-64 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
         <div className="absolute top-1/3 -right-64 w-96 h-96 bg-purple-500/10 rounded-full blur-[128px] pointer-events-none" />
 
