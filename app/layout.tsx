@@ -28,40 +28,33 @@ export async function generateMetadata(): Promise<Metadata> {
     getSiteSettings().catch(() => null),
   ]);
 
-  const title = "Amartuvshin Surenjav — Web Developer";
+  const title =
+    settings?.site_title ??
+    "Amartuvshin Surenjav — Security Engineer & AI Agentic Workflow Engineer";
   const description =
     settings?.site_description ??
-    "Website hiine Mongolia — Amartuvshin Surenjav. Веб сайт хийх, web hogjuuleh, AI-native tooling. Хямд, хурдан, найдвартай freelance web development from Ulaanbaatar.";
+    "Portfolio of Amartuvshin Surenjav — Security Engineer at erxes, Cybersecurity student at MUST-SICT, and AI agentic workflow engineer based in Ulaanbaatar, Mongolia. Shipping full-stack products (flint.mn, voices.mn, devscomm.com, piano.mn) and AI-native tooling at record speed.";
 
-  const mongolianKeywords = [
-    "website hiine",
-    "website hiih",
-    "website mongolia",
-    "website hymd hiine",
-    "hymd website",
-    "hymd website hiine",
-    "hurdan website hiine",
-    "web hogjuuleh",
-    "web hugjuulelt",
-    "web developer mongolia",
-    "veb sait hiih",
-    "vebsite hiine",
-    "freelance website mongolia",
-    "hamgiin sain web hogjuuleh",
-    "веб сайт хийх",
-    "веб сайт хийнэ",
-    "веб сайт хийдэг",
-    "веб хөгжүүлэлт",
-    "вэбсайт хямд",
-    "хямд вэб сайт",
-    "хямдхан вэбсайт",
-    "веб сайт Монгол",
-    "Улаанбаатар веб хөгжүүлэлт",
-    "монгол веб дизайнер",
-    "Next.js хөгжүүлэгч Монгол",
+  const keywords = settings?.meta_keywords ?? [
+    "Amartuvshin Surenjav",
+    "Amaraa",
+    "Mongolia developer",
+    "security engineer",
+    "AI agentic workflows",
+    "Claude Code",
+    "MCP servers",
+    "full-stack engineer",
+    "Next.js",
+    "TypeScript",
+    "React",
+    "GraphQL Federation",
+    "erxes",
+    "MUST-SICT",
+    "flint.mn",
+    "voices.mn",
+    "devscomm.com",
+    "piano.mn",
   ];
-  const baseKeywords = settings?.meta_keywords ?? [];
-  const keywords = Array.from(new Set([...mongolianKeywords, ...baseKeywords]));
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -78,27 +71,13 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: profile?.name ?? "Amartuvshin Surenjav",
     publisher: profile?.name ?? "Amartuvshin Surenjav",
     category: "technology",
-    classification: "Personal portfolio · Freelance web development Mongolia",
+    classification: "Personal portfolio",
     alternates: {
       canonical: "/",
-      languages: {
-        "mn-MN": "/",
-        "mn-Cyrl": "/",
-        "mn-Latn": "/",
-        en: "/",
-        "x-default": "/",
-      },
-    },
-    other: {
-      "geo.region": "MN-1",
-      "geo.placename": "Ulaanbaatar",
-      "geo.position": "47.9184;106.9177",
-      ICBM: "47.9184, 106.9177",
     },
     openGraph: {
       type: "profile",
-      locale: "mn_MN",
-      alternateLocale: ["en_US"],
+      locale: "en_US",
       url: SITE_URL,
       siteName: profile?.name ?? "Amartuvshin Surenjav",
       title,
@@ -211,9 +190,9 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: profile?.name ?? "Amartuvshin Surenjav",
-    alternateName: ["Amaraa", "Website hiine Mongolia", "Веб сайт хийх Монгол"],
+    alternateName: profile?.alternate_names ?? ["Amaraa", "Amartuvshin"],
     url: SITE_URL,
-    inLanguage: ["mn", "mn-Cyrl", "mn-Latn", "en"],
+    inLanguage: "en",
     publisher: {
       "@type": "Person",
       name: profile?.name ?? "Amartuvshin Surenjav",
@@ -222,7 +201,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="mn" suppressHydrationWarning className="scroll-smooth">
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
         <script
           type="application/ld+json"

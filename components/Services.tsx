@@ -78,7 +78,7 @@ export default function Services() {
     <section
       id="services"
       className="py-24 md:py-32 relative overflow-hidden"
-      aria-label="Website hiine · Веб сайт хийх services — Mongolia"
+      aria-label="Services"
     >
       <div className="absolute top-1/4 -right-64 w-96 h-96 bg-emerald-500/10 rounded-full blur-[128px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-64 w-96 h-96 bg-blue-500/10 rounded-full blur-[128px] pointer-events-none" />
