@@ -14,62 +14,62 @@ import { cn } from "@/lib/utils";
 const services = [
   {
     icon: <Globe className="h-4 w-4" />,
-    title: "Website hiine · Веб сайт хийх",
-    subtitle: "Landing & marketing sites",
+    title: "Landing & Marketing Sites",
+    subtitle: "Маркетингийн вэбсайт",
     description:
-      "Хямд, хурдан landing page болон marketing site — Next.js + Tailwind дээр бүтээгдсэн. Mongolian SEO (website hiine, web hogjuuleh, веб сайт хийх) ба analytics багтсан.",
-    timeline: "3-7 хоног",
+      "Хурдан, өндөр чанартай landing болон marketing сайт — Next.js, Tailwind технологи дээр суурилсан. SEO, analytics, performance оптимизаци багтсан.",
+    timeline: "3–7 хоног",
   },
   {
     icon: <Layers className="h-4 w-4" />,
-    title: "Web hogjuuleh · Full-stack хөгжүүлэлт",
-    subtitle: "Production-ready web apps",
+    title: "Full-stack Web Applications",
+    subtitle: "Production-ready веб систем",
     description:
-      "Full-stack веб сайт хөгжүүлэлт — auth, CMS, admin panel, payments, integrations. flint.mn, voices.mn, piano.mn зэрэг шиг live products бүтээсэн туршлагатай.",
-    timeline: "3-6 долоо хоног",
+      "Хэрэглэгчийн нэвтрэлт, CMS, админ панель, төлбөр, интеграцийг багтаасан бүрэн веб шийдэл. flint.mn, voices.mn, piano.mn зэрэг live production системүүдийг хөгжүүлсэн туршлагатай.",
+    timeline: "3–6 долоо хоног",
   },
   {
     icon: <Sparkles className="h-4 w-4" />,
     title: "AI Agentic Workflows",
     subtitle: "Claude Code · MCP servers",
     description:
-      "Claude Code, custom MCP server, тусгай skill-үүдийг ашиглан engineering автоматжуулалт. Нэг developer-ийг бүхэл багийн хурдтай ажиллуулах хөшүүрэг.",
+      "Claude Code, custom MCP server, тусгай skill ашиглан инженерийн процессийг автоматжуулна. Нэг хөгжүүлэгчийг бүхэл багийн хурдтай ажиллуулах боломжийг олгоно.",
     timeline: "Project-based",
   },
   {
     icon: <ShieldCheck className="h-4 w-4" />,
-    title: "Security audit · Vulnerability triage",
+    title: "Security Audit & Vulnerability Triage",
     subtitle: "OWASP · CodeQL · GraphQL Federation",
     description:
-      "Application security review, code-scanning сэрэмжлүүлгийн triage, vulnerability fix. Erxes-д enterprise SaaS security дээр ажилласан туршлагатай.",
-    timeline: "1-3 долоо хоног",
+      "Application security review, code-scanning үр дүнгийн triage, vulnerability засвар. Erxes дээр enterprise SaaS-ийн аюулгүй байдлыг хариуцан ажилласан туршлагатай.",
+    timeline: "1–3 долоо хоног",
   },
 ];
 
 const faqs: { q: string; a: string }[] = [
   {
-    q: "Website hiine — хэдэн төгрөг вэ? How much does a website cost in Mongolia?",
-    a: "Веб сайт хийх төсөв нь scope-оос хамаарна. Энгийн landing page (1-3 хуудас) дунджаар 1-3 сая төгрөг, full-stack веб app (auth, CMS, payments) 5-15 сая төгрөг. Хямд, тогтмол үнэтэй pricing-ийн хувьд scope-ийг эхэлж тодорхойлоод дараа нь fixed quote өгдөг.",
+    q: "Веб сайт хийлгэх үнэ ямар вэ?",
+    a: "Үнэ нь төслийн хэмжээ, нарийн төвөгтэй байдлаас хамаарна. Энгийн landing сайт (1–3 хуудас) дунджаар 1–3 сая ₮, full-stack веб систем (нэвтрэлт, CMS, төлбөр) 5–15 сая ₮. Эхлээд scope-ийг тодорхойлж, дараа нь тогтмол үнийн санал өгнө.",
   },
   {
-    q: "Хэр хурдан website hiine? How fast can you ship?",
-    a: "Landing page 3-7 хоног, marketing site 1-2 долоо хоног, full-stack бүтээгдэхүүн 3-6 долоо хоног дотор production-д гарна. AI agentic workflow (Claude Code + MCP servers) ашигладаг учраас record хурдтай.",
+    q: "Хэр хугацаанд гүйцэтгэх вэ?",
+    a: "Landing сайт 3–7 хоног, marketing сайт 1–2 долоо хоног, full-stack бүтээгдэхүүн 3–6 долоо хоног дотор production-д гарна. AI agentic workflow (Claude Code, MCP servers) ашигладаг учраас ердийн хугацаанаас илүү хурдтай.",
   },
   {
-    q: "Хямд website хийдэг үү? Do you offer affordable web development?",
-    a: "Тийм. Startup, жижиг бизнес, эсвэл MVP-д зориулсан хямд landing page-ийн option байгаа. Том scope-той project-ийн хувьд phased delivery хийж budget-ийг хэсэг хэсгээр хуваан ажиллах боломжтой.",
+    q: "Жижиг бизнест зориулсан хямд хувилбар байдаг уу?",
+    a: "Тийм. Startup, жижиг бизнес болон MVP-д зориулсан боломжийн үнэтэй landing сайтын багц байдаг. Том төслийн хувьд phased delivery — төсвийг хэсэгчилэн хуваан ажиллах боломжтой.",
   },
   {
-    q: "Mongolia-аас гадуур ажилладаг уу? Do you work with international clients?",
-    a: "Тийм. Улаанбаатар (Ulaanbaatar) дотор болон remote-оор Mongolia-аас гадуурх клиентүүдтэй ажилладаг. UTC+8 timezone-д байгаа учраас Азийн орнуудтай ажиллахад ялангуяа хялбар.",
+    q: "Олон улсын клиенттэй ажилладаг уу?",
+    a: "Тийм. Улаанбаатар хотоос remote-оор ажилладаг бөгөөд олон улсын клиентүүдтэй хамтран ажилладаг. UTC+8 timezone нь Ази, Австрали, Европтой давхцалтай ажиллахад тохиромжтой.",
   },
   {
-    q: "Ямар technology ашигладаг вэ? What tech stack do you use?",
+    q: "Ямар технологи ашигладаг вэ?",
     a: "Frontend: Next.js (App Router), React 19, TypeScript, Tailwind v4. Backend: Node.js, GraphQL Federation, PostgreSQL, MongoDB, Redis, MinIO. AI: Claude Code, MCP servers. Security: OWASP, CodeQL.",
   },
   {
-    q: "Аль live website-уудыг хийсэн бэ? Which live products have you shipped?",
-    a: "flint.mn (dating platform), voices.mn (multi-tenant news), devscomm.com (developer community), piano.mn (Mongolian Piano Association). Бүгд production-д ажиллаж байгаа, end-to-end бүтээсэн.",
+    q: "Production-д гарсан ямар бүтээгдэхүүн байгаа вэ?",
+    a: "flint.mn (танилцах платформ), voices.mn (multi-tenant news систем), devscomm.com (хөгжүүлэгчдийн нийгэмлэг), piano.mn (Монголын Төгөлдөр Хуурын Холбоо). Бүгд одоо ч production-д ажиллаж байна.",
   },
 ];
 
@@ -97,16 +97,15 @@ export default function Services() {
               Services · Үйлчилгээ
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter">
-              Веб сайт хийнэ.
+              Веб хөгжүүлэлт.
               <span className="block text-muted-foreground text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight mt-2">
-                Website hiine — Mongolia.
+                Web development from Mongolia.
               </span>
             </h2>
           </div>
           <p className="max-w-md text-muted-foreground text-base md:text-right leading-relaxed">
-            Хямд, хурдан, найдвартай <strong className="text-foreground font-semibold">веб сайт хөгжүүлэлт</strong> Улаанбаатар хотоос. Freelance{" "}
-            <strong className="text-foreground font-semibold">website hiine</strong> and{" "}
-            <strong className="text-foreground font-semibold">web hogjuuleh</strong> services for Mongolian businesses and startups.
+            Улаанбаатар хотоос үзүүлэх <strong className="text-foreground font-semibold">найдвартай вэб хөгжүүлэлтийн</strong> үйлчилгээ. Монголын бизнесүүд болон олон улсын клиентүүдэд зориулсан freelance{" "}
+            <strong className="text-foreground font-semibold">design, development, security</strong> шийдэл.
           </p>
         </motion.div>
 
@@ -134,7 +133,7 @@ export default function Services() {
               </h2>
             </div>
             <p className="max-w-md text-muted-foreground text-base md:text-right">
-              Mongolia-д website хийлгэхээр төлөвлөж буй хүмүүсийн ихэвчлэн асуудаг асуултууд.
+              Веб сайт хийлгэхээр төлөвлөж буй клиентүүдийн түгээмэл асуудаг асуултууд.
             </p>
           </motion.div>
 
