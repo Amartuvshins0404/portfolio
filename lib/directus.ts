@@ -30,6 +30,17 @@ export type BlogSettings = {
   eyebrow: string | null;
   heading: string | null;
   description: string | null;
+  read_post_label: string | null;
+  all_posts_label: string | null;
+  more_posts_label: string | null;
+  last_updated_label: string | null;
+  min_read_suffix: string | null;
+  no_posts_title: string | null;
+  no_posts_body: string | null;
+  error_title: string | null;
+  error_body: string | null;
+  filter_aria_label: string | null;
+  not_found_title: string | null;
 };
 
 type DirectusResponse<T> = { data: T; errors?: { message: string }[] };
@@ -116,10 +127,27 @@ export async function fetchContentTypes(): Promise<ContentType[]> {
   );
 }
 
+const BLOG_SETTINGS_FIELDS = [
+  "eyebrow",
+  "heading",
+  "description",
+  "read_post_label",
+  "all_posts_label",
+  "more_posts_label",
+  "last_updated_label",
+  "min_read_suffix",
+  "no_posts_title",
+  "no_posts_body",
+  "error_title",
+  "error_body",
+  "filter_aria_label",
+  "not_found_title",
+].join(",");
+
 export async function fetchBlogSettings(): Promise<BlogSettings | null> {
   try {
     return await directusFetch<BlogSettings>(
-      `/items/blog_settings?fields=eyebrow,heading,description`,
+      `/items/blog_settings?fields=${BLOG_SETTINGS_FIELDS}`,
     );
   } catch {
     return null;

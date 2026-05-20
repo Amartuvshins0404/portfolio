@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import {
   directusAssetUrl,
+  fetchBlogSettings,
   fetchPostBySlug,
   fetchPostSlugs,
 } from "@/lib/directus";
@@ -32,9 +33,15 @@ export async function generateMetadata({
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await fetchPostBySlug(slug).catch(() => null);
+  const [post, settings] = await Promise.all([
+    fetchPostBySlug(slug).catch(() => null),
+    fetchBlogSettings().catch(() => null),
+  ]);
   if (!post) {
-    return { title: "Post not found", robots: { index: false, follow: false } };
+    return {
+      title: settings?.not_found_title ?? "Нийтлэл олдсонгүй",
+      robots: { index: false, follow: false },
+    };
   }
   const cover = directusAssetUrl(post.cover_image, { width: 1200, height: 630, fit: "cover", quality: 82 });
   return {
@@ -63,7 +70,7 @@ export async function generateMetadata({
 
 function formatDate(value: string | null): string {
   if (!value) return "";
-  return new Date(value).toLocaleDateString("en-US", {
+  return new Date(value).toLocaleDateString("mn-MN", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -76,8 +83,16 @@ export default async function BlogPostPage({
   params: Promise<RouteParams>;
 }) {
   const { slug } = await params;
-  const post = await fetchPostBySlug(slug).catch(() => null);
+  const [post, settings] = await Promise.all([
+    fetchPostBySlug(slug).catch(() => null),
+    fetchBlogSettings().catch(() => null),
+  ]);
   if (!post) notFound();
+
+  const allPostsLabel = settings?.all_posts_label ?? "Бүх нийтлэл";
+  const morePostsLabel = settings?.more_posts_label ?? "Бусад нийтлэл";
+  const lastUpdatedLabel = settings?.last_updated_label ?? "Сүүлд шинэчилсэн";
+  const minReadSuffix = settings?.min_read_suffix ?? "минут унших";
 
   const cover = directusAssetUrl(post.cover_image, { width: 1800, quality: 88 });
 
@@ -120,7 +135,7 @@ export default async function BlogPostPage({
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-12"
           >
             <ArrowLeft className="h-4 w-4" />
-            All posts
+            {allPostsLabel}
           </Link>
 
           <header className="space-y-6 mb-12 md:mb-16">
@@ -134,7 +149,7 @@ export default async function BlogPostPage({
               {post.reading_time ? (
                 <span className="inline-flex items-center gap-1.5">
                   <Clock className="h-3 w-3" />
-                  {post.reading_time} min read
+                  {post.reading_time} {minReadSuffix}
                 </span>
               ) : null}
             </div>
@@ -181,10 +196,11 @@ export default async function BlogPostPage({
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
-              More posts
+              {morePostsLabel}
             </Link>
             <div className="text-xs text-muted-foreground font-mono">
-              Last updated {formatDate(post.date_updated ?? post.published_at ?? post.date_created)}
+              {lastUpdatedLabel}{" "}
+              {formatDate(post.date_updated ?? post.published_at ?? post.date_created)}
             </div>
           </footer>
         </div>

@@ -18,10 +18,10 @@ export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchBlogSettings().catch(() => null);
-  const heading = settings?.heading ?? "Writing";
+  const heading = settings?.heading ?? "Тэмдэглэл ба эссэ.";
   const description =
     settings?.description ??
-    "Long-form notes from Amartuvshin Surenjav.";
+    "Аппликейшний аюулгүй байдал, AI агентик workflow, програм хангамжийн ур чадварын тухай тэмдэглэлүүд.";
   return {
     title: `${heading.replace(/\.$/, "")} — Amartuvshin Surenjav`,
     description,
@@ -37,7 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 function formatDate(value: string | null): string {
   if (!value) return "";
-  return new Date(value).toLocaleDateString("en-US", {
+  return new Date(value).toLocaleDateString("mn-MN", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -90,9 +90,20 @@ export default async function BlogIndex({
     loadError = err instanceof Error ? err.message : "Failed to load posts";
   }
 
-  const heading = settings?.heading ?? "Writing";
+  const heading = settings?.heading ?? "Тэмдэглэл ба эссэ.";
   const description = settings?.description ?? null;
   const eyebrow = settings?.eyebrow ?? null;
+  const readPostLabel = settings?.read_post_label ?? "Нийтлэлийг унших";
+  const minReadSuffix = settings?.min_read_suffix ?? "минут унших";
+  const filterAriaLabel = settings?.filter_aria_label ?? "Нийтлэлийг төрлөөр шүүх";
+  const errorTitle = settings?.error_title ?? "CMS-тэй холбогдож чадсангүй";
+  const errorBody =
+    settings?.error_body ??
+    "Блогийн backend алдаа буцаалаа. Хэсэг хугацааны дараа дахин оролдоно уу.";
+  const noPostsTitle = settings?.no_posts_title ?? "Нийтлэл удахгүй нэмэгдэнэ";
+  const noPostsBody =
+    settings?.no_posts_body ??
+    "Шинэ бичвэрүүд бэлдэгдэж байна. Удахгүй буцаж ороорой.";
 
   const [featured, ...rest] = posts;
 
@@ -128,7 +139,11 @@ export default async function BlogIndex({
 
       {types.length > 1 ? (
         <section className="container mx-auto max-w-5xl px-4 md:px-6 pb-2">
-          <TabsBar types={types} activeSlug={activeType?.slug} />
+          <TabsBar
+            types={types}
+            activeSlug={activeType?.slug}
+            ariaLabel={filterAriaLabel}
+          />
         </section>
       ) : null}
 
@@ -141,28 +156,22 @@ export default async function BlogIndex({
           ) : null}
 
           {loadError ? (
-            <EmptyState
-              title="Couldn't reach the CMS"
-              body={`The blog backend returned an error. Try again later. (${loadError})`}
-            />
+            <EmptyState title={errorTitle} body={`${errorBody} (${loadError})`} />
           ) : posts.length === 0 ? (
-            <EmptyState
-              title={
-                activeType ? `No ${activeType.label.toLowerCase()} yet` : "No posts yet"
-              }
-              body={
-                activeType
-                  ? `Drafts are cooking. Check back soon, or pick another tab above.`
-                  : `Drafts are cooking. Check back soon.`
-              }
-            />
+            <EmptyState title={noPostsTitle} body={noPostsBody} />
           ) : (
             <div className="space-y-16">
-              {featured ? <FeaturedCard post={featured} /> : null}
+              {featured ? (
+                <FeaturedCard
+                  post={featured}
+                  readPostLabel={readPostLabel}
+                  minReadSuffix={minReadSuffix}
+                />
+              ) : null}
               {rest.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   {rest.map((p) => (
-                    <PostCard key={p.id} post={p} />
+                    <PostCard key={p.id} post={p} minReadSuffix={minReadSuffix} />
                   ))}
                 </div>
               ) : null}
@@ -177,14 +186,16 @@ export default async function BlogIndex({
 function TabsBar({
   types,
   activeSlug,
+  ariaLabel,
 }: {
   types: ContentType[];
   activeSlug?: string;
+  ariaLabel: string;
 }) {
   return (
     <nav
       role="tablist"
-      aria-label="Filter posts by type"
+      aria-label={ariaLabel}
       className="inline-flex flex-wrap items-center gap-1 rounded-full border border-border/50 bg-card/50 p-1 backdrop-blur-sm"
     >
       {types.map((t) => {
@@ -221,7 +232,15 @@ function EmptyState({ title, body }: { title: string; body: string }) {
   );
 }
 
-function FeaturedCard({ post }: { post: Post }) {
+function FeaturedCard({
+  post,
+  readPostLabel,
+  minReadSuffix,
+}: {
+  post: Post;
+  readPostLabel: string;
+  minReadSuffix: string;
+}) {
   const cover = directusAssetUrl(post.cover_image, {
     width: 1600,
     quality: 85,
@@ -246,7 +265,7 @@ function FeaturedCard({ post }: { post: Post }) {
           </div>
         ) : null}
         <div className="p-8 md:p-12 space-y-5">
-          <PostMeta post={post} />
+          <PostMeta post={post} minReadSuffix={minReadSuffix} />
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
             {post.title}
           </h2>
@@ -256,7 +275,7 @@ function FeaturedCard({ post }: { post: Post }) {
             </p>
           ) : null}
           <div className="inline-flex items-center gap-2 text-sm font-medium pt-2 text-foreground/80 group-hover:text-foreground transition-colors">
-            Read post
+            {readPostLabel}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </div>
         </div>
@@ -265,7 +284,13 @@ function FeaturedCard({ post }: { post: Post }) {
   );
 }
 
-function PostCard({ post }: { post: Post }) {
+function PostCard({
+  post,
+  minReadSuffix,
+}: {
+  post: Post;
+  minReadSuffix: string;
+}) {
   const cover = directusAssetUrl(post.cover_image, {
     width: 1200,
     quality: 82,
@@ -288,7 +313,7 @@ function PostCard({ post }: { post: Post }) {
           </div>
         ) : null}
         <div className="p-6 md:p-7 space-y-3">
-          <PostMeta post={post} />
+          <PostMeta post={post} minReadSuffix={minReadSuffix} />
           <h3 className="text-xl md:text-2xl font-semibold tracking-tight">
             {post.title}
           </h3>
@@ -303,7 +328,13 @@ function PostCard({ post }: { post: Post }) {
   );
 }
 
-function PostMeta({ post }: { post: Post }) {
+function PostMeta({
+  post,
+  minReadSuffix,
+}: {
+  post: Post;
+  minReadSuffix: string;
+}) {
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
       {post.published_at ? (
@@ -315,7 +346,7 @@ function PostMeta({ post }: { post: Post }) {
       {post.reading_time ? (
         <span className="inline-flex items-center gap-1.5">
           <Clock className="h-3 w-3" />
-          {post.reading_time} min read
+          {post.reading_time} {minReadSuffix}
         </span>
       ) : null}
       {post.tags && post.tags.length > 0 ? (
