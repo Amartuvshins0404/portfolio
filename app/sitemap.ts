@@ -9,26 +9,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: SITE_URL,
       lastModified,
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 1,
-    },
-    {
-      url: `${SITE_URL}/#projects`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/#skills`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/#contact`,
-      lastModified,
-      changeFrequency: "yearly",
-      priority: 0.7,
+      alternates: {
+        languages: {
+          "mn-MN": SITE_URL,
+          "mn-Cyrl": SITE_URL,
+          "mn-Latn": SITE_URL,
+          en: SITE_URL,
+          "x-default": SITE_URL,
+        },
+      },
     },
   ];
 }

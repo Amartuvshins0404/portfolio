@@ -4,7 +4,7 @@ import path from "node:path";
 
 export const runtime = "nodejs";
 export const alt =
-  "Amartuvshin Surenjav — Security Engineer & AI Agentic Workflow Engineer";
+  "Website hiine · Веб сайт хийх — Amartuvshin Surenjav, freelance web developer Mongolia";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -86,10 +86,10 @@ export default async function Image() {
             amartuvshin.com
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
             <div
               style={{
-                fontSize: 82,
+                fontSize: 72,
                 fontWeight: 800,
                 letterSpacing: -3,
                 lineHeight: 1.02,
@@ -101,15 +101,27 @@ export default async function Image() {
             </div>
             <div
               style={{
-                fontSize: 32,
-                color: "rgba(255,255,255,0.78)",
+                fontSize: 38,
+                fontWeight: 700,
+                color: "rgba(255,255,255,0.95)",
+                lineHeight: 1.2,
+                maxWidth: 720,
+                display: "flex",
+              }}
+            >
+              Website hiine · Веб сайт хийнэ
+            </div>
+            <div
+              style={{
+                fontSize: 26,
+                color: "rgba(255,255,255,0.72)",
                 lineHeight: 1.3,
                 maxWidth: 720,
                 display: "flex",
               }}
             >
-              Security Engineer · AI Agentic Workflow Engineer · Full-stack
-              builder from Ulaanbaatar.
+              Freelance web development from Ulaanbaatar, Mongolia · AI agentic
+              workflows · Security engineering.
             </div>
           </div>
 
@@ -121,12 +133,12 @@ export default async function Image() {
             }}
           >
             {[
-              "erxes",
-              "Claude Code",
+              "Website hiine",
+              "Web hogjuuleh",
+              "Веб сайт",
               "Next.js",
+              "Claude Code",
               "MCP servers",
-              "TypeScript",
-              "GraphQL",
             ].map((tag) => (
               <div
                 key={tag}

@@ -29,8 +29,39 @@ export async function generateMetadata(): Promise<Metadata> {
   ]);
 
   const title = settings?.site_title ?? profile?.name ?? "Amartuvshin Surenjav";
-  const description = settings?.site_description ?? "";
-  const keywords = settings?.meta_keywords ?? [];
+  const description =
+    settings?.site_description ??
+    "Website hiine Mongolia — Amartuvshin Surenjav. Веб сайт хийх, web hogjuuleh, AI-native tooling. Хямд, хурдан, найдвартай freelance web development from Ulaanbaatar.";
+
+  const mongolianKeywords = [
+    "website hiine",
+    "website hiih",
+    "website mongolia",
+    "website hymd hiine",
+    "hymd website",
+    "hymd website hiine",
+    "hurdan website hiine",
+    "web hogjuuleh",
+    "web hugjuulelt",
+    "web developer mongolia",
+    "veb sait hiih",
+    "vebsite hiine",
+    "freelance website mongolia",
+    "hamgiin sain web hogjuuleh",
+    "веб сайт хийх",
+    "веб сайт хийнэ",
+    "веб сайт хийдэг",
+    "веб хөгжүүлэлт",
+    "вэбсайт хямд",
+    "хямд вэб сайт",
+    "хямдхан вэбсайт",
+    "веб сайт Монгол",
+    "Улаанбаатар веб хөгжүүлэлт",
+    "монгол веб дизайнер",
+    "Next.js хөгжүүлэгч Монгол",
+  ];
+  const baseKeywords = settings?.meta_keywords ?? [];
+  const keywords = Array.from(new Set([...mongolianKeywords, ...baseKeywords]));
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -47,11 +78,27 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: profile?.name ?? "Amartuvshin Surenjav",
     publisher: profile?.name ?? "Amartuvshin Surenjav",
     category: "technology",
-    classification: "Personal portfolio",
-    alternates: { canonical: "/" },
+    classification: "Personal portfolio · Freelance web development Mongolia",
+    alternates: {
+      canonical: "/",
+      languages: {
+        "mn-MN": "/",
+        "mn-Cyrl": "/",
+        "mn-Latn": "/",
+        en: "/",
+        "x-default": "/",
+      },
+    },
+    other: {
+      "geo.region": "MN-1",
+      "geo.placename": "Ulaanbaatar",
+      "geo.position": "47.9184;106.9177",
+      ICBM: "47.9184, 106.9177",
+    },
     openGraph: {
       type: "profile",
-      locale: "en_US",
+      locale: "mn_MN",
+      alternateLocale: ["en_US"],
       url: SITE_URL,
       siteName: profile?.name ?? "Amartuvshin Surenjav",
       title,
@@ -82,7 +129,7 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: {
       icon: "/favicon.ico",
       shortcut: "/favicon.ico",
-      apple: "/profile.jpg",
+      apple: { url: "/profile.jpg", sizes: "180x180", type: "image/jpeg" },
     },
     manifest: "/manifest.webmanifest",
     formatDetection: {
@@ -164,8 +211,9 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: profile?.name ?? "Amartuvshin Surenjav",
+    alternateName: ["Amaraa", "Website hiine Mongolia", "Веб сайт хийх Монгол"],
     url: SITE_URL,
-    inLanguage: "en",
+    inLanguage: ["mn", "mn-Cyrl", "mn-Latn", "en"],
     publisher: {
       "@type": "Person",
       name: profile?.name ?? "Amartuvshin Surenjav",
@@ -174,7 +222,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+    <html lang="mn" suppressHydrationWarning className="scroll-smooth">
       <head>
         <script
           type="application/ld+json"

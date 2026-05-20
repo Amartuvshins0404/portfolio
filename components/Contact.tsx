@@ -120,9 +120,12 @@ export default function Contact({
             ))}
           </motion.div>
 
-          <div className="w-full max-w-md pt-10 mt-2 border-t border-border/60">
+          <div className="w-full max-w-2xl pt-10 mt-2 border-t border-border/60">
             <p className="text-xs text-muted-foreground pt-6">
               © {new Date().getFullYear()} {profile?.name ?? "Amartuvshin Surenjav"}. Built in Ulaanbaatar.
+            </p>
+            <p className="text-[11px] text-muted-foreground/70 pt-2 leading-relaxed">
+              Website hiine · Веб сайт хийнэ · Web hogjuuleh — freelance web development from Ulaanbaatar, Mongolia. Next.js, React, TypeScript. Хямд, хурдан, найдвартай.
             </p>
           </div>
         </div>

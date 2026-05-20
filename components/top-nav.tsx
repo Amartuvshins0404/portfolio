@@ -1,7 +1,7 @@
 'use client'
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FolderGit2, GraduationCap, Home, Mail, Sparkles, BookOpen } from "lucide-react";
+import { FolderGit2, GraduationCap, Home, Mail, Sparkles, BookOpen, HelpCircle, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -9,8 +9,10 @@ import type { CMSProfile } from "@/lib/cms";
 
 const iconMap: Record<string, React.ReactNode> = {
   Home: <Home size={20} />,
+  Services: <Briefcase size={20} />,
   Projects: <FolderGit2 size={20} />,
   Skills: <Sparkles size={20} />,
+  FAQ: <HelpCircle size={20} />,
   Learn: <GraduationCap size={20} />,
   Blog: <BookOpen size={20} />,
   Contact: <Mail size={20} />,
@@ -38,12 +40,13 @@ export default function TopNav({ profile }: { profile: CMSProfile | null }) {
 }
 
 function UpperNav({ profile }: { profile: CMSProfile | null }) {
-  const navItems = [
+  const navItems: { label: string; href: string; external?: boolean }[] = [
     { label: "Home", href: "#backtop" },
+    { label: "Services", href: "#services" },
     { label: "Projects", href: "#projects" },
     { label: "Skills", href: "#skills" },
+    { label: "FAQ", href: "#faq" },
     { label: "Learn", href: "https://learn.amartuvshin.com", external: true },
-    { label: "Blog", href: "https://blog.amartuvshin.com", external: true },
     { label: "Contact", href: "#contact" },
   ];
 
@@ -54,7 +57,7 @@ function UpperNav({ profile }: { profile: CMSProfile | null }) {
       <Link href="#backtop" aria-label="Amartuvshin Surenjav — Home" className="flex items-center gap-2">
         <Image
           src={profile?.profile_image ?? "/profile.jpg"}
-          alt="Amartuvshin Surenjav portrait"
+          alt="Amartuvshin Surenjav — Security Engineer & freelance web developer Ulaanbaatar Mongolia"
           width={40}
           height={40}
           priority
@@ -92,10 +95,10 @@ function UpperNav({ profile }: { profile: CMSProfile | null }) {
 function BottomNav({ isScrolled }: { isScrolled: boolean }) {
   const navItems: { label: string; href: string; external?: boolean }[] = [
     { label: "Home", href: "#backtop" },
+    { label: "Services", href: "#services" },
     { label: "Projects", href: "#projects" },
     { label: "Skills", href: "#skills" },
-    { label: "Learn", href: "https://learn.amartuvshin.com", external: true },
-    { label: "Blog", href: "https://blog.amartuvshin.com", external: true },
+    { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#contact" },
   ];
 

@@ -81,7 +81,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           <div className="relative aspect-[16/10] overflow-hidden bg-muted/20">
             <Image
               src={project.image_url}
-              alt={`${project.title} screenshot`}
+              alt={`${project.title} — website built by Amartuvshin Surenjav · веб сайт хийсэн (${project.category})`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
               className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
