@@ -6,6 +6,8 @@ import FixedButtons from "@/components/fixed-buttons";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getProfile, getSiteSettings } from "@/lib/cms";
 
+export const dynamic = "force-dynamic";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

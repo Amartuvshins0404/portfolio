@@ -7,6 +7,7 @@ type FetchOptions = {
 
 async function fetchCMS<T>(path: string, options?: FetchOptions): Promise<T> {
   const res = await fetch(`${CMS_URL}${path}`, {
+    cache: "no-store",
     ...options,
     headers: { "Content-Type": "application/json" },
   });
