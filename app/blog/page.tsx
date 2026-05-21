@@ -115,7 +115,7 @@ export default async function BlogIndex({
           __html: JSON.stringify(blogJsonLd(posts, heading)),
         }}
       />
-      <section className="relative overflow-hidden pt-32 pb-12 md:pt-40 md:pb-16">
+      <section className="relative overflow-hidden pt-12 pb-10 md:pt-40 md:pb-16">
         <div className="absolute top-0 -left-64 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
         <div className="absolute bottom-0 -right-64 w-96 h-96 bg-purple-500/10 rounded-full blur-[128px] pointer-events-none" />
 
@@ -126,7 +126,7 @@ export default async function BlogIndex({
               {eyebrow}
             </div>
           ) : null}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter break-words">
             {heading}
           </h1>
           {description ? (
@@ -147,7 +147,7 @@ export default async function BlogIndex({
         </section>
       ) : null}
 
-      <section className="pb-24 md:pb-32 pt-8 md:pt-10">
+      <section className="pb-32 md:pb-32 pt-8 md:pt-10">
         <div className="container mx-auto max-w-5xl px-4 md:px-6">
           {activeType?.description ? (
             <p className="max-w-2xl text-sm md:text-base text-muted-foreground mb-12 md:mb-16">

@@ -78,18 +78,18 @@ function UpperNav({
     <nav className={cn(
       "flex justify-between items-center container mx-auto p-6 transition-all duration-300",
     )}>
-      <Link href={homeLinkHref} aria-label="Amartuvshin Surenjav — Home" className="flex items-center gap-2">
+      <Link href={homeLinkHref} aria-label="Amartuvshin Surenjav — Home" className="flex items-center gap-2 min-w-0">
         <Image
           src={profile?.profile_image ?? "/profile.jpg"}
           alt="Amartuvshin Surenjav — Security Engineer & freelance web developer Ulaanbaatar Mongolia"
           width={40}
           height={40}
           priority
-          className="rounded-full"
+          className="rounded-full shrink-0"
         />
-        <div>
-          <span className="block font-bold tracking-tight text-lg md:text-xl">{profile?.name ?? "Amartuvshin Surenjav"}</span>
-          <span className="block text-xs md:text-sm text-muted-foreground font-medium">{profile?.job_title ?? "Security Engineer @ erxes · Cybersecurity Student"}</span>
+        <div className="min-w-0">
+          <span className="block font-bold tracking-tight text-base md:text-xl truncate">{profile?.name ?? "Amartuvshin Surenjav"}</span>
+          <span className="block text-xs md:text-sm text-muted-foreground font-medium line-clamp-1">{profile?.job_title ?? "Security Engineer @ erxes · Cybersecurity Student"}</span>
         </div>
       </Link>
 

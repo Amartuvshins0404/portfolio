@@ -10,6 +10,17 @@ export type ContentType = {
   sort: number | null;
 };
 
+export type RelatedPostSummary = {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  cover_image: string | null;
+  published_at: string | null;
+  reading_time: number | null;
+  type: { slug: string; label: string } | null;
+};
+
 export type Post = {
   id: number;
   status: "published" | "draft" | "archived";
@@ -24,6 +35,7 @@ export type Post = {
   date_created: string;
   date_updated: string | null;
   type: { id: number; slug: string; label: string } | null;
+  related_posts: { related_posts_id: RelatedPostSummary | null }[] | null;
 };
 
 export type BlogSettings = {
@@ -41,6 +53,7 @@ export type BlogSettings = {
   error_body: string | null;
   filter_aria_label: string | null;
   not_found_title: string | null;
+  related_label: string | null;
 };
 
 type DirectusResponse<T> = { data: T; errors?: { message: string }[] };
@@ -72,6 +85,18 @@ async function directusFetch<T>(
   return json.data;
 }
 
+const RELATED_SUMMARY_FIELDS = [
+  "id",
+  "slug",
+  "title",
+  "excerpt",
+  "cover_image",
+  "published_at",
+  "reading_time",
+  "type.slug",
+  "type.label",
+];
+
 const POST_FIELDS = [
   "id",
   "status",
@@ -88,6 +113,9 @@ const POST_FIELDS = [
   "type.id",
   "type.slug",
   "type.label",
+  ...RELATED_SUMMARY_FIELDS.map(
+    (f) => `related_posts.related_posts_id.${f}`,
+  ),
 ].join(",");
 
 export async function fetchPosts(typeSlug?: string): Promise<Post[]> {
@@ -142,7 +170,41 @@ const BLOG_SETTINGS_FIELDS = [
   "error_body",
   "filter_aria_label",
   "not_found_title",
+  "related_label",
 ].join(",");
+
+export async function fetchBacklinks(
+  postId: number,
+): Promise<RelatedPostSummary[]> {
+  const fields = RELATED_SUMMARY_FIELDS.map((f) => `posts_id.${f}`).join(",");
+  const params = new URLSearchParams();
+  params.set("fields", fields);
+  params.append("filter[related_posts_id][_eq]", String(postId));
+  params.set("limit", "100");
+  const rows = await directusFetch<
+    { posts_id: RelatedPostSummary | null }[]
+  >(`/items/posts_related_posts?${params.toString()}`);
+  return rows
+    .map((r) => r.posts_id)
+    .filter((p): p is RelatedPostSummary => p !== null);
+}
+
+export async function fetchRelatedPosts(
+  post: Post,
+): Promise<RelatedPostSummary[]> {
+  const forward = (post.related_posts ?? [])
+    .map((r) => r.related_posts_id)
+    .filter((p): p is RelatedPostSummary => p !== null);
+  const backward = await fetchBacklinks(post.id).catch(() => []);
+  const map = new Map<number, RelatedPostSummary>();
+  for (const p of forward) map.set(p.id, p);
+  for (const p of backward) if (!map.has(p.id)) map.set(p.id, p);
+  return Array.from(map.values()).sort((a, b) => {
+    const ad = a.published_at ?? "";
+    const bd = b.published_at ?? "";
+    return bd.localeCompare(ad);
+  });
+}
 
 export async function fetchBlogSettings(): Promise<BlogSettings | null> {
   try {

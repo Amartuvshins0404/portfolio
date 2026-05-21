@@ -4,7 +4,6 @@ import BackToTop from './back-to-top'
 import ChatModal from './ChatModal'
 import Chatbot from './Chatbot'
 import { cn } from '@/lib/utils';
-import { ThemeToggle } from './theme-toggle';
 
 const FixedButtons = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -12,11 +11,7 @@ const FixedButtons = () => {
 
     useEffect(() => {
         const toggleVisibility = () => {
-            if (window.scrollY > 300) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
+            setIsVisible(window.scrollY > 300);
         };
 
         window.addEventListener("scroll", toggleVisibility);
@@ -24,25 +19,15 @@ const FixedButtons = () => {
     }, []);
 
     const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (
-        <div className='fixed bottom-10 right-10 z-50 flex flex-col items-end gap-3'>
+        <div className='fixed bottom-24 right-4 md:bottom-10 md:right-10 z-50 flex flex-col items-end gap-3'>
             {isChatOpen ? (
                 <ChatModal onClose={() => setIsChatOpen(false)} />
             ) : (
                 <div className="relative w-12 h-12">
-                    <ThemeToggle
-                        className={cn(
-                            "absolute right-0 h-12 w-12 transition-all duration-500 ease-in-out",
-                            isVisible ? "bottom-40" : "bottom-20"
-                        )}
-                    />
-
                     <Chatbot
                         onOpen={() => setIsChatOpen(true)}
                         className={cn(
