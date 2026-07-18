@@ -17,7 +17,7 @@ import {
   getSiteSettings,
 } from "@/lib/cms";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const SITE_URL = "https://portfolio.amartuvshin.com";
 
