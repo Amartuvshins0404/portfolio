@@ -5,7 +5,7 @@ import TopNav from "@/components/top-nav";
 import FixedButtons from "@/components/fixed-buttons";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getProfile, getSiteSettings } from "@/lib/cms";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -225,6 +225,7 @@ export default async function RootLayout({
           {children}
           <FixedButtons />
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
