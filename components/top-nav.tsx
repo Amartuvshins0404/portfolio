@@ -11,6 +11,7 @@ import type { CMSProfile } from "@/lib/cms";
 const iconMap: Record<string, React.ReactNode> = {
   Home: <Home size={20} />,
   Services: <Briefcase size={20} />,
+  Advisory: <Briefcase size={20} />,
   Projects: <FolderGit2 size={20} />,
   Skills: <Sparkles size={20} />,
   FAQ: <HelpCircle size={20} />,
@@ -25,9 +26,9 @@ function buildNavItems(
 ): { label: string; href: string; external?: boolean }[] {
   const items: { label: string; href: string; external?: boolean }[] = [
     { label: "Home", href: homeHref("#backtop") },
-    { label: "Services", href: homeHref("#services") },
+    { label: "Advisory", href: "https://amartuvshin.com", external: true },
     { label: "Projects", href: homeHref("#projects") },
-    { label: "Blog", href: "/blog" },
+    { label: "Blog", href: "https://portfolio.amartuvshin.com/blog" },
     { label: "Skills", href: homeHref("#skills") },
     { label: "FAQ", href: homeHref("#faq") },
   ];

@@ -1,136 +1,90 @@
 import type { Metadata } from "next";
-import About from "@/components/About";
 import Contact from "@/components/Contact";
-import Hero from "@/components/Hero";
-import IdentityGraph from "@/components/IdentityGraph";
 import Projects from "@/components/Projects";
 import Services from "@/components/Services";
-
-export const dynamic = "force-dynamic";
+import { DeliveryProcess, ServiceHero } from "@/components/ServiceLanding";
 import {
   getProfile,
   getProjects,
-  getSkills,
-  getWorkExperiences,
-  getEducations,
-  getCurrentActivities,
   getSocialLinks,
   getStats,
-  getSiteSettings,
 } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 
 const SITE_URL = "https://amartuvshin.com";
 
 export const metadata: Metadata = {
-  title:
-    "Amartuvshin Surenjav — Security Engineer & AI Agentic Workflow Engineer",
+  title: "Web Development, AI Workflows & Security Services",
   description:
-    "Personal portfolio of Amartuvshin Surenjav: Security Engineer at erxes, Cybersecurity student at MUST-SICT, and full-stack builder shipping AI-native tooling and live products (flint.mn, voices.mn, devscomm.com, piano.mn) from Ulaanbaatar, Mongolia.",
-  alternates: { canonical: "/" },
+    "End-to-end web development in Ulaanbaatar, Mongolia. Production websites, full-stack applications, AI agentic workflows, and application security delivered by Amartuvshin Surenjav.",
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    title: "Web Products, AI Workflows & Security — Amartuvshin Surenjav",
+    description:
+      "From business idea to production: design, full-stack development, AI automation, security, and launch from one accountable engineer.",
+  },
 };
 
-export default async function Home() {
-  const [
-    profile,
-    projects,
-    skills,
-    workExperiences,
-    educations,
-    activities,
-    socialLinks,
-    stats,
-    settings,
-  ] = await Promise.all([
+export default async function ServicesPage() {
+  const [profile, projects, socialLinks, stats] = await Promise.all([
     getProfile().catch(() => null),
     getProjects().catch(() => []),
-    getSkills().catch(() => []),
-    getWorkExperiences().catch(() => []),
-    getEducations().catch(() => []),
-    getCurrentActivities().catch(() => []),
     getSocialLinks().catch(() => []),
     getStats().catch(() => []),
-    getSiteSettings().catch(() => null),
   ]);
 
-  const projectsJsonLd = {
+  const serviceJsonLd = {
     "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: "Featured Projects by Amartuvshin Surenjav",
-    itemListOrder: "https://schema.org/ItemListOrderAscending",
-    itemListElement: projects.map((p, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      item: {
-        "@type": "WebSite",
-        name: p.title,
-        url: p.demo_url,
-        description: p.description,
-        author: { "@type": "Person", name: "Amartuvshin Surenjav" },
-      },
-    })),
-  };
-
-  const profilePageJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ProfilePage",
+    "@type": "ProfessionalService",
+    name: "Amartuvshin Surenjav — Web & AI Product Engineering",
     url: SITE_URL,
-    inLanguage: "en",
-    mainEntity: {
+    image: profile?.profile_image ?? `${SITE_URL}/profile.jpg`,
+    description:
+      "End-to-end web development, AI agentic workflow engineering, and application security services.",
+    email: profile?.email ?? "amaraaamka0404@gmail.com",
+    telephone: profile?.phone ?? "+976-8036-0420",
+    founder: {
       "@type": "Person",
       name: profile?.name ?? "Amartuvshin Surenjav",
-      url: SITE_URL,
-      image: profile?.profile_image ?? `${SITE_URL}/profile.jpg`,
-      jobTitle: profile?.job_title?.split(" — ")[0] ?? "Security Engineer",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Ulaanbaatar",
-        addressCountry: "MN",
-      },
+      url: "https://portfolio.amartuvshin.com",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Ulaanbaatar",
+      addressCountry: "MN",
+    },
+    areaServed: [
+      { "@type": "Country", name: "Mongolia" },
+      { "@type": "Place", name: "Worldwide remote" },
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Digital product services",
+      itemListElement: [
+        "Landing and marketing websites",
+        "Full-stack web applications",
+        "AI agentic workflows",
+        "Security audits and vulnerability triage",
+      ].map((name) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name },
+      })),
     },
   };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/#services` },
-      { "@type": "ListItem", position: 3, name: "Projects", item: `${SITE_URL}/#projects` },
-      { "@type": "ListItem", position: 4, name: "Contact", item: `${SITE_URL}/#contact` },
-    ],
-  };
-
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="flex min-h-screen flex-col">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      <Hero
-        stats={stats}
-        socialLinks={socialLinks}
-        tagline={settings?.tagline ?? null}
-        subtitle={settings?.subtitle ?? null}
-        profile={profile}
-      />
-      <IdentityGraph />
+      <ServiceHero profile={profile} stats={stats} />
       <Services />
+      <DeliveryProcess />
       <Projects projects={projects} />
-      <About
-        profile={profile}
-        skills={skills}
-        workExperiences={workExperiences}
-        educations={educations}
-        activities={activities}
-      />
       <Contact profile={profile} socialLinks={socialLinks} />
     </main>
   );

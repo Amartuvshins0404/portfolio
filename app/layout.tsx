@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://amartuvshin.com";
+const SITE_URL = "https://portfolio.amartuvshin.com";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [profile, settings] = await Promise.all([
@@ -67,11 +67,11 @@ export async function generateMetadata(): Promise<Metadata> {
     generator: "Next.js",
     referrer: "origin-when-cross-origin",
     keywords,
-    authors: [{ name: profile?.name ?? "Amartuvshin Surenjav", url: SITE_URL }],
+    authors: [{ name: profile?.name ?? "Amartuvshin Surenjav", url: "https://portfolio.amartuvshin.com" }],
     creator: profile?.name ?? "Amartuvshin Surenjav",
     publisher: profile?.name ?? "Amartuvshin Surenjav",
     category: "technology",
-    classification: "Personal portfolio",
+    classification: "Digital product services and personal portfolio",
     alternates: {
       canonical: "/",
     },
@@ -143,7 +143,7 @@ export default async function RootLayout({
     "@type": "Person",
     name: profile?.name ?? "Amartuvshin Surenjav",
     alternateName: profile?.alternate_names ?? [],
-    url: SITE_URL,
+    url: "https://portfolio.amartuvshin.com",
     image: profile?.profile_image ?? `${SITE_URL}/profile.jpg`,
     jobTitle: profile?.job_title?.split(" — ")[0] ?? "Security Engineer",
     worksFor: {
@@ -196,7 +196,7 @@ export default async function RootLayout({
     publisher: {
       "@type": "Person",
       name: profile?.name ?? "Amartuvshin Surenjav",
-      url: SITE_URL,
+      url: "https://portfolio.amartuvshin.com",
     },
   };
 

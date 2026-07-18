@@ -12,7 +12,7 @@ import {
 } from "@/lib/directus";
 import { cn } from "@/lib/utils";
 
-const SITE_URL = "https://amartuvshin.com";
+const SITE_URL = "https://portfolio.amartuvshin.com";
 
 export const revalidate = 60;
 
@@ -23,9 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
     settings?.description ??
     "Аппликейшний аюулгүй байдал, AI агентик workflow, програм хангамжийн ур чадварын тухай тэмдэглэлүүд.";
   return {
-    title: `${heading.replace(/\.$/, "")} — Amartuvshin Surenjav`,
+    title: { absolute: "Технологийн нийтлэл ба кейсүүд | Амартүвшин" },
     description,
-    alternates: { canonical: "/blog" },
+    alternates: { canonical: `${SITE_URL}/blog` },
     openGraph: {
       title: `${heading.replace(/\.$/, "")} — Amartuvshin Surenjav`,
       description,

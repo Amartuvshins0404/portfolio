@@ -13,7 +13,7 @@ import {
 } from "@/lib/directus";
 import MdcRenderer from "@/components/mdc/MdcRenderer";
 
-const SITE_URL = "https://amartuvshin.com";
+const SITE_URL = "https://portfolio.amartuvshin.com";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -47,9 +47,9 @@ export async function generateMetadata({
   }
   const cover = directusAssetUrl(post.cover_image, { width: 1200, height: 630, fit: "cover", quality: 82 });
   return {
-    title: post.title,
+    title: { absolute: post.title },
     description: post.excerpt ?? undefined,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: { canonical: `${SITE_URL}/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt ?? undefined,
