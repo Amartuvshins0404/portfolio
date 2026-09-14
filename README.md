@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Amartuvshin Portfolio
 
-## Getting Started
+Public portfolio, consulting site, and technical blog for Amartuvshin Surenjav.
 
-First, run the development server:
+## Public Routes
+
+- `/` — web product, AI workflow, and security services
+- `/portfolio` — engineering profile, experience, skills, and projects
+- `/blog` — technical articles and case studies
+- `/blog/[slug]` — individual long-form articles
+
+## Stack
+
+- Next.js 16 App Router and React 19
+- TypeScript and Tailwind CSS 4
+- Framer Motion
+- Directus CMS
+- Vercel Speed Insights
+
+## Local Development
+
+Install dependencies and start the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create `.env.local` for the integrations you need. Supported variables include `DIRECTUS_URL`, `DIRECTUS_TOKEN`, `GOOGLE_API`, `TELEGRAM_HTTP_API`, `TELEGRAM_USER_ID`, and `REVALIDATE_SECRET`. Never commit secret values.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Content
 
-## Learn More
+Directus provides the profile, project, experience, education, activity, statistics, chatbot, blog, and consulting-site content. The `site_settings` singleton owns the portfolio hero, project controls, About labels, contact copy, footer note, and route metadata. Portfolio projects use the `projects.state` field with `ongoing`, `done`, and `planning` values; `/portfolio` fetches the collection once and filters those states in one Projects interface. The consulting page reads its site copy, offers, process steps, FAQs, and proof points from the `service_*` collections through a server-side `DIRECTUS_TOKEN`. Public interface fallbacks live in the route and component files under `app/` and `components/`.
 
-To learn more about Next.js, take a look at the following resources:
+Blog articles use Markdown with MDC components. Preserve headings, links, code fences, inline code, tables, and MDC syntax when editing an article.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Language Policy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+English is the sole public language and the default application language. All interface copy, metadata, structured data, CMS content, documentation, and articles must use natural English. Do not add Mongolian locale variants or translation controls unless this policy is explicitly changed.
 
-## Deploy on Vercel
+## Validation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Create an optimized production build before publishing:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+```

@@ -3,8 +3,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 export const runtime = "nodejs";
-export const alt =
-  "Amartuvshin Surenjav — Security Engineer & AI Agentic Workflow Engineer";
+export const alt = "Amartuvshin Surenjav — Software Engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -108,8 +107,7 @@ export default async function Image() {
                 display: "flex",
               }}
             >
-              Security Engineer · AI Agentic Workflow Engineer · Full-stack
-              builder from Ulaanbaatar.
+              Software Engineer · Secure products · AI systems · Ulaanbaatar
             </div>
           </div>
 

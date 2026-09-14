@@ -1,31 +1,15 @@
 import type { MetadataRoute } from "next";
-import { headers } from "next/headers";
 import { getProfile } from "@/lib/cms";
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
-  const [profile, requestHeaders] = await Promise.all([
-    getProfile().catch(() => null),
-    headers(),
-  ]);
-  const hostname = (
-    requestHeaders.get("x-forwarded-host") ??
-    requestHeaders.get("host") ??
-    ""
-  )
-    .split(",")[0]
-    .trim()
-    .split(":")[0];
-  const isPortfolio = hostname === "portfolio.amartuvshin.com";
+  const profile = await getProfile().catch(() => null);
 
   return {
-    name: isPortfolio
-      ? `${profile?.name ?? "Amartuvshin Surenjav"} — Portfolio`
-      : "Amartuvshin Surenjav — Web & AI Product Engineering",
+    name: `${profile?.name ?? "Amartuvshin Surenjav"} — Portfolio`,
     short_name: profile?.name?.split(" ")[0] ?? "Amartuvshin",
-    description: isPortfolio
-      ? profile?.bio_short ??
-        "Security engineering, AI agentic workflows, and production full-stack products by Amartuvshin Surenjav."
-      : "End-to-end web development, AI agentic workflows, and application security services from Ulaanbaatar, Mongolia.",
+    description:
+      profile?.bio_short ??
+      "Software engineering, AI-native workflows, and production products by Amartuvshin Surenjav.",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0a0a",

@@ -4,7 +4,7 @@ import "./globals.css";
 import TopNav from "@/components/top-nav";
 import FixedButtons from "@/components/fixed-buttons";
 import { ThemeProvider } from "@/components/theme-provider";
-import { getProfile, getSiteSettings } from "@/lib/cms";
+import { getNavigationLinks, getProfile, getSiteSettings } from "@/lib/cms";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://portfolio.amartuvshin.com";
+const SITE_URL = "https://amartuvshin.com";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [profile, settings] = await Promise.all([
@@ -28,11 +28,10 @@ export async function generateMetadata(): Promise<Metadata> {
   ]);
 
   const title =
-    settings?.site_title ??
-    "Amartuvshin Surenjav — Security Engineer & AI Agentic Workflow Engineer";
+    settings?.site_title ?? "Amartuvshin Surenjav — Software Engineer";
   const description =
     settings?.site_description ??
-    "Portfolio of Amartuvshin Surenjav — Security Engineer at erxes, Cybersecurity student at MUST-SICT, and AI agentic workflow engineer based in Ulaanbaatar, Mongolia. Shipping full-stack products (flint.mn, voices.mn, devscomm.com, piano.mn) and AI-native tooling at record speed.";
+    "Portfolio of Amartuvshin Surenjav, a software engineer in Ulaanbaatar building secure full-stack products and AI systems.";
 
   const keywords = settings?.meta_keywords ?? [
     "Amartuvshin Surenjav",
@@ -66,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
     generator: "Next.js",
     referrer: "origin-when-cross-origin",
     keywords,
-    authors: [{ name: profile?.name ?? "Amartuvshin Surenjav", url: "https://portfolio.amartuvshin.com" }],
+    authors: [{ name: profile?.name ?? "Amartuvshin Surenjav", url: "https://amartuvshin.com" }],
     creator: profile?.name ?? "Amartuvshin Surenjav",
     publisher: profile?.name ?? "Amartuvshin Surenjav",
     category: "technology",
@@ -135,16 +134,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const profile = await getProfile().catch(() => null);
+  const [profile, navLinks] = await Promise.all([
+    getProfile().catch(() => null),
+    getNavigationLinks().catch(() => []),
+  ]);
 
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: profile?.name ?? "Amartuvshin Surenjav",
     alternateName: profile?.alternate_names ?? [],
-    url: "https://portfolio.amartuvshin.com",
+    url: "https://amartuvshin.com",
     image: profile?.profile_image ?? `${SITE_URL}/profile.jpg`,
-    jobTitle: profile?.job_title?.split(" — ")[0] ?? "Security Engineer",
+    jobTitle: profile?.job_title?.split(" — ")[0] ?? "Software Engineer",
     worksFor: {
       "@type": "Organization",
       name: profile?.company ?? "erxes Mongolia LLC",
@@ -195,7 +197,7 @@ export default async function RootLayout({
     publisher: {
       "@type": "Person",
       name: profile?.name ?? "Amartuvshin Surenjav",
-      url: "https://portfolio.amartuvshin.com",
+      url: "https://amartuvshin.com",
     },
   };
 
@@ -221,7 +223,7 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <TopNav profile={profile} />
+          <TopNav profile={profile} navLinks={navLinks} />
           {children}
           <FixedButtons />
         </ThemeProvider>

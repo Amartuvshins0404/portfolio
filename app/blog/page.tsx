@@ -12,18 +12,18 @@ import {
 } from "@/lib/directus";
 import { cn } from "@/lib/utils";
 
-const SITE_URL = "https://portfolio.amartuvshin.com";
+const SITE_URL = "https://amartuvshin.com";
 
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchBlogSettings().catch(() => null);
-  const heading = settings?.heading ?? "Тэмдэглэл ба эссэ.";
+  const heading = settings?.heading ?? "Notes and essays.";
   const description =
     settings?.description ??
-    "Аппликейшний аюулгүй байдал, AI агентик workflow, програм хангамжийн ур чадварын тухай тэмдэглэлүүд.";
+    "Writing about application security, AI agentic workflows, and the craft of shipping reliable software.";
   return {
-    title: { absolute: "Технологийн нийтлэл ба кейсүүд | Амартүвшин" },
+    title: { absolute: "Technology Articles and Case Studies | Amartuvshin" },
     description,
     alternates: { canonical: `${SITE_URL}/blog` },
     openGraph: {
@@ -37,7 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 function formatDate(value: string | null): string {
   if (!value) return "";
-  return new Date(value).toLocaleDateString("mn-MN", {
+  return new Date(value).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -49,10 +49,12 @@ function blogJsonLd(posts: Post[], heading: string) {
     "@context": "https://schema.org",
     "@type": "Blog",
     name: `Amartuvshin Surenjav — ${heading.replace(/\.$/, "")}`,
+    inLanguage: "en",
     url: `${SITE_URL}/blog`,
     author: { "@type": "Person", name: "Amartuvshin Surenjav" },
     blogPost: posts.map((p) => ({
       "@type": "BlogPosting",
+      inLanguage: "en",
       headline: p.title,
       url: `${SITE_URL}/blog/${p.slug}`,
       datePublished: p.published_at ?? p.date_created,
@@ -90,20 +92,20 @@ export default async function BlogIndex({
     loadError = err instanceof Error ? err.message : "Failed to load posts";
   }
 
-  const heading = settings?.heading ?? "Тэмдэглэл ба эссэ.";
+  const heading = settings?.heading ?? "Notes and essays.";
   const description = settings?.description ?? null;
   const eyebrow = settings?.eyebrow ?? null;
-  const readPostLabel = settings?.read_post_label ?? "Нийтлэлийг унших";
-  const minReadSuffix = settings?.min_read_suffix ?? "минут унших";
-  const filterAriaLabel = settings?.filter_aria_label ?? "Нийтлэлийг төрлөөр шүүх";
-  const errorTitle = settings?.error_title ?? "CMS-тэй холбогдож чадсангүй";
+  const readPostLabel = settings?.read_post_label ?? "Read article";
+  const minReadSuffix = settings?.min_read_suffix ?? "min read";
+  const filterAriaLabel = settings?.filter_aria_label ?? "Filter articles by type";
+  const errorTitle = settings?.error_title ?? "Unable to connect to the CMS";
   const errorBody =
     settings?.error_body ??
-    "Блогийн backend алдаа буцаалаа. Хэсэг хугацааны дараа дахин оролдоно уу.";
-  const noPostsTitle = settings?.no_posts_title ?? "Нийтлэл удахгүй нэмэгдэнэ";
+    "The blog backend returned an error. Please try again shortly.";
+  const noPostsTitle = settings?.no_posts_title ?? "Articles coming soon";
   const noPostsBody =
     settings?.no_posts_body ??
-    "Шинэ бичвэрүүд бэлдэгдэж байна. Удахгүй буцаж ороорой.";
+    "New writing is in progress. Please check back soon.";
 
   const [featured, ...rest] = posts;
 

@@ -10,11 +10,11 @@ export default function Footer() {
                         <span className="hidden sm:inline">Built in Ulaanbaatar, Mongolia.</span>
                     </p>
                     <nav className="flex flex-wrap justify-center gap-4 sm:gap-6">
-                        <Link className="text-sm font-medium hover:underline underline-offset-4" href="#services">
-                            Services
+                        <Link className="text-sm font-medium hover:underline underline-offset-4" href="#projects">
+                            Projects
                         </Link>
-                        <Link className="text-sm font-medium hover:underline underline-offset-4" href="#faq">
-                            FAQ
+                        <Link className="text-sm font-medium hover:underline underline-offset-4" href="/blog">
+                            Writing
                         </Link>
                         <Link className="text-sm font-medium hover:underline underline-offset-4" href="#contact">
                             Contact

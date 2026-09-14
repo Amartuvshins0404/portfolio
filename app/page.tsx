@@ -1,77 +1,108 @@
 import type { Metadata } from "next";
+import About from "@/components/About";
 import Contact from "@/components/Contact";
+import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
-import Services from "@/components/Services";
-import { DeliveryProcess, ServiceHero } from "@/components/ServiceLanding";
 import {
   getProfile,
   getProjects,
+  getSkills,
+  getWorkExperiences,
+  getEducations,
+  getCurrentActivities,
   getSocialLinks,
   getStats,
+  getSiteSettings,
 } from "@/lib/cms";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 const SITE_URL = "https://amartuvshin.com";
 
-export const metadata: Metadata = {
-  title: "Web Development, AI Workflows & Security Services",
-  description:
-    "End-to-end web development in Ulaanbaatar, Mongolia. Production websites, full-stack applications, AI agentic workflows, and application security delivered by Amartuvshin Surenjav.",
-  alternates: { canonical: SITE_URL },
-  openGraph: {
-    type: "website",
-    url: SITE_URL,
-    title: "Web Products, AI Workflows & Security — Amartuvshin Surenjav",
-    description:
-      "From business idea to production: design, full-stack development, AI automation, security, and launch from one accountable engineer.",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings().catch(() => null);
+  const title =
+    settings?.site_title ?? "Amartuvshin Surenjav — Software Engineer";
+  const description =
+    settings?.site_description ??
+    "Portfolio of Amartuvshin Surenjav, a software engineer in Ulaanbaatar building secure full-stack products and AI systems.";
 
-export default async function ServicesPage() {
-  const [profile, projects, socialLinks, stats] = await Promise.all([
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: SITE_URL },
+    openGraph: {
+      type: "profile",
+      url: SITE_URL,
+      title,
+      description,
+    },
+  };
+}
+
+export default async function PortfolioPage() {
+  const [
+    profile,
+    projects,
+    skills,
+    workExperiences,
+    educations,
+    activities,
+    socialLinks,
+    stats,
+    settings,
+  ] = await Promise.all([
     getProfile().catch(() => null),
     getProjects().catch(() => []),
+    getSkills().catch(() => []),
+    getWorkExperiences().catch(() => []),
+    getEducations().catch(() => []),
+    getCurrentActivities().catch(() => []),
     getSocialLinks().catch(() => []),
     getStats().catch(() => []),
+    getSiteSettings().catch(() => null),
   ]);
+  const profileImageUrl = new URL("/profile.jpg", SITE_URL).toString();
 
-  const serviceJsonLd = {
+  const projectsJsonLd = {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    name: "Amartuvshin Surenjav — Web & AI Product Engineering",
+    "@type": "ItemList",
+    name: `${settings?.projects_title ?? "Projects"} by ${
+      profile?.name ?? "Amartuvshin Surenjav"
+    }`,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    itemListElement: projects.map((project, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "WebSite",
+        name: project.title,
+        url: project.demo_url,
+        description: project.description,
+        author: {
+          "@type": "Person",
+          name: profile?.name ?? "Amartuvshin Surenjav",
+        },
+      },
+    })),
+  };
+
+  const profilePageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
     url: SITE_URL,
-    image: profile?.profile_image ?? `${SITE_URL}/profile.jpg`,
-    description:
-      "End-to-end web development, AI agentic workflow engineering, and application security services.",
-    email: profile?.email ?? "amaraaamka0404@gmail.com",
-    telephone: profile?.phone ?? "+976-8036-0420",
-    founder: {
+    inLanguage: "en",
+    mainEntity: {
       "@type": "Person",
       name: profile?.name ?? "Amartuvshin Surenjav",
-      url: "https://portfolio.amartuvshin.com",
-    },
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Ulaanbaatar",
-      addressCountry: "MN",
-    },
-    areaServed: [
-      { "@type": "Country", name: "Mongolia" },
-      { "@type": "Place", name: "Worldwide remote" },
-    ],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Digital product services",
-      itemListElement: [
-        "Landing and marketing websites",
-        "Full-stack web applications",
-        "AI agentic workflows",
-        "Security audits and vulnerability triage",
-      ].map((name) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name },
-      })),
+      url: SITE_URL,
+      image: profile?.profile_image ?? profileImageUrl,
+      jobTitle: profile?.job_title?.split(" — ")[0] ?? "Software Engineer",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Ulaanbaatar",
+        addressCountry: "MN",
+      },
     },
   };
 
@@ -79,13 +110,32 @@ export default async function ServicesPage() {
     <main className="flex min-h-screen flex-col">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }}
       />
-      <ServiceHero profile={profile} stats={stats} />
-      <Services />
-      <DeliveryProcess />
-      <Projects projects={projects} />
-      <Contact profile={profile} socialLinks={socialLinks} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsJsonLd) }}
+      />
+      <Hero
+        stats={stats}
+        socialLinks={socialLinks}
+        settings={settings}
+        profile={profile}
+      />
+      <Projects projects={projects} settings={settings} />
+      <About
+        profile={profile}
+        settings={settings}
+        skills={skills}
+        workExperiences={workExperiences}
+        educations={educations}
+        activities={activities}
+      />
+      <Contact
+        profile={profile}
+        socialLinks={socialLinks}
+        settings={settings}
+      />
     </main>
   );
 }

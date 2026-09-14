@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { Reveal, TiltCard } from "@/components/portfolio-motion";
 import {
   ArrowUpRight,
   Bot,
@@ -17,16 +17,25 @@ import {
   Workflow,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { CMSProfile, CMSSkill, CMSWorkExperience, CMSEducation, CMSActivity } from "@/lib/cms";
+import type {
+  CMSActivity,
+  CMSEducation,
+  CMSProfile,
+  CMSSiteSettings,
+  CMSSkill,
+  CMSWorkExperience,
+} from "@/lib/cms";
 
 export default function About({
   profile,
+  settings,
   skills,
   workExperiences,
   educations,
   activities,
 }: {
   profile: CMSProfile | null;
+  settings: CMSSiteSettings | null;
   skills: CMSSkill[];
   workExperiences: CMSWorkExperience[];
   educations: CMSEducation[];
@@ -41,26 +50,20 @@ export default function About({
   return (
     <section id="skills" className="py-24 md:py-32 relative overflow-hidden">
       <div className="container px-4 md:px-6 max-w-7xl mx-auto relative z-10 space-y-14">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
-        >
+        <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div className="space-y-3">
             <div className="inline-flex items-center gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
               <span className="h-px w-8 bg-muted-foreground/50" />
-              About
+              {settings?.about_eyebrow ?? "About"}
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter">
-              The short version.
+              {settings?.about_title ?? "The short version."}
             </h2>
           </div>
           <p className="max-w-md text-muted-foreground md:text-right">
-            {profile?.bio_short ?? "Security engineer by day, full-stack builder by night, AI agentic workflow tinkerer always."}
+            {profile?.bio_short ?? "Software engineer building secure products, production systems, and AI-native workflows."}
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5">
           <BentoCard className="md:col-span-3 md:row-span-2 flex flex-col gap-6">
@@ -86,7 +89,7 @@ export default function About({
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
                       <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
                     </span>
-                    Available for freelance
+                    {settings?.about_freelance_label ?? "Available for freelance"}
                   </div>
                 )}
               </div>
@@ -105,7 +108,8 @@ export default function About({
             <BentoCard key={exp.id} className="md:col-span-3">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground inline-flex items-center gap-2">
-                  <Briefcase className="h-3 w-3" /> Work
+                  <Briefcase className="h-3 w-3" />{" "}
+                  {settings?.about_work_label ?? "Work"}
                 </span>
                 <span className="text-[10px] font-mono text-muted-foreground">{exp.period}</span>
               </div>
@@ -130,7 +134,8 @@ export default function About({
             <BentoCard key={edu.id} className="md:col-span-3">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground inline-flex items-center gap-2">
-                  <GraduationCap className="h-3 w-3" /> Education
+                  <GraduationCap className="h-3 w-3" />{" "}
+                  {settings?.about_education_label ?? "Education"}
                 </span>
                 <span className="text-[10px] font-mono text-muted-foreground">{edu.status}</span>
               </div>
@@ -145,7 +150,7 @@ export default function About({
           <BentoCard className="md:col-span-3">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground inline-flex items-center gap-2">
-                Currently
+                {settings?.about_currently_label ?? "Currently"}
               </span>
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
@@ -172,16 +177,20 @@ export default function About({
             >
               <div className="space-y-1.5">
                 <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground inline-flex items-center gap-2">
-                  <Github className="h-3 w-3" /> GitHub
+                  <Github className="h-3 w-3" />{" "}
+                  {settings?.about_github_label ?? "GitHub"}
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl md:text-6xl font-bold tracking-tighter">
                     {profile?.github_repo_count ?? 27}
                   </span>
-                  <span className="text-sm text-muted-foreground">public repos</span>
+                  <span className="text-sm text-muted-foreground">
+                    {settings?.about_github_repo_label ?? "public repos"}
+                  </span>
                 </div>
                 <p className="text-sm text-muted-foreground pt-2 max-w-xs">
-                  Open-sourcing tools, security skills, and agentic experiments.
+                  {settings?.about_github_description ??
+                    "Open-sourcing tools, security skills, and agentic experiments."}
                   <span className="block text-foreground/80 font-mono text-xs mt-1">@{profile?.github_username ?? "Amartuvshins0404"}</span>
                 </p>
               </div>
@@ -190,25 +199,21 @@ export default function About({
           </BentoCard>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="space-y-6 pt-4"
-        >
+        <Reveal delay={0.08} className="space-y-6 pt-4">
           <div className="flex items-center gap-3">
             <span className="h-px w-8 bg-muted-foreground/50" />
             <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
-              Tech Stack
+              {settings?.about_tech_stack_label ?? "Tech Stack"}
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {Object.entries(stack).map(([category, items]) => (
-              <div
+            {Object.entries(stack).map(([category, items], index) => (
+              <TiltCard
                 key={category}
-                className="space-y-4 rounded-2xl border border-border/40 bg-card p-5 transition-colors hover:border-border/80"
+                delay={index * 0.04}
+                intensity={3}
+                className="space-y-4 rounded-2xl border border-border/40 bg-card/90 backdrop-blur-sm p-5 transition-colors hover:border-border/80"
               >
                 <h4 className="text-sm font-semibold tracking-tight flex items-center gap-2.5">
                   <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-muted text-foreground">
@@ -227,10 +232,10 @@ export default function About({
                     </li>
                   ))}
                 </ul>
-              </div>
+              </TiltCard>
             ))}
           </div>
-        </motion.div>
+        </Reveal>
       </div>
 
       <div className="absolute top-1/3 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10 pointer-events-none" />
@@ -247,18 +252,15 @@ function BentoCard({
   className?: string;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+    <TiltCard
+      intensity={4}
       className={cn(
-        "rounded-3xl border border-border/40 bg-card p-6 md:p-7 transition-all duration-300 hover:border-border/80 hover:-translate-y-0.5",
+        "rounded-3xl border border-border/40 bg-card/90 backdrop-blur-sm p-6 md:p-7 transition-colors duration-300 hover:border-border/80",
         className
       )}
     >
       {children}
-    </motion.div>
+    </TiltCard>
   );
 }
 

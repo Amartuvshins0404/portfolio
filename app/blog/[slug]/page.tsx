@@ -13,7 +13,7 @@ import {
 } from "@/lib/directus";
 import MdcRenderer from "@/components/mdc/MdcRenderer";
 
-const SITE_URL = "https://portfolio.amartuvshin.com";
+const SITE_URL = "https://amartuvshin.com";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -41,7 +41,7 @@ export async function generateMetadata({
   ]);
   if (!post) {
     return {
-      title: settings?.not_found_title ?? "Нийтлэл олдсонгүй",
+      title: settings?.not_found_title ?? "Article not found",
       robots: { index: false, follow: false },
     };
   }
@@ -72,7 +72,7 @@ export async function generateMetadata({
 
 function formatDate(value: string | null): string {
   if (!value) return "";
-  return new Date(value).toLocaleDateString("mn-MN", {
+  return new Date(value).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -93,17 +93,18 @@ export default async function BlogPostPage({
 
   const related = await fetchRelatedPosts(post).catch(() => []);
 
-  const allPostsLabel = settings?.all_posts_label ?? "Бүх нийтлэл";
-  const morePostsLabel = settings?.more_posts_label ?? "Бусад нийтлэл";
-  const lastUpdatedLabel = settings?.last_updated_label ?? "Сүүлд шинэчилсэн";
-  const minReadSuffix = settings?.min_read_suffix ?? "минут унших";
-  const relatedLabel = settings?.related_label ?? "Холбоотой постууд";
+  const allPostsLabel = settings?.all_posts_label ?? "All articles";
+  const morePostsLabel = settings?.more_posts_label ?? "More articles";
+  const lastUpdatedLabel = settings?.last_updated_label ?? "Last updated";
+  const minReadSuffix = settings?.min_read_suffix ?? "min read";
+  const relatedLabel = settings?.related_label ?? "Related articles";
 
   const cover = directusAssetUrl(post.cover_image, { width: 1800, quality: 88 });
 
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
+    inLanguage: "en",
     headline: post.title,
     description: post.excerpt ?? undefined,
     image: cover ? [cover] : undefined,

@@ -13,7 +13,7 @@ interface ChatModalProps {
 
 const ChatModal = ({ onClose }: ChatModalProps) => {
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant', content: string }[]>([
-    { role: 'assistant', content: 'Leave any questions to clarify in your language. I will try my best to answer it. ' }
+    { role: 'assistant', content: 'Ask me anything about my work, experience, or availability. I will answer in English.' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);

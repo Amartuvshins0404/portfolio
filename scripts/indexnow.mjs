@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const HOSTS = ["amartuvshin.com", "portfolio.amartuvshin.com"];
+const HOSTS = ["amartuvshin.com"];
 const KEY = "abdb82c4beb645798938694e1af669df";
 
 async function fetchSitemapUrls(host) {
