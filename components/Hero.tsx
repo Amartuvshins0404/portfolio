@@ -8,12 +8,8 @@ import {
   Twitter,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  HeroFade,
-  HeroOrb,
-  HeroWords,
-  ScrollCue,
-} from "@/components/hero-motion";
+import { HeroFade, HeroWords, ScrollCue } from "@/components/hero-motion";
+import { HeroDotPortrait } from "@/components/hero-portrait";
 import type {
   CMSProfile,
   CMSSiteSettings,
@@ -121,7 +117,7 @@ export default function Hero({
         </div>
 
         <div className="order-first pb-8 lg:order-none lg:pb-0">
-          <HeroOrb
+          <HeroDotPortrait
             src={profile?.profile_image ?? "/profile.jpg"}
             alt={name}
             label={`${role} · ${profile?.company ?? "erxes"}`}
