@@ -129,6 +129,7 @@ export default async function PortfolioPage() {
         socialLinks={socialLinks}
         settings={settings}
         profile={profile}
+        activities={activities}
       />
       <Focus areas={focusAreas} settings={settings} />
       <Projects projects={projects} settings={settings} />
