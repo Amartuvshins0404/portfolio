@@ -1,22 +1,12 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { Reveal, TiltCard } from "@/components/portfolio-motion";
+import { ArrowUpRight } from "lucide-react";
+import { Reveal } from "@/components/portfolio-motion";
 import {
-  ArrowUpRight,
-  Bot,
-  Briefcase,
-  Code2,
-  Database,
-  Github,
-  GraduationCap,
-  MapPin,
-  ShieldCheck,
-  Sparkles,
-  Workflow,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+  Counter,
+  Line,
+  Marquee,
+  TextReveal,
+} from "@/components/section-motion";
 import type {
   CMSActivity,
   CMSEducation,
@@ -41,236 +31,124 @@ export default function About({
   educations: CMSEducation[];
   activities: CMSActivity[];
 }) {
-  const stack = skills.reduce<Record<string, string[]>>((acc, s) => {
-    if (!acc[s.category]) acc[s.category] = [];
-    acc[s.category].push(s.name);
-    return acc;
-  }, {});
+  const statement =
+    profile?.bio_paragraphs?.[0] ??
+    profile?.bio_short ??
+    "Software engineer building secure products, production systems, and AI-native workflows.";
+  const work = workExperiences[0];
+  const education = educations[0];
+  const github = profile?.github_username ?? "Amartuvshins0404";
+  const stack = skills.map((s) => s.name);
 
   return (
-    <section id="skills" className="py-24 md:py-32 relative overflow-hidden">
-      <div className="container px-4 md:px-6 max-w-7xl mx-auto relative z-10 space-y-14">
-        <Reveal className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
-              <span className="h-px w-8 bg-muted-foreground/50" />
-              {settings?.about_eyebrow ?? "About"}
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter">
-              {settings?.about_title ?? "The short version."}
-            </h2>
-          </div>
-          <p className="max-w-md text-muted-foreground md:text-right">
-            {profile?.bio_short ?? "Software engineer building secure products, production systems, and AI-native workflows."}
+    <section id="skills" className="py-24 md:py-32">
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-6">
+          <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground md:col-span-3">
+            {settings?.about_eyebrow ?? "About"}
           </p>
-        </Reveal>
+          <TextReveal
+            as="h2"
+            text={statement}
+            className="text-2xl font-medium leading-[1.25] tracking-[-0.03em] text-foreground md:col-span-9 md:text-4xl lg:text-[2.75rem]"
+          />
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5">
-          <BentoCard className="md:col-span-3 md:row-span-2 flex flex-col gap-6">
-            <div className="flex items-start gap-5">
-              <Image
-                src={profile?.profile_image ?? "/profile.jpg"}
-                alt={profile?.name ?? "Amartuvshin Surenjav"}
-                width={88}
-                height={88}
-                className="rounded-2xl border border-border/40 object-cover shrink-0"
-              />
-              <div className="space-y-1.5 flex-1 min-w-0">
-                <h3 className="text-2xl md:text-[1.6rem] font-semibold tracking-tight">
-                  {profile?.name ?? "Amartuvshin Surenjav"}
-                </h3>
-                <p className="text-sm text-muted-foreground inline-flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5" />
-                  {profile?.location ?? "Ulaanbaatar, Mongolia"}
-                </p>
-                {profile?.available_for_freelance && (
-                  <div className="inline-flex items-center gap-2 text-[11px] font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mt-1">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    </span>
-                    {settings?.about_freelance_label ?? "Available for freelance"}
-                  </div>
-                )}
-              </div>
-            </div>
+        <div className="mt-16 grid gap-px md:mt-20 md:grid-cols-3">
+          <Reveal className="border-t border-border py-8 md:pr-8">
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+              {settings?.about_work_label ?? "Work"}
+            </p>
+            <p className="mt-4 text-xl font-medium tracking-tight">
+              {work?.role ?? profile?.job_title ?? "Software Engineer"}
+            </p>
+            {work ? (
+              <Link
+                href={work.company_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group mt-1 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {work.company}
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </Link>
+            ) : null}
+            {work ? (
+              <p className="mt-4 font-mono text-xs text-muted-foreground">
+                {work.period}
+              </p>
+            ) : null}
+          </Reveal>
 
-            <div className="space-y-4 pt-5 border-t border-border/40 flex-1">
-              {(profile?.bio_paragraphs ?? []).map((para, i) => (
-                <p key={i} className="text-muted-foreground leading-relaxed text-[15px]">
-                  {para}
-                </p>
-              ))}
-            </div>
-          </BentoCard>
+          <Reveal delay={0.08} className="border-t border-border py-8 md:px-8">
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+              {settings?.about_education_label ?? "Education"}
+            </p>
+            <p className="mt-4 text-xl font-medium tracking-tight">
+              {education?.degree ?? "—"}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {education?.institution}
+            </p>
+            {education ? (
+              <p className="mt-4 font-mono text-xs text-muted-foreground">
+                {education.status}
+              </p>
+            ) : null}
+          </Reveal>
 
-          {workExperiences.map((exp) => (
-            <BentoCard key={exp.id} className="md:col-span-3">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground inline-flex items-center gap-2">
-                  <Briefcase className="h-3 w-3" />{" "}
-                  {settings?.about_work_label ?? "Work"}
-                </span>
-                <span className="text-[10px] font-mono text-muted-foreground">{exp.period}</span>
-              </div>
-              <div className="space-y-1.5">
-                <h4 className="text-xl font-semibold tracking-tight">{exp.role}</h4>
-                <Link
-                  href={exp.company_url}
-                  target="_blank"
-                  className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors group"
-                >
-                  {exp.company}
-                  <ArrowUpRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </Link>
-                <p className="text-sm text-muted-foreground pt-1.5 leading-relaxed">
-                  {exp.description}
-                </p>
-              </div>
-            </BentoCard>
-          ))}
+          <Reveal delay={0.16} className="border-t border-border py-8 md:pl-8">
+            <Link
+              href={`https://github.com/${github}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <p className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                {settings?.about_github_label ?? "GitHub"}
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </p>
+              <p className="mt-3 text-5xl font-semibold tracking-[-0.05em] md:text-6xl">
+                <Counter value={profile?.github_repo_count ?? 27} />
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {settings?.about_github_repo_label ?? "public repos"} · @{github}
+              </p>
+            </Link>
+          </Reveal>
+        </div>
 
-          {educations.map((edu) => (
-            <BentoCard key={edu.id} className="md:col-span-3">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground inline-flex items-center gap-2">
-                  <GraduationCap className="h-3 w-3" />{" "}
-                  {settings?.about_education_label ?? "Education"}
-                </span>
-                <span className="text-[10px] font-mono text-muted-foreground">{edu.status}</span>
-              </div>
-              <div className="space-y-1.5">
-                <h4 className="text-xl font-semibold tracking-tight">{edu.degree}</h4>
-                <p className="text-sm text-muted-foreground">{edu.institution}</p>
-                <p className="text-sm text-muted-foreground">{edu.school}</p>
-              </div>
-            </BentoCard>
-          ))}
-
-          <BentoCard className="md:col-span-3">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground inline-flex items-center gap-2">
-                {settings?.about_currently_label ?? "Currently"}
-              </span>
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-            </div>
-            <ul className="space-y-3">
+        {activities.length > 0 ? (
+          <div className="mt-16 md:mt-20">
+            <Line />
+            <ul className="divide-y divide-border">
               {activities.map((a) => (
-                <li key={a.id} className="flex gap-3 text-sm">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground w-20 shrink-0 pt-0.5">
+                <li
+                  key={a.id}
+                  className="grid grid-cols-[7rem_1fr] items-baseline gap-4 py-4 md:grid-cols-12"
+                >
+                  <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground md:col-span-3">
                     {a.label}
                   </span>
-                  <span className="text-foreground/90 leading-snug">{a.value}</span>
+                  <span className="text-sm text-foreground/90 md:col-span-9 md:text-base">
+                    {a.value}
+                  </span>
                 </li>
               ))}
             </ul>
-          </BentoCard>
+            <Line delay={0.2} />
+          </div>
+        ) : null}
 
-          <BentoCard className="md:col-span-3">
-            <Link
-              href={`https://github.com/${profile?.github_username ?? "Amartuvshins0404"}`}
-              target="_blank"
-              className="flex items-start justify-between group"
-            >
-              <div className="space-y-1.5">
-                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground inline-flex items-center gap-2">
-                  <Github className="h-3 w-3" />{" "}
-                  {settings?.about_github_label ?? "GitHub"}
-                </div>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-5xl md:text-6xl font-bold tracking-tighter">
-                    {profile?.github_repo_count ?? 27}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {settings?.about_github_repo_label ?? "public repos"}
-                  </span>
-                </div>
-                <p className="text-sm text-muted-foreground pt-2 max-w-xs">
-                  {settings?.about_github_description ??
-                    "Open-sourcing tools, security skills, and agentic experiments."}
-                  <span className="block text-foreground/80 font-mono text-xs mt-1">@{profile?.github_username ?? "Amartuvshins0404"}</span>
-                </p>
-              </div>
-              <ArrowUpRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-            </Link>
-          </BentoCard>
-        </div>
-
-        <Reveal delay={0.08} className="space-y-6 pt-4">
-          <div className="flex items-center gap-3">
-            <span className="h-px w-8 bg-muted-foreground/50" />
-            <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+        {stack.length > 0 ? (
+          <div className="mt-16 md:mt-20">
+            <p className="mb-6 font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">
               {settings?.about_tech_stack_label ?? "Tech Stack"}
-            </span>
+            </p>
+            <Marquee items={stack} speed={stack.length * 1.6} />
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {Object.entries(stack).map(([category, items], index) => (
-              <TiltCard
-                key={category}
-                delay={index * 0.04}
-                intensity={3}
-                className="space-y-4 rounded-2xl border border-border/40 bg-card/90 backdrop-blur-sm p-5 transition-colors hover:border-border/80"
-              >
-                <h4 className="text-sm font-semibold tracking-tight flex items-center gap-2.5">
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-muted text-foreground">
-                    <CategoryIcon name={category} />
-                  </span>
-                  {category}
-                </h4>
-                <ul className="space-y-1.5">
-                  {items.map((item) => (
-                    <li
-                      key={item}
-                      className="text-[13px] text-muted-foreground flex items-center gap-2"
-                    >
-                      <span className="h-1 w-1 rounded-full bg-muted-foreground/40 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </TiltCard>
-            ))}
-          </div>
-        </Reveal>
+        ) : null}
       </div>
-
-      <div className="absolute top-1/3 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10 pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl -z-10 pointer-events-none" />
     </section>
   );
-}
-
-function BentoCard({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <TiltCard
-      intensity={4}
-      className={cn(
-        "rounded-3xl border border-border/40 bg-card/90 backdrop-blur-sm p-6 md:p-7 transition-colors duration-300 hover:border-border/80",
-        className
-      )}
-    >
-      {children}
-    </TiltCard>
-  );
-}
-
-function CategoryIcon({ name }: { name: string }) {
-  const map: Record<string, React.ReactNode> = {
-    Frontend: <Code2 className="h-3.5 w-3.5" />,
-    Backend: <Workflow className="h-3.5 w-3.5" />,
-    Data: <Database className="h-3.5 w-3.5" />,
-    Security: <ShieldCheck className="h-3.5 w-3.5" />,
-    AI: <Bot className="h-3.5 w-3.5" />,
-  };
-  return <>{map[name] ?? <Sparkles className="h-3.5 w-3.5" />}</>;
 }

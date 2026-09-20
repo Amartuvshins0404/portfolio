@@ -1,87 +1,73 @@
 import Link from "next/link";
-import { Bot, Layers, ShieldCheck } from "lucide-react";
-import { Reveal } from "@/components/portfolio-motion";
+import { ArrowUpRight } from "lucide-react";
+import { Line, Row, TextReveal } from "@/components/section-motion";
 
 const focusAreas = [
   {
-    icon: ShieldCheck,
     title: "Application Security",
-    description:
-      "Triage of code-scanning alerts, vulnerability remediation, and hardening across a TypeScript GraphQL Federation monorepo at erxes.",
-    tags: ["CodeQL", "OWASP", "SAST", "Vulnerability Triage", "GraphQL Federation"],
+    line: "Code-scanning triage and remediation in a GraphQL Federation monorepo.",
+    keywords: ["CodeQL", "OWASP", "GraphQL Federation"],
     href: "/blog",
   },
   {
-    icon: Bot,
     title: "AI Agent Workflows",
-    description:
-      "Designing agentic developer loops with Claude Code, custom MCP servers, and tightly scoped skills so one engineer can ship like a team.",
-    tags: ["MCP servers", "Claude Code", "Agentic engineering", "RAG", "n8n"],
+    line: "Claude Code, custom MCP servers, and scoped skills for one-engineer teams.",
+    keywords: ["MCP servers", "Claude Code", "Agentic engineering"],
     href: "/blog",
   },
   {
-    icon: Layers,
-    title: "Full-Stack Product Engineering",
-    description:
-      "Shipping production products end to end with Next.js, React, TypeScript, PostgreSQL, and Cloudflare — from CMS-driven sites to three-sided logistics platforms.",
-    tags: ["Next.js", "React 19", "TypeScript", "PostgreSQL", "Cloudflare"],
+    title: "Full-Stack Products",
+    line: "Next.js, TypeScript, and PostgreSQL products shipped end to end.",
+    keywords: ["Next.js", "TypeScript", "PostgreSQL"],
     href: "/blog?type=case-studies",
   },
 ] as const;
 
 export default function Focus() {
   return (
-    <section id="focus" className="border-b border-border/60 py-20 md:py-28">
-      <div className="container mx-auto max-w-7xl space-y-14 px-4 md:px-6">
-        <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
-              <span className="h-px w-8 bg-muted-foreground/50" />
-              Focus
-            </div>
-            <h2 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">
-              Application security, AI agent workflows, and full-stack systems.
-            </h2>
-          </div>
-          <p className="max-w-md text-muted-foreground md:text-right">
-            The three areas most of my work and writing sit in.
+    <section id="focus" className="py-24 md:py-32">
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-6">
+          <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground md:col-span-3">
+            Focus
           </p>
-        </Reveal>
+          <TextReveal
+            as="h2"
+            text="Application security, AI agent workflows, and full-stack systems."
+            className="text-3xl font-semibold leading-[1.05] tracking-[-0.04em] md:col-span-9 md:text-5xl"
+          />
+        </div>
 
-        <Reveal delay={0.08}>
-          <div className="grid gap-4 md:grid-cols-3">
-            {focusAreas.map(({ icon: Icon, title, description, tags, href }) => (
-              <article
-                key={title}
-                className="flex h-full flex-col rounded-3xl border border-border/40 bg-card/90 p-6 transition-colors duration-300 hover:border-border/80 md:p-7"
+        <div className="mt-16 md:mt-20">
+          <Line />
+        </div>
+        <ul>
+          {focusAreas.map((area, i) => (
+            <Row key={area.title} index={i}>
+              <Link
+                href={area.href}
+                className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-6 py-7 md:grid-cols-12 md:gap-6 md:py-9"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-foreground">
-                  <Icon className="h-4 w-4" />
+                <span className="font-mono text-xs text-muted-foreground md:col-span-1">
+                  0{i + 1}
+                </span>
+                <h3 className="text-2xl font-medium tracking-[-0.03em] transition-transform duration-500 ease-out group-hover:translate-x-2 md:col-span-5 md:text-4xl">
+                  {area.title}
+                </h3>
+                <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-all duration-500 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-foreground md:order-last md:col-span-1 md:justify-self-end" />
+                <div className="col-span-3 mt-3 space-y-2 md:col-span-5 md:mt-0">
+                  <p className="text-sm leading-relaxed text-muted-foreground md:text-base">
+                    {area.line}
+                  </p>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground/70">
+                    {area.keywords.join(" · ")}
+                  </p>
                 </div>
-                <h3 className="mt-6 text-xl font-semibold tracking-tight">{title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {description}
-                </p>
-                <div className="mt-5 flex flex-wrap gap-1.5">
-                  {tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-border/30 bg-muted/60 px-2.5 py-1 text-[11px]"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <Link
-                  href={href}
-                  className="mt-auto pt-8 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
-                >
-                  Read related writing →
-                </Link>
-              </article>
-            ))}
-          </div>
-        </Reveal>
+              </Link>
+              <span className="block h-px w-full bg-border" />
+            </Row>
+          ))}
+        </ul>
       </div>
     </section>
   );
