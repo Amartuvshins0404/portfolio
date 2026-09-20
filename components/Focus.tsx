@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Line, Row, TextReveal } from "@/components/section-motion";
+import type { CMSFocusArea, CMSSiteSettings } from "@/lib/cms";
 
-const focusAreas = [
+const FALLBACK_FOCUS_AREAS: Pick<
+  CMSFocusArea,
+  "title" | "line" | "keywords" | "href"
+>[] = [
   {
-    title: "Application Security",
-    line: "Code-scanning triage and remediation in a GraphQL Federation monorepo.",
-    keywords: ["CodeQL", "OWASP", "GraphQL Federation"],
-    href: "/blog",
+    title: "AI Agents in Products",
+    line: "erxes-agent: durable agents that call permission-checked tools across an enterprise platform, with human approval where it matters.",
+    keywords: ["erxes-agent", "Mastra", "GraphQL Federation"],
+    href: "/blog/erxes-ai-agents-plugin-case-study",
   },
   {
     title: "AI Agent Workflows",
@@ -21,19 +25,30 @@ const focusAreas = [
     keywords: ["Next.js", "TypeScript", "PostgreSQL"],
     href: "/blog?type=case-studies",
   },
-] as const;
+];
 
-export default function Focus() {
+export default function Focus({
+  areas,
+  settings,
+}: {
+  areas: CMSFocusArea[];
+  settings: CMSSiteSettings | null;
+}) {
+  const list = areas.length > 0 ? areas : FALLBACK_FOCUS_AREAS;
+
   return (
     <section id="focus" className="py-24 md:py-32">
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <div className="grid gap-10 md:grid-cols-12 md:gap-6">
           <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground md:col-span-3">
-            Focus
+            {settings?.focus_eyebrow ?? "Focus"}
           </p>
           <TextReveal
             as="h2"
-            text="Application security, AI agent workflows, and full-stack systems."
+            text={
+              settings?.focus_title ??
+              "AI agents in products, agentic developer workflows, and full-stack systems."
+            }
             className="text-3xl font-semibold leading-[1.05] tracking-[-0.04em] md:col-span-9 md:text-5xl"
           />
         </div>
@@ -42,7 +57,7 @@ export default function Focus() {
           <Line />
         </div>
         <ul>
-          {focusAreas.map((area, i) => (
+          {list.map((area, i) => (
             <Row key={area.title} index={i}>
               <Link
                 href={area.href}

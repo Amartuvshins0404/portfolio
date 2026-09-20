@@ -21,11 +21,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const heading = settings?.heading ?? "Notes and essays.";
   const description =
     settings?.description ??
-    "Writing about application security, AI agentic workflows, and the craft of shipping reliable software.";
+    "Writing about AI agents, agentic workflows, and the craft of shipping reliable software.";
   return {
     title: {
       absolute:
-        "Articles on Application Security, MCP Servers & AI Agent Workflows — Amartuvshin Surenjav",
+        settings?.seo_title ??
+        "Articles on AI Agents, MCP Servers & Full-Stack Engineering — Amartuvshin Surenjav",
     },
     description,
     alternates: {

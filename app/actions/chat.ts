@@ -1,6 +1,6 @@
 'use server';
 
-import { getChatbotQA } from "@/lib/cms";
+import { getChatbotQA, getProfile } from "@/lib/cms";
 
 interface Message {
     role: 'user' | 'assistant';
@@ -14,7 +14,10 @@ export async function generateResponse(history: Message[]) {
             return { error: 'API key not configured' };
         }
 
-        const qaData = await getChatbotQA().catch(() => []);
+        const [qaData, profile] = await Promise.all([
+            getChatbotQA().catch(() => []),
+            getProfile().catch(() => null),
+        ]);
 
         const qaSection = qaData
             .map((qa) => `- ${qa.question}\n${qa.answer}`)
@@ -35,9 +38,9 @@ export async function generateResponse(history: Message[]) {
                 body: JSON.stringify({
                     systemInstruction: {
                         parts: [{
-                            text: `You are Amartuvshin Surenjav, a software engineer and freelancer based in Mongolia.
+                            text: `You are ${profile?.name ?? "Amartuvshin Surenjav"}, a software engineer and freelancer based in Mongolia.
 When users ask questions about you, answer professionally and realistically using the questions and answers provided below as a guide.
-If a question doesn't exactly match, respond logically based on your work as a software engineer specializing in secure products, full-stack systems, and AI-native workflows.
+If a question doesn't exactly match, respond logically based on your work: ${profile?.bio_short ?? "software engineer building AI agents, production systems, and full-stack products"}.
 Always respond in clear, professional English, even if the user writes in another language. If the user asks something unexpected or beyond your knowledge, guide them to call +976 80360420.
 
 ${qaSection}

@@ -4,10 +4,10 @@ Public portfolio, consulting site, and technical blog for Amartuvshin Surenjav.
 
 ## Public Routes
 
-- `/` — web product, AI workflow, and security services
-- `/portfolio` — engineering profile, experience, skills, and projects
+- `/` — engineering profile, focus, projects, writing, experience and contact
 - `/blog` — technical articles and case studies
 - `/blog/[slug]` — individual long-form articles
+- `/feed.xml` — RSS feed of published articles
 
 ## Stack
 
@@ -32,7 +32,9 @@ Create `.env.local` for the integrations you need. Supported variables include `
 
 ## Content
 
-Directus provides the profile, project, experience, education, activity, statistics, chatbot, blog, and consulting-site content. The `site_settings` singleton owns the portfolio hero, project controls, About labels, contact copy, footer note, and route metadata. Portfolio projects use the `projects.state` field with `ongoing`, `done`, and `planning` values; `/portfolio` fetches the collection once and filters those states in one Projects interface. The consulting page reads its site copy, offers, process steps, FAQs, and proof points from the `service_*` collections through a server-side `DIRECTUS_TOKEN`. Public interface fallbacks live in the route and component files under `app/` and `components/`.
+Directus provides the profile, project, experience, education, activity, statistics, chatbot, blog, and consulting-site content. The `site_settings` singleton owns the portfolio hero, project controls, About labels, contact copy, footer note, and route metadata; it also owns the Focus and Writing section copy (`focus_eyebrow`, `focus_title`, `writing_eyebrow`, `writing_title`, `writing_cta`). The `focus_areas` collection provides the Focus section cards (`title`, `line`, `keywords`, `href`, `sort`, `status`), and `blog_settings.seo_title` owns the `/blog` metadata title. Portfolio projects use the `projects.state` field with `ongoing`, `done`, and `planning` values; `/portfolio` fetches the collection once and filters those states in one Projects interface. The consulting page reads its site copy, offers, process steps, FAQs, and proof points from the `service_*` collections through a server-side `DIRECTUS_TOKEN`. Public interface fallbacks live in the route and component files under `app/` and `components/`.
+
+One-off CMS migrations live in `scripts/cms-migrate-*.mjs` (for example `scripts/cms-migrate-focus.mjs`) and run with `DIRECTUS_URL` and `DIRECTUS_TOKEN` in the environment.
 
 Blog articles use Markdown with MDC components. Preserve headings, links, code fences, inline code, tables, and MDC syntax when editing an article.
 

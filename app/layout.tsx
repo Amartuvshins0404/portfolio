@@ -4,7 +4,12 @@ import "./globals.css";
 import TopNav from "@/components/top-nav";
 import FixedButtons from "@/components/fixed-buttons";
 import { ThemeProvider } from "@/components/theme-provider";
-import { getNavigationLinks, getProfile, getSiteSettings } from "@/lib/cms";
+import {
+  getNavigationLinks,
+  getProfile,
+  getSiteSettings,
+  getSkills,
+} from "@/lib/cms";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
@@ -31,13 +36,15 @@ export async function generateMetadata(): Promise<Metadata> {
     settings?.site_title ?? "Amartuvshin Surenjav — Software Engineer";
   const description =
     settings?.site_description ??
-    "Portfolio of Amartuvshin Surenjav, a software engineer in Ulaanbaatar building secure full-stack products and AI systems.";
+    "Portfolio of Amartuvshin Surenjav, a software engineer in Ulaanbaatar building AI agents, platform features, and full-stack products.";
 
   const keywords = settings?.meta_keywords ?? [
     "Amartuvshin Surenjav",
     "Amaraa",
     "Mongolia developer",
-    "security engineer",
+    "software engineer",
+    "AI agents",
+    "erxes-agent",
     "AI agentic workflows",
     "Claude Code",
     "MCP servers",
@@ -121,6 +128,19 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const FALLBACK_KNOWS_ABOUT = [
+  "AI agents",
+  "Mastra",
+  "MCP servers",
+  "Claude Code",
+  "Next.js",
+  "React",
+  "TypeScript",
+  "GraphQL Federation",
+  "MongoDB",
+  "PostgreSQL",
+];
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -137,9 +157,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [profile, navLinks] = await Promise.all([
+  const [profile, navLinks, skills] = await Promise.all([
     getProfile().catch(() => null),
     getNavigationLinks().catch(() => []),
+    getSkills().catch(() => []),
   ]);
 
   const personJsonLd = {
@@ -169,21 +190,8 @@ export default async function RootLayout({
     },
     email: `mailto:${profile?.email ?? "amaraaamka0404@gmail.com"}`,
     telephone: profile?.phone ?? "+976-8036-0420",
-    knowsAbout: [
-      "Application Security",
-      "Vulnerability Triage",
-      "CodeQL",
-      "OWASP",
-      "Next.js",
-      "React",
-      "TypeScript",
-      "GraphQL Federation",
-      "MongoDB",
-      "PostgreSQL",
-      "Claude Code",
-      "MCP servers",
-      "AI agentic workflows",
-    ],
+    knowsAbout:
+      skills.length > 0 ? skills.map((s) => s.name) : FALLBACK_KNOWS_ABOUT,
     sameAs: [
       "https://github.com/Amartuvshins0404",
       "https://www.linkedin.com/in/amartuvshins/",

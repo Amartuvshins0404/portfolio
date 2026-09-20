@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { getProfile, getSiteSettings } from "@/lib/cms";
 
 export const runtime = "nodejs";
 export const alt = "Amartuvshin Surenjav — Software Engineer";
@@ -8,9 +9,11 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  const portrait = await readFile(
-    path.join(process.cwd(), "public/profile.jpg")
-  );
+  const [portrait, profile, settings] = await Promise.all([
+    readFile(path.join(process.cwd(), "public/profile.jpg")),
+    getProfile().catch(() => null),
+    getSiteSettings().catch(() => null),
+  ]);
   const portraitSrc = `data:image/jpeg;base64,${portrait.toString("base64")}`;
 
   return new ImageResponse(
@@ -82,7 +85,8 @@ export default async function Image() {
                 background: "rgba(255,255,255,0.5)",
               }}
             />
-            amartuvshin.com
+            {settings?.site_url?.replace(/^https?:\/\//, "").replace(/\/+$/, "") ??
+              "amartuvshin.com"}
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -96,7 +100,7 @@ export default async function Image() {
                 flexDirection: "column",
               }}
             >
-              <span>Amartuvshin Surenjav</span>
+              <span>{profile?.name ?? "Amartuvshin Surenjav"}</span>
             </div>
             <div
               style={{
@@ -107,7 +111,11 @@ export default async function Image() {
                 display: "flex",
               }}
             >
-              Software Engineer · Secure products · AI systems · Ulaanbaatar
+              {[
+                profile?.job_title ?? "Software Engineer",
+                profile?.company ?? "erxes",
+                profile?.location ?? "Ulaanbaatar, Mongolia",
+              ].join(" · ")}
             </div>
           </div>
 

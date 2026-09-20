@@ -11,6 +11,7 @@ import {
   fetchRelatedPosts,
   type RelatedPostSummary,
 } from "@/lib/directus";
+import { getProfile } from "@/lib/cms";
 import MdcRenderer from "@/components/mdc/MdcRenderer";
 
 const SITE_URL = "https://amartuvshin.com";
@@ -90,9 +91,10 @@ export default async function BlogPostPage({
   params: Promise<RouteParams>;
 }) {
   const { slug } = await params;
-  const [post, settings] = await Promise.all([
+  const [post, settings, profile] = await Promise.all([
     fetchPostBySlug(slug).catch(() => null),
     fetchBlogSettings().catch(() => null),
+    getProfile().catch(() => null),
   ]);
   if (!post) notFound();
 
@@ -258,7 +260,7 @@ export default async function BlogPostPage({
           <aside className="mt-12 flex gap-5 rounded-3xl border border-border/40 bg-card/90 p-6">
             <Image
               src="/profile.jpg"
-              alt="Amartuvshin Surenjav"
+              alt={profile?.name ?? "Amartuvshin Surenjav"}
               width={64}
               height={64}
               className="h-16 w-16 shrink-0 rounded-2xl object-cover"
@@ -268,10 +270,11 @@ export default async function BlogPostPage({
                 Written by
               </p>
               <Link href="/" className="block font-semibold hover:underline">
-                Amartuvshin Surenjav
+                {profile?.name ?? "Amartuvshin Surenjav"}
               </Link>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Software engineer in Ulaanbaatar working on application security at erxes, AI agent workflows with Claude Code and MCP servers, and full-stack products.
+                {profile?.bio_short ??
+                  "Software engineer building AI agents, production systems, and full-stack products."}
               </p>
               <div className="flex flex-wrap gap-x-4 gap-y-1 pt-1 text-xs text-muted-foreground">
                 <Link href="/#skills" className="hover:text-foreground">
@@ -281,7 +284,7 @@ export default async function BlogPostPage({
                   More articles
                 </Link>
                 <Link
-                  href="https://github.com/Amartuvshins0404"
+                  href={`https://github.com/${profile?.github_username ?? "Amartuvshins0404"}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-foreground"
