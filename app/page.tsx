@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
+import Focus from "@/components/Focus";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
+import Writing from "@/components/Writing";
 import {
   getProfile,
   getProjects,
@@ -30,7 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { absolute: title },
     description,
-    alternates: { canonical: SITE_URL },
+    alternates: {
+      canonical: SITE_URL,
+      types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
+    },
     openGraph: {
       type: "profile",
       url: SITE_URL,
@@ -122,7 +127,9 @@ export default async function PortfolioPage() {
         settings={settings}
         profile={profile}
       />
+      <Focus />
       <Projects projects={projects} settings={settings} />
+      <Writing />
       <About
         profile={profile}
         settings={settings}
