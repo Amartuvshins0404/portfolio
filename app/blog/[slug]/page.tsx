@@ -51,7 +51,10 @@ export async function generateMetadata({
     description: post.excerpt ?? undefined,
     keywords: post.tags ?? undefined,
     authors: [{ name: "Amartuvshin Surenjav", url: SITE_URL }],
-    alternates: { canonical: `${SITE_URL}/blog/${post.slug}` },
+    alternates: {
+      canonical: `${SITE_URL}/blog/${post.slug}`,
+      types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt ?? undefined,
@@ -113,6 +116,7 @@ export default async function BlogPostPage({
     datePublished: post.published_at ?? post.date_created,
     dateModified: post.date_updated ?? post.published_at ?? post.date_created,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
+    url: `${SITE_URL}/blog/${post.slug}`,
     articleSection: post.type?.label,
     author: {
       "@type": "Person",

@@ -32,7 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { absolute: title },
     description,
-    alternates: { canonical: SITE_URL },
+    alternates: {
+      canonical: SITE_URL,
+      types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
+    },
     openGraph: {
       type: "profile",
       url: SITE_URL,

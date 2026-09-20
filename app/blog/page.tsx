@@ -28,7 +28,10 @@ export async function generateMetadata(): Promise<Metadata> {
         "Articles on Application Security, MCP Servers & AI Agent Workflows — Amartuvshin Surenjav",
     },
     description,
-    alternates: { canonical: `${SITE_URL}/blog` },
+    alternates: {
+      canonical: `${SITE_URL}/blog`,
+      types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
+    },
     openGraph: {
       title: `${heading.replace(/\.$/, "")} — Amartuvshin Surenjav`,
       description,
