@@ -9,6 +9,7 @@ import {
   fetchPosts,
   type Post,
 } from "@/lib/directus";
+import type { CMSSiteSettings } from "@/lib/cms";
 
 function formatDate(value: string | null): string {
   if (!value) return "";
@@ -19,8 +20,12 @@ function formatDate(value: string | null): string {
   });
 }
 
-export default async function Writing() {
-  const [posts, settings] = await Promise.all([
+export default async function Writing({
+  settings,
+}: {
+  settings: CMSSiteSettings | null;
+}) {
+  const [posts, blogSettings] = await Promise.all([
     fetchPosts().catch(() => []),
     fetchBlogSettings().catch(() => null),
   ]);
@@ -35,14 +40,15 @@ export default async function Writing() {
           <div className="space-y-3">
             <div className="inline-flex items-center gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
               <span className="h-px w-8 bg-muted-foreground/50" />
-              Writing
+              {settings?.writing_eyebrow ?? "Writing"}
             </div>
             <h2 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">
-              Notes on security, AI agents, and shipping software.
+              {settings?.writing_title ??
+                "Notes on AI agents, platform engineering, and shipping software."}
             </h2>
           </div>
           <p className="max-w-md text-muted-foreground md:text-right">
-            {settings?.description ??
+            {blogSettings?.description ??
               "Long-form articles and case studies from real production work."}
           </p>
         </Reveal>
@@ -58,7 +64,8 @@ export default async function Writing() {
         <Reveal delay={0.14} className="flex justify-center">
           <Button asChild variant="outline" className="rounded-full">
             <Link href="/blog">
-              All articles
+              {settings?.writing_cta ?? blogSettings?.all_posts_label ??
+                "All articles"}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>

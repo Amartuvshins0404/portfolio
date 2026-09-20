@@ -34,7 +34,7 @@ export default function About({
   const statement =
     profile?.bio_paragraphs?.[0] ??
     profile?.bio_short ??
-    "Software engineer building secure products, production systems, and AI-native workflows.";
+    "Software engineer building AI agents, production systems, and full-stack products.";
   const work = workExperiences[0];
   const education = educations[0];
   const github = profile?.github_username ?? "Amartuvshins0404";

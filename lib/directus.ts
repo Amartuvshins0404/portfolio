@@ -39,6 +39,7 @@ export type Post = {
 };
 
 export type BlogSettings = {
+  seo_title: string | null;
   eyebrow: string | null;
   heading: string | null;
   description: string | null;
@@ -166,6 +167,7 @@ export async function fetchContentTypes(): Promise<ContentType[]> {
 }
 
 const BLOG_SETTINGS_FIELDS = [
+  "seo_title",
   "eyebrow",
   "heading",
   "description",

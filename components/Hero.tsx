@@ -63,7 +63,7 @@ export default function Hero({
           <HeroWords
             text={
               settings?.tagline ??
-              "Software engineer building secure products and AI systems."
+              "Software engineer building AI agents and full-stack products."
             }
             className="max-w-4xl text-[2.75rem] font-semibold leading-[0.96] tracking-[-0.06em] sm:text-6xl md:text-7xl lg:text-[5.35rem]"
           />
@@ -71,7 +71,7 @@ export default function Hero({
           <HeroFade delay={0.55}>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">
               {settings?.subtitle ??
-                "Application security, AI agent workflows, and full-stack products — shipped end to end."}
+                "AI agents, platform engineering, and full-stack products — shipped end to end."}
             </p>
           </HeroFade>
 

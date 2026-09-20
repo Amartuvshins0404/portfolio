@@ -75,6 +75,22 @@ export async function getProjects(): Promise<Project[]> {
   return data.map(enrichProject);
 }
 
+export type CMSFocusArea = {
+  id: string;
+  sort: number;
+  status: string;
+  title: string;
+  line: string;
+  keywords: string[];
+  href: string;
+};
+
+export async function getFocusAreas(): Promise<CMSFocusArea[]> {
+  return fetchCMS<CMSFocusArea[]>(
+    "/items/focus_areas?filter[status][_eq]=published&sort=sort"
+  );
+}
+
 export type CMSSkill = {
   id: string;
   sort: number;
@@ -183,6 +199,8 @@ export type CMSSiteSettings = {
   hero_secondary_cta: string;
   hero_profile_eyebrow: string;
   hero_current_role_label: string;
+  focus_eyebrow: string;
+  focus_title: string;
   projects_eyebrow: string;
   projects_title: string;
   projects_description: string;
@@ -197,6 +215,9 @@ export type CMSSiteSettings = {
   projects_planning_card_label: string;
   projects_planning_empty_label: string;
   projects_view_cta: string;
+  writing_eyebrow: string;
+  writing_title: string;
+  writing_cta: string;
   about_eyebrow: string;
   about_title: string;
   about_freelance_label: string;

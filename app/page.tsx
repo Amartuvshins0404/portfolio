@@ -8,6 +8,7 @@ import Writing from "@/components/Writing";
 import {
   getProfile,
   getProjects,
+  getFocusAreas,
   getSkills,
   getWorkExperiences,
   getEducations,
@@ -27,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
     settings?.site_title ?? "Amartuvshin Surenjav — Software Engineer";
   const description =
     settings?.site_description ??
-    "Portfolio of Amartuvshin Surenjav, a software engineer in Ulaanbaatar building secure full-stack products and AI systems.";
+    "Portfolio of Amartuvshin Surenjav, a software engineer in Ulaanbaatar building AI agents, platform features, and full-stack products.";
 
   return {
     title: { absolute: title },
@@ -49,6 +50,7 @@ export default async function PortfolioPage() {
   const [
     profile,
     projects,
+    focusAreas,
     skills,
     workExperiences,
     educations,
@@ -59,6 +61,7 @@ export default async function PortfolioPage() {
   ] = await Promise.all([
     getProfile().catch(() => null),
     getProjects().catch(() => []),
+    getFocusAreas().catch(() => []),
     getSkills().catch(() => []),
     getWorkExperiences().catch(() => []),
     getEducations().catch(() => []),
@@ -127,9 +130,9 @@ export default async function PortfolioPage() {
         settings={settings}
         profile={profile}
       />
-      <Focus />
+      <Focus areas={focusAreas} settings={settings} />
       <Projects projects={projects} settings={settings} />
-      <Writing />
+      <Writing settings={settings} />
       <About
         profile={profile}
         settings={settings}
