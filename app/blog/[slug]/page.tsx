@@ -49,6 +49,8 @@ export async function generateMetadata({
   return {
     title: { absolute: post.title },
     description: post.excerpt ?? undefined,
+    keywords: post.tags ?? undefined,
+    authors: [{ name: "Amartuvshin Surenjav", url: SITE_URL }],
     alternates: { canonical: `${SITE_URL}/blog/${post.slug}` },
     openGraph: {
       title: post.title,
@@ -111,8 +113,10 @@ export default async function BlogPostPage({
     datePublished: post.published_at ?? post.date_created,
     dateModified: post.date_updated ?? post.published_at ?? post.date_created,
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
+    articleSection: post.type?.label,
     author: {
       "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
       name: "Amartuvshin Surenjav",
       url: SITE_URL,
     },
@@ -124,11 +128,40 @@ export default async function BlogPostPage({
     keywords: post.tags?.join(", "),
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Writing",
+        item: `${SITE_URL}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: `${SITE_URL}/blog/${post.slug}`,
+      },
+    ],
+  };
+
   return (
     <main className="flex flex-col min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <article className="relative overflow-hidden pt-12 pb-32 md:pt-40 md:pb-32">
@@ -146,6 +179,14 @@ export default async function BlogPostPage({
 
           <header className="space-y-4 md:space-y-6 mb-10 md:mb-16">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+              {post.type ? (
+                <Link
+                  href={`/blog?type=${encodeURIComponent(post.type.slug)}`}
+                  className="transition-colors hover:text-foreground"
+                >
+                  {post.type.label}
+                </Link>
+              ) : null}
               {post.published_at ? (
                 <span className="inline-flex items-center gap-1.5">
                   <Calendar className="h-3 w-3" />
@@ -209,6 +250,43 @@ export default async function BlogPostPage({
               {formatDate(post.date_updated ?? post.published_at ?? post.date_created)}
             </div>
           </footer>
+
+          <aside className="mt-12 flex gap-5 rounded-3xl border border-border/40 bg-card/90 p-6">
+            <Image
+              src="/profile.jpg"
+              alt="Amartuvshin Surenjav"
+              width={64}
+              height={64}
+              className="h-16 w-16 shrink-0 rounded-2xl object-cover"
+            />
+            <div className="min-w-0 space-y-2">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                Written by
+              </p>
+              <Link href="/" className="block font-semibold hover:underline">
+                Amartuvshin Surenjav
+              </Link>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                Software engineer in Ulaanbaatar working on application security at erxes, AI agent workflows with Claude Code and MCP servers, and full-stack products.
+              </p>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 pt-1 text-xs text-muted-foreground">
+                <Link href="/#skills" className="hover:text-foreground">
+                  About
+                </Link>
+                <Link href="/blog" className="hover:text-foreground">
+                  More articles
+                </Link>
+                <Link
+                  href="https://github.com/Amartuvshins0404"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground"
+                >
+                  GitHub
+                </Link>
+              </div>
+            </div>
+          </aside>
 
           {related.length > 0 ? (
             <RelatedSection label={relatedLabel} posts={related} />

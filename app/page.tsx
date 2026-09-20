@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
+import Focus from "@/components/Focus";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
+import Writing from "@/components/Writing";
 import {
   getProfile,
   getProjects,
@@ -122,7 +124,9 @@ export default async function PortfolioPage() {
         settings={settings}
         profile={profile}
       />
+      <Focus />
       <Projects projects={projects} settings={settings} />
+      <Writing />
       <About
         profile={profile}
         settings={settings}

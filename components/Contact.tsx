@@ -154,6 +154,12 @@ export default function Contact({
             {socialLinks.map((link) => (
               <SocialLink key={link.platform} href={link.url} icon={iconMap[link.icon] ?? <Linkedin className="h-3.5 w-3.5" />} label={link.platform} />
             ))}
+            <Link
+              href="/feed.xml"
+              className="text-xs font-mono uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              RSS
+            </Link>
           </Reveal>
 
           <div className="w-full max-w-2xl pt-10 mt-2 border-t border-border/60">

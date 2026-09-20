@@ -72,6 +72,9 @@ export async function generateMetadata(): Promise<Metadata> {
     classification: "Digital product services and personal portfolio",
     alternates: {
       canonical: "/",
+      types: {
+        "application/rss+xml": `${SITE_URL}/feed.xml`,
+      },
     },
     openGraph: {
       type: "profile",
@@ -142,9 +145,11 @@ export default async function RootLayout({
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": `${SITE_URL}/#person`,
     name: profile?.name ?? "Amartuvshin Surenjav",
     alternateName: profile?.alternate_names ?? [],
     url: "https://amartuvshin.com",
+    mainEntityOfPage: SITE_URL,
     image: profile?.profile_image ?? `${SITE_URL}/profile.jpg`,
     jobTitle: profile?.job_title?.split(" — ")[0] ?? "Software Engineer",
     worksFor: {

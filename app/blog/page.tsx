@@ -23,7 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
     settings?.description ??
     "Writing about application security, AI agentic workflows, and the craft of shipping reliable software.";
   return {
-    title: { absolute: "Technology Articles and Case Studies | Amartuvshin" },
+    title: {
+      absolute:
+        "Articles on Application Security, MCP Servers & AI Agent Workflows — Amartuvshin Surenjav",
+    },
     description,
     alternates: { canonical: `${SITE_URL}/blog` },
     openGraph: {
@@ -61,6 +64,27 @@ function blogJsonLd(posts: Post[], heading: string) {
       dateModified: p.date_updated ?? p.published_at ?? p.date_created,
       description: p.excerpt ?? undefined,
     })),
+  };
+}
+
+function breadcrumbJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Writing",
+        item: `${SITE_URL}/blog`,
+      },
+    ],
   };
 }
 
@@ -116,6 +140,10 @@ export default async function BlogIndex({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(blogJsonLd(posts, heading)),
         }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd()) }}
       />
       <section className="relative overflow-hidden pt-12 pb-10 md:pt-40 md:pb-16">
         <div className="absolute top-0 -left-64 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />

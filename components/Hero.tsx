@@ -39,7 +39,7 @@ export default function Hero({
   return (
     <section
       id="backtop"
-      className="relative isolate flex min-h-[calc(100svh-96px)] items-center overflow-hidden border-b border-border/60 pb-20 pt-28 md:pb-28 md:pt-36"
+      className="relative isolate flex min-h-[calc(100svh-96px)] items-center overflow-hidden border-b border-border/60 pb-16 pt-24 md:pb-28 md:pt-36"
     >
       <div
         aria-hidden="true"
@@ -57,8 +57,12 @@ export default function Hero({
       <div className="container mx-auto grid max-w-7xl items-center gap-12 px-4 md:px-6 lg:grid-cols-[1.08fr_0.72fr] lg:gap-20">
         <div>
           <Reveal distance={30}>
-
-            <h1 className="max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.06em] sm:text-6xl md:text-7xl lg:text-[5.35rem]">
+            <p className="mb-5 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+              {profile?.name ?? "Amartuvshin Surenjav"} ·{" "}
+              {profile?.job_title ?? "Software Engineer"} ·{" "}
+              {profile?.location ?? "Ulaanbaatar, Mongolia"}
+            </p>
+            <h1 className="max-w-5xl text-[2.75rem] font-semibold leading-[0.96] tracking-[-0.06em] sm:text-6xl md:text-7xl lg:text-[5.35rem]">
               {settings?.tagline ??
                 "Software engineer building secure products and AI systems."}
             </h1>
