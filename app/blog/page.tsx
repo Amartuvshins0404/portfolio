@@ -39,6 +39,11 @@ export async function generateMetadata(): Promise<Metadata> {
       url: `${SITE_URL}/blog`,
       type: "website",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: settings?.seo_title ?? `${heading.replace(/\.$/, "")} — Amartuvshin Surenjav`,
+      description,
+    },
   };
 }
 

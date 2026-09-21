@@ -127,7 +127,7 @@ function WritingCard({ post }: { post: Post }) {
               {post.tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-border/30 bg-muted/60 px-2.5 py-1 text-[11px]"
+                  className="rounded-full border border-border/30 bg-muted/60 px-2.5 py-1 text-[11px] text-foreground/70"
                 >
                   {tag}
                 </span>

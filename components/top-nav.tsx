@@ -120,7 +120,7 @@ export default function TopNav({
           >
             <Image
               src={profile?.profile_image ?? "/profile.jpg"}
-              alt={profile?.name ?? "Amartuvshin Surenjav"}
+              alt=""
               width={40}
               height={40}
               priority

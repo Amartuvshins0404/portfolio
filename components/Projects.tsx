@@ -301,7 +301,7 @@ function ProjectCard({
             {project.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-border/30 bg-muted/60 px-2.5 py-1 text-[11px] font-medium text-muted-foreground/90"
+                className="rounded-full border border-border/30 bg-muted/60 px-2.5 py-1 text-[11px] font-medium text-foreground/70"
               >
                 {tag}
               </span>
