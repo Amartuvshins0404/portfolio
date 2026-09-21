@@ -79,9 +79,13 @@ export default function Hero({
               </span>
             </p>
             <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
-              Security engineering on a GraphQL Federation platform by day;
-              agentic developer tooling, MCP servers and Next.js products the
-              rest of the time.
+              Full-stack and AI agent developer based in {location}. Security
+              engineering on a GraphQL Federation platform by day; agentic
+              developer tooling, MCP servers and Next.js products the rest of
+              the time.
+              {profile?.available_for_freelance !== false
+                ? " Available for freelance and remote work."
+                : null}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
               <Link
