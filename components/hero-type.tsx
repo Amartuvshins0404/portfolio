@@ -129,6 +129,7 @@ export function MagneticName({
         const outline = li === lines.length - 1 && lines.length > 1;
         return (
           <span key={line} className="block overflow-hidden pb-[0.05em]">
+            {li > 0 && " "}
             {Array.from(line).map((ch) => {
               const i = index++;
               return (
