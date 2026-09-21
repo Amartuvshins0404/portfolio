@@ -11,6 +11,16 @@ import {
   getSkills,
 } from "@/lib/cms";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import {
+  SEO_KEYWORDS,
+  SEO_OCCUPATIONS,
+  SEO_SERVICES,
+  SITE_URL,
+  seoAreaServed,
+  seoDescription,
+  seoOccupation,
+  seoTitle,
+} from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,41 +34,16 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://amartuvshin.com";
-
 export async function generateMetadata(): Promise<Metadata> {
   const [profile, settings] = await Promise.all([
     getProfile().catch(() => null),
     getSiteSettings().catch(() => null),
   ]);
 
-  const title =
-    settings?.site_title ?? "Amartuvshin Surenjav — Software Engineer";
-  const description =
-    settings?.site_description ??
-    "Portfolio of Amartuvshin Surenjav, a software engineer in Ulaanbaatar building AI agents, platform features, and full-stack products.";
-
-  const keywords = settings?.meta_keywords ?? [
-    "Amartuvshin Surenjav",
-    "Amaraa",
-    "Mongolia developer",
-    "software engineer",
-    "AI agents",
-    "erxes-agent",
-    "AI agentic workflows",
-    "Claude Code",
-    "MCP servers",
-    "full-stack engineer",
-    "Next.js",
-    "TypeScript",
-    "React",
-    "GraphQL Federation",
-    "erxes",
-    "MUST-SICT",
-    "flint.mn",
-    "voices.mn",
-    "devscomm.com",
-    "piano.mn",
+  const title = seoTitle(profile);
+  const description = seoDescription(profile);
+  const keywords = [
+    ...new Set([...SEO_KEYWORDS, ...(settings?.meta_keywords ?? [])]),
   ];
 
   return {
@@ -172,7 +157,10 @@ export default async function RootLayout({
     url: "https://amartuvshin.com",
     mainEntityOfPage: SITE_URL,
     image: profile?.profile_image ?? `${SITE_URL}/profile.jpg`,
+    description: seoDescription(profile),
     jobTitle: profile?.job_title?.split(" — ")[0] ?? "Software Engineer",
+    hasOccupation: seoOccupation(profile),
+    knowsLanguage: ["en", "mn"],
     worksFor: {
       "@type": "Organization",
       name: profile?.company ?? "erxes Mongolia LLC",
@@ -188,10 +176,28 @@ export default async function RootLayout({
       addressLocality: "Ulaanbaatar",
       addressCountry: "MN",
     },
+    homeLocation: {
+      "@type": "City",
+      name: "Ulaanbaatar",
+      containedInPlace: { "@type": "Country", name: "Mongolia" },
+    },
     email: `mailto:${profile?.email ?? "amaraaamka0404@gmail.com"}`,
     telephone: profile?.phone ?? "+976-8036-0420",
-    knowsAbout:
-      skills.length > 0 ? skills.map((s) => s.name) : FALLBACK_KNOWS_ABOUT,
+    knowsAbout: [
+      ...new Set([
+        ...(skills.length > 0 ? skills.map((s) => s.name) : FALLBACK_KNOWS_ABOUT),
+        ...SEO_OCCUPATIONS,
+      ]),
+    ],
+    makesOffer: SEO_SERVICES.map((service) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: service,
+        provider: { "@id": `${SITE_URL}/#person` },
+        areaServed: seoAreaServed(),
+      },
+    })),
     sameAs: [
       "https://github.com/Amartuvshins0404",
       "https://www.linkedin.com/in/amartuvshins/",
@@ -205,6 +211,7 @@ export default async function RootLayout({
     "@type": "WebSite",
     name: profile?.name ?? "Amartuvshin Surenjav",
     alternateName: profile?.alternate_names ?? ["Amaraa", "Amartuvshin"],
+    description: seoDescription(profile),
     url: SITE_URL,
     inLanguage: "en",
     publisher: {
