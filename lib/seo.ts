@@ -9,6 +9,7 @@ export const SEO_COUNTRY = "Mongolia";
 // Search intents this site should rank for (what a client or recruiter types),
 // rather than the owner's name.
 export const SEO_KEYWORDS = [
+  "software engineer in Mongolia",
   "software engineer Ulaanbaatar",
   "web developer Mongolia",
   "full-stack developer Mongolia",
@@ -47,16 +48,15 @@ export function seoName(profile: CMSProfile | null) {
 }
 
 export function seoTitle(profile: CMSProfile | null) {
-  return `${seoName(profile)} — ${SEO_ROLE} in ${SEO_CITY}, ${SEO_COUNTRY}`;
+  return `${seoName(profile)} — Software Engineer in ${SEO_COUNTRY} | Full-Stack & AI Agents`;
 }
 
 export function seoDescription(profile: CMSProfile | null) {
-  const name = seoName(profile);
   const availability =
     profile?.available_for_freelance === false
       ? ""
       : " Available for freelance and remote work.";
-  return `${name} is a full-stack software engineer and AI agent developer in ${SEO_CITY}, ${SEO_COUNTRY}, building Next.js/React/TypeScript products, MCP servers, and agentic workflows.${availability}`;
+  return `Software engineer in ${SEO_COUNTRY} building full-stack web products and AI agents with Next.js, React and TypeScript.${availability}`;
 }
 
 export function seoOccupation(profile: CMSProfile | null) {

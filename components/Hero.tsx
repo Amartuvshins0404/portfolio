@@ -79,10 +79,10 @@ export default function Hero({
               </span>
             </p>
             <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
-              Full-stack and AI agent developer based in {location}. Security
-              engineering on a GraphQL Federation platform by day; agentic
-              developer tooling, MCP servers and Next.js products the rest of
-              the time.
+              Software engineer in Mongolia building AI agents and full-stack
+              products. Security engineering on a GraphQL Federation platform
+              by day; agentic developer tooling, MCP servers and Next.js
+              products the rest of the time.
               {profile?.available_for_freelance !== false
                 ? " Available for freelance and remote work."
                 : null}
