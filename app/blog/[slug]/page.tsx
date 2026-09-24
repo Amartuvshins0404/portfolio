@@ -47,6 +47,8 @@ export async function generateMetadata({
     };
   }
   const cover = directusAssetUrl(post.cover_image, { width: 1200, height: 630, fit: "cover", quality: 82 });
+  const version = new Date(post.date_updated ?? post.published_at ?? post.date_created).getTime();
+  const ogImage = cover ?? `/blog/${post.slug}/og?v=${version}`;
   return {
     title: { absolute: post.title },
     description: post.excerpt ?? undefined,
@@ -65,13 +67,13 @@ export async function generateMetadata({
       modifiedTime: post.date_updated ?? undefined,
       authors: ["Amartuvshin Surenjav"],
       tags: post.tags ?? undefined,
-      images: cover ? [{ url: cover, width: 1200, height: 630, alt: post.title }] : undefined,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt ?? undefined,
-      images: cover ? [cover] : undefined,
+      images: [ogImage],
     },
   };
 }
