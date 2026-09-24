@@ -38,11 +38,13 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: `${SITE_URL}/blog`,
       type: "website",
+      images: ["/opengraph-image"],
     },
     twitter: {
       card: "summary_large_image",
       title: settings?.seo_title ?? `${heading.replace(/\.$/, "")} — Amartuvshin Surenjav`,
       description,
+      images: ["/opengraph-image"],
     },
   };
 }
