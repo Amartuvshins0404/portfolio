@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { fetchPosts } from "@/lib/directus";
+import { fetchPages, fetchPosts } from "@/lib/directus";
 
 const SITE_URL = "https://amartuvshin.com";
 
@@ -21,18 +21,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  try {
-    const posts = await fetchPosts();
-    const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
-      url: `${SITE_URL}/blog/${post.slug}`,
-      lastModified: new Date(
-        post.date_updated ?? post.published_at ?? post.date_created,
-      ),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    }));
-    return [...portfolioEntries, ...postEntries];
-  } catch {
-    return portfolioEntries;
-  }
+  const [posts, mnPages] = await Promise.all([
+    fetchPosts().catch(() => []),
+    fetchPages("mn").catch(() => []),
+  ]);
+
+  const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${SITE_URL}/blog/${post.slug}`,
+    lastModified: new Date(
+      post.date_updated ?? post.published_at ?? post.date_created,
+    ),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  const mnEntries: MetadataRoute.Sitemap = mnPages.map((page) => ({
+    url:
+      page.slug === "index"
+        ? `${SITE_URL}/mn`
+        : `${SITE_URL}/mn/${page.slug}`,
+    lastModified: new Date(
+      page.date_updated ?? page.published_at ?? page.date_created,
+    ),
+    changeFrequency: "monthly",
+    priority: page.slug === "index" ? 0.8 : 0.7,
+  }));
+
+  return [...portfolioEntries, ...postEntries, ...mnEntries];
 }

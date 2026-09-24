@@ -157,6 +157,73 @@ export async function fetchPostBySlug(slug: string): Promise<Post | null> {
   return data[0] ?? null;
 }
 
+export type SitePage = {
+  id: number;
+  status: string;
+  locale: string;
+  slug: string;
+  kind: "landing" | "service" | "article";
+  title: string;
+  eyebrow: string | null;
+  lead: string | null;
+  content: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  keywords: string[] | null;
+  cta_title: string | null;
+  cta_description: string | null;
+  sort: number | null;
+  published_at: string | null;
+  date_created: string;
+  date_updated: string | null;
+};
+
+const PAGE_FIELDS = [
+  "id",
+  "locale",
+  "slug",
+  "kind",
+  "title",
+  "eyebrow",
+  "lead",
+  "content",
+  "seo_title",
+  "seo_description",
+  "keywords",
+  "cta_title",
+  "cta_description",
+  "sort",
+  "published_at",
+  "date_created",
+  "date_updated",
+].join(",");
+
+export async function fetchPages(locale: string): Promise<SitePage[]> {
+  const params = new URLSearchParams();
+  params.set("fields", PAGE_FIELDS);
+  params.append("filter[status][_eq]", "published");
+  params.append("filter[locale][_eq]", locale);
+  params.set("sort", "sort,-published_at");
+  params.set("limit", "100");
+  return directusFetch<SitePage[]>(`/items/pages?${params.toString()}`);
+}
+
+export async function fetchPage(
+  locale: string,
+  slug: string,
+): Promise<SitePage | null> {
+  const params = new URLSearchParams();
+  params.set("fields", PAGE_FIELDS);
+  params.append("filter[status][_eq]", "published");
+  params.append("filter[locale][_eq]", locale);
+  params.append("filter[slug][_eq]", slug);
+  params.set("limit", "1");
+  const data = await directusFetch<SitePage[]>(
+    `/items/pages?${params.toString()}`,
+  );
+  return data[0] ?? null;
+}
+
 export async function fetchContentTypes(): Promise<ContentType[]> {
   return directusFetch<ContentType[]>(
     `/items/content_types?fields=id,slug,label,description,sort` +

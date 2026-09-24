@@ -34,6 +34,18 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: "/mn",
+        headers: [{ key: "Content-Language", value: "mn" }],
+      },
+      {
+        source: "/mn/:path*",
+        headers: [{ key: "Content-Language", value: "mn" }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

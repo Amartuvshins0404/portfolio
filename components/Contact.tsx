@@ -109,6 +109,9 @@ export default function Contact({
               </li>
             ))}
             <li>
+              <FooterLink href="/mn">Монгол</FooterLink>
+            </li>
+            <li>
               <FooterLink href="/feed.xml">RSS</FooterLink>
             </li>
           </ul>
