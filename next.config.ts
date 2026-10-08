@@ -23,6 +23,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/services",
+        destination: "/hire",
+        permanent: true,
+      },
+      {
+        source: "/consulting",
+        destination: "/hire",
+        permanent: true,
+      },
+      {
         source: "/en",
         destination: "/",
         permanent: true,

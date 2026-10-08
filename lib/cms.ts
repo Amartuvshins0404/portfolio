@@ -57,15 +57,20 @@ export type CMSProject = {
   tags: string[];
   category: string;
   image: string;
+  video: string | null;
   demo_url: string;
   accent: string;
   state: ProjectState;
 };
 
-export type Project = CMSProject & { image_url: string };
+export type Project = CMSProject & { image_url: string; video_url: string };
 
 export function enrichProject(p: CMSProject): Project {
-  return { ...p, image_url: p.image ? assetUrl(p.image) : "" };
+  return {
+    ...p,
+    image_url: p.image ? assetUrl(p.image) : "",
+    video_url: p.video ? assetUrl(p.video) : "",
+  };
 }
 
 export async function getProjects(): Promise<Project[]> {
@@ -235,8 +240,13 @@ export type CMSSiteSettings = {
   contact_phone_label: string;
   contact_cta: string;
   footer_note: string;
+  hero_video: string | null;
 };
 
 export async function getSiteSettings(): Promise<CMSSiteSettings> {
   return fetchCMS<CMSSiteSettings>("/items/site_settings");
+}
+
+export function heroVideoUrl(s: CMSSiteSettings | null): string {
+  return s?.hero_video ? assetUrl(s.hero_video) : "";
 }

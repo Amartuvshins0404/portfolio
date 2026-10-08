@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -51,85 +50,6 @@ export function TextReveal({
         </span>
       ))}
     </MotionTag>
-  );
-}
-
-export function Line({ delay = 0 }: { delay?: number }) {
-  const reduceMotion = useReducedMotion();
-  return (
-    <motion.span
-      aria-hidden="true"
-      className="block h-px w-full origin-left bg-border"
-      initial={reduceMotion ? false : { scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 1, delay, ease }}
-    />
-  );
-}
-
-export function Row({
-  children,
-  index,
-  className,
-}: {
-  children: ReactNode;
-  index: number;
-  className?: string;
-}) {
-  const reduceMotion = useReducedMotion();
-  return (
-    <motion.li
-      className={cn("group relative list-none", className)}
-      initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.7, delay: index * 0.08, ease }}
-    >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-foreground transition-transform duration-500 ease-out group-hover:scale-x-100"
-      />
-      {children}
-    </motion.li>
-  );
-}
-
-export function Marquee({
-  items,
-  speed = 40,
-  className,
-}: {
-  items: string[];
-  speed?: number;
-  className?: string;
-}) {
-  const reduceMotion = useReducedMotion();
-  const track = [...items, ...items];
-  return (
-    <div
-      className={cn(
-        "relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]",
-        className,
-      )}
-    >
-      <motion.ul
-        className="flex w-max items-center gap-10 whitespace-nowrap"
-        animate={reduceMotion ? undefined : { x: ["0%", "-50%"] }}
-        transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
-      >
-        {track.map((item, i) => (
-          <li
-            key={`${item}-${i}`}
-            aria-hidden={i >= items.length}
-            className="flex items-center gap-10 font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground"
-          >
-            {item}
-            <span className="h-1 w-1 rounded-full bg-foreground/30" />
-          </li>
-        ))}
-      </motion.ul>
-    </div>
   );
 }
 

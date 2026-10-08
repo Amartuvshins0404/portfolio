@@ -8,10 +8,10 @@ import {
   CalendarClock,
   CheckCircle2,
   CircleDotDashed,
-  Globe,
   type LucideIcon,
 } from "lucide-react";
-import { Reveal, TiltCard } from "@/components/portfolio-motion";
+import { Reveal } from "@/components/portfolio-motion";
+import ShowcaseVideo from "@/components/showcase-video";
 import { cn } from "@/lib/utils";
 import type {
   CMSSiteSettings,
@@ -27,7 +27,6 @@ type StateMeta = {
   emptyLabel: string;
   icon: LucideIcon;
   badge: string;
-  wash: string;
 };
 
 const DEFAULT_STATE_META: Record<ProjectState, StateMeta> = {
@@ -38,7 +37,6 @@ const DEFAULT_STATE_META: Record<ProjectState, StateMeta> = {
     icon: CircleDotDashed,
     badge:
       "border-amber-500/25 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-    wash: "from-amber-500/20 via-orange-500/8 to-transparent",
   },
   done: {
     label: "Done",
@@ -47,7 +45,6 @@ const DEFAULT_STATE_META: Record<ProjectState, StateMeta> = {
     icon: CheckCircle2,
     badge:
       "border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
-    wash: "from-emerald-500/18 via-teal-500/8 to-transparent",
   },
   planning: {
     label: "Planning",
@@ -56,7 +53,6 @@ const DEFAULT_STATE_META: Record<ProjectState, StateMeta> = {
     icon: CalendarClock,
     badge:
       "border-indigo-500/25 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300",
-    wash: "from-indigo-500/20 via-violet-500/8 to-transparent",
   },
 };
 function getStateMeta(
@@ -122,92 +118,85 @@ export default function Projects({
   if (projects.length === 0) return null;
 
   return (
-    <section id="projects" className="relative overflow-hidden py-24 md:py-32">
-      <div className="pointer-events-none absolute -left-64 top-1/4 h-96 w-96 rounded-full bg-primary/10 blur-[128px]" />
-      <div className="pointer-events-none absolute -right-64 bottom-1/4 h-96 w-96 rounded-full bg-purple-500/10 blur-[128px]" />
+    <section id="projects" className="card-surface p-5 sm:p-7">
+      <Reveal className="flex flex-wrap items-center justify-between gap-4">
+        <span className="section-badge">
+          {settings?.projects_eyebrow ?? "Selected work"}
+        </span>
+        <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+          {settings?.projects_title ?? "Projects."}
+        </h2>
+      </Reveal>
+      {settings?.projects_description ? (
+        <p className="mt-3 max-w-lg text-sm text-muted-foreground">
+          {settings.projects_description}
+        </p>
+      ) : null}
 
-      <div className="container relative z-10 mx-auto max-w-7xl px-4 md:px-6">
-        <Reveal className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              <span className="h-px w-8 bg-muted-foreground/50" />
-              {settings?.projects_eyebrow ?? "Selected work"}
-            </div>
-            <h2 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">
-              {settings?.projects_title ?? "Projects."}
-            </h2>
-          </div>
-          <p className="max-w-md text-base text-muted-foreground md:text-right">
-            {settings?.projects_description ??
-              "Active builds, completed products, and what I’m planning next."}
-          </p>
-        </Reveal>
+      <Reveal delay={0.08} className="mt-6">
+        <div
+          className="inline-flex max-w-full gap-1 overflow-x-auto rounded-full bg-muted p-1"
+          aria-label={
+            settings?.projects_filter_label ?? "Filter projects by state"
+          }
+        >
+          {STATE_ORDER.map((state) => {
+            const meta = stateMeta[state];
+            const count = projects.filter(
+              (project) => project.state === state
+            ).length;
+            const isActive = activeState === state;
 
-        <Reveal delay={0.08} className="mb-12">
-          <div
-            className="inline-flex max-w-full gap-1 overflow-x-auto rounded-2xl border border-border/50 bg-muted/50 p-1.5"
-            aria-label={
-              settings?.projects_filter_label ?? "Filter projects by state"
-            }
-          >
-            {STATE_ORDER.map((state) => {
-              const meta = stateMeta[state];
-              const count = projects.filter(
-                (project) => project.state === state
-              ).length;
-              const isActive = activeState === state;
-
-              return (
-                <button
-                  key={state}
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setActiveState(state)}
+            return (
+              <button
+                key={state}
+                type="button"
+                aria-pressed={isActive}
+                onClick={() => setActiveState(state)}
+                className={cn(
+                  "inline-flex min-h-9 shrink-0 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring",
+                  isActive
+                    ? "bg-foreground text-background shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {meta.label}
+                <span
                   className={cn(
-                    "inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl px-4 text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring",
+                    "rounded-full px-1.5 py-0.5 font-mono text-[10px]",
                     isActive
-                      ? "bg-foreground text-background shadow-sm"
-                      : "text-muted-foreground hover:bg-background/70 hover:text-foreground"
+                      ? "bg-background/20 text-background"
+                      : "bg-background/70 text-muted-foreground"
                   )}
                 >
-                  {meta.label}
-                  <span
-                    className={cn(
-                      "rounded-full px-1.5 py-0.5 font-mono text-[10px]",
-                      isActive
-                        ? "bg-background/20 text-background"
-                        : "bg-background/70 text-muted-foreground"
-                    )}
-                  >
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </Reveal>
-
-        <div aria-live="polite">
-          {visibleProjects.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-              {visibleProjects.map((project, index) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  index={index}
-                  meta={stateMeta[project.state]}
-                  viewCta={settings?.projects_view_cta ?? "View project"}
-                />
-              ))}
-            </div>
-          ) : (
-            <Reveal className="rounded-3xl border border-dashed border-border/60 bg-muted/25 px-6 py-16 text-center">
-              <p className="text-sm text-muted-foreground">
-                {stateMeta[activeState].emptyLabel}
-              </p>
-            </Reveal>
-          )}
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
+      </Reveal>
+
+      <div aria-live="polite" className="mt-6">
+        {visibleProjects.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {visibleProjects.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+                meta={stateMeta[project.state]}
+                viewCta={settings?.projects_view_cta ?? "View project"}
+              />
+            ))}
+          </div>
+        ) : (
+          <Reveal className="rounded-2xl border border-dashed border-border/60 bg-muted/25 px-6 py-16 text-center">
+            <p className="text-sm text-muted-foreground">
+              {stateMeta[activeState].emptyLabel}
+            </p>
+          </Reveal>
+        )}
       </div>
     </section>
   );
@@ -227,52 +216,32 @@ function ProjectCard({
   const StateIcon = meta.icon;
 
   return (
-    <TiltCard
-      delay={index * 0.08}
-      intensity={5}
-      className="relative rounded-3xl"
-    >
-      <article className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-border/40 bg-card/90 backdrop-blur-sm transition-all duration-500 group-hover:border-border/80 group-hover:shadow-2xl group-hover:shadow-primary/5">
-        {project.image_url ? (
-          <>
-            <div className="flex items-center gap-1.5 border-b border-border/40 bg-muted/30 px-4 py-3">
-              <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
-              <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
-              <span className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
-              <div className="ml-3 flex flex-1 items-center gap-2 rounded-md border border-border/30 bg-background/50 px-3 py-1 font-mono text-xs text-muted-foreground">
-                <Globe className="h-3 w-3" />
-                <span className="truncate">{project.url}</span>
-              </div>
-            </div>
-            <div className="relative aspect-[16/10] overflow-hidden bg-muted/20">
-              <Image
-                src={project.image_url}
-                alt={`${project.title} — ${project.category} built by Amartuvshin Surenjav`}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
-                className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-[1.07]"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-card/30 via-transparent to-transparent" />
-            </div>
-          </>
-        ) : (
-          <div className="relative flex aspect-[16/7] items-center justify-center overflow-hidden border-b border-border/40 bg-muted/20">
-            <div
-              className={cn(
-                "absolute inset-0 bg-linear-to-br",
-                meta.wash
-              )}
+    <Reveal delay={index * 0.08} className="h-full">
+      <article className="tile-surface group flex h-full flex-col overflow-hidden transition-colors hover:border-primary/40">
+        {project.video_url ? (
+          <ShowcaseVideo
+            src={project.video_url}
+            poster={project.image_url || undefined}
+            title={project.title}
+            className="aspect-video rounded-b-none"
+          />
+        ) : project.image_url ? (
+          <div className="relative aspect-[16/10] overflow-hidden bg-muted/20">
+            <Image
+              src={project.image_url}
+              alt={`${project.title} — ${project.category} built by Amartuvshin Surenjav`}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
+              className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-[1.05]"
             />
-            <div className="relative flex flex-col items-center gap-3 text-center">
-              <StateIcon className="h-7 w-7" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                {meta.cardLabel}
-              </span>
-            </div>
+          </div>
+        ) : (
+          <div className="flex aspect-[16/7] items-center justify-center bg-tile">
+            <StateIcon className="h-8 w-8 text-muted-foreground" />
           </div>
         )}
 
-        <div className="flex flex-1 flex-col space-y-5 p-6 md:p-8">
+        <div className="flex flex-1 flex-col space-y-4 p-5 sm:p-6">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0 space-y-2">
               <div
@@ -284,7 +253,7 @@ function ProjectCard({
                 <StateIcon className="h-3.5 w-3.5" />
                 {meta.label}
               </div>
-              <h3 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
                 {project.title}
               </h3>
             </div>
@@ -293,7 +262,7 @@ function ProjectCard({
             </span>
           </div>
 
-          <p className="text-sm leading-relaxed text-muted-foreground md:text-[15px]">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {project.description}
           </p>
 
@@ -308,7 +277,7 @@ function ProjectCard({
             ))}
           </div>
 
-          <div className="mt-auto flex min-h-10 items-center justify-between gap-4 border-t border-border/40 pt-5">
+          <div className="mt-auto flex min-h-10 items-center justify-between gap-4 border-t border-border/40 pt-4">
             <span className="truncate font-mono text-xs text-muted-foreground">
               {project.url}
             </span>
@@ -326,6 +295,6 @@ function ProjectCard({
           </div>
         </div>
       </article>
-    </TiltCard>
+    </Reveal>
   );
 }

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/portfolio-motion";
 import {
   directusAssetUrl,
@@ -34,43 +33,35 @@ export default async function Writing({
   if (latestPosts.length === 0) return null;
 
   return (
-    <section id="writing" className="py-24 md:py-32">
-      <div className="container mx-auto max-w-7xl space-y-14 px-4 md:px-6">
-        <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
-              <span className="h-px w-8 bg-muted-foreground/50" />
-              {settings?.writing_eyebrow ?? "Writing"}
-            </div>
-            <h2 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-6xl">
-              {settings?.writing_title ??
-                "Notes on AI agents, platform engineering, and shipping software."}
-            </h2>
-          </div>
-          <p className="max-w-md text-muted-foreground md:text-right">
-            {blogSettings?.description ??
-              "Long-form articles and case studies from real production work."}
-          </p>
-        </Reveal>
+    <section id="writing" className="card-surface p-5 sm:p-7">
+      <Reveal className="flex flex-wrap items-center justify-between gap-4">
+        <span className="section-badge">
+          {settings?.writing_eyebrow ?? "Writing"}
+        </span>
+        <h2 className="text-xl font-bold tracking-tight sm:text-2xl">
+          {settings?.writing_title ??
+            "Notes on AI agents, platform engineering, and shipping software."}
+        </h2>
+      </Reveal>
 
-        <Reveal delay={0.08}>
-          <div className="grid gap-4 md:grid-cols-3">
-            {latestPosts.map((post) => (
-              <WritingCard key={post.id} post={post} />
-            ))}
-          </div>
-        </Reveal>
+      <Reveal delay={0.08} className="mt-6">
+        <div className="grid gap-4 md:grid-cols-3">
+          {latestPosts.map((post) => (
+            <WritingCard key={post.id} post={post} />
+          ))}
+        </div>
+      </Reveal>
 
-        <Reveal delay={0.14} className="flex justify-center">
-          <Button asChild variant="outline" className="rounded-full">
-            <Link href="/blog">
-              {settings?.writing_cta ?? blogSettings?.all_posts_label ??
-                "All articles"}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-        </Reveal>
-      </div>
+      <Reveal delay={0.14} className="mt-6 flex justify-end">
+        <Link
+          href="/blog"
+          className="inline-flex h-10 items-center gap-2 rounded-full border border-border px-5 text-sm font-semibold transition-colors hover:bg-muted"
+        >
+          {settings?.writing_cta ?? blogSettings?.all_posts_label ??
+            "All articles"}
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </Reveal>
     </section>
   );
 }
@@ -86,11 +77,11 @@ function WritingCard({ post }: { post: Post }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group block rounded-3xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+      className="group block rounded-2xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
     >
-      <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-border/40 bg-card/90 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:border-border/80">
+      <article className="tile-surface flex h-full flex-col overflow-hidden transition-colors group-hover:border-primary/40">
         {cover ? (
-          <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
+          <div className="relative aspect-video overflow-hidden bg-muted/20">
             <Image
               src={cover}
               alt={post.title}
@@ -100,7 +91,7 @@ function WritingCard({ post }: { post: Post }) {
             />
           </div>
         ) : null}
-        <div className="flex flex-1 flex-col space-y-3 p-6 md:p-7">
+        <div className="flex flex-1 flex-col space-y-3 p-5">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-mono uppercase tracking-[0.16em] text-muted-foreground">
             {post.type?.label ? <span>{post.type.label}</span> : null}
             <span className="inline-flex items-center gap-1.5">
@@ -114,25 +105,13 @@ function WritingCard({ post }: { post: Post }) {
               </span>
             ) : null}
           </div>
-          <h3 className="line-clamp-2 text-xl font-semibold tracking-tight">
+          <h3 className="line-clamp-2 text-lg font-semibold tracking-tight">
             {post.title}
           </h3>
           {post.excerpt ? (
-            <p className="line-clamp-3 text-sm text-muted-foreground">
+            <p className="line-clamp-2 text-sm text-muted-foreground">
               {post.excerpt}
             </p>
-          ) : null}
-          {post.tags && post.tags.length > 0 ? (
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {post.tags.slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border/30 bg-muted/60 px-2.5 py-1 text-[11px] text-foreground/70"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
           ) : null}
         </div>
       </article>

@@ -1,153 +1,135 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { HeroFade } from "@/components/hero-motion";
+import ShowcaseVideo from "@/components/showcase-video";
 import {
-  Fade,
-  LocalClock,
-  MagneticName,
-  RotatingWords,
-  Rule,
-} from "@/components/hero-type";
-import type {
-  CMSActivity,
-  CMSProfile,
-  CMSSiteSettings,
-  CMSStat,
-  CMSSocialLink,
+  heroVideoUrl,
+  type CMSProfile,
+  type CMSSiteSettings,
 } from "@/lib/cms";
 
-const builds = [
-  "secure products",
-  "AI agent workflows",
-  "MCP servers",
-  "full-stack apps",
-];
-
 export default function Hero({
-  socialLinks,
   profile,
-  activities = [],
+  settings,
 }: {
-  stats: CMSStat[];
-  socialLinks: CMSSocialLink[];
-  settings: CMSSiteSettings | null;
   profile: CMSProfile | null;
-  activities?: CMSActivity[];
+  settings: CMSSiteSettings | null;
 }) {
   const name = profile?.name ?? "Amartuvshin Surenjav";
   const role = profile?.job_title ?? "Software Engineer";
-  const company = profile?.company ?? "erxes";
   const location = profile?.location ?? "Ulaanbaatar, Mongolia";
-  const city = location.split(",")[0];
-  const lines = name.split(" ");
-  const now = activities.slice(0, 3);
+  const company = profile?.company ?? "erxes";
+  const [firstName, ...restName] = name.split(" ");
+  const showcaseVideo = heroVideoUrl(settings);
 
   return (
     <section
-      id="backtop"
-      className="relative isolate flex min-h-[calc(100svh-96px)] flex-col justify-end overflow-hidden border-b border-border/60 pb-10 pt-32 md:pb-14 md:pt-40"
+      id="home"
+      className="card-surface relative overflow-hidden p-6 sm:p-10 lg:p-12"
     >
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-20 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--border)_40%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--border)_40%,transparent)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(ellipse_at_top,black,transparent_78%)]"
-      />
+      <div className="relative flex flex-col items-start gap-10 lg:flex-row lg:items-center lg:justify-between">
+        <div className="max-w-2xl">
+          <HeroFade>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Hey there, I&apos;m
+            </p>
+          </HeroFade>
 
-      <div className="container mx-auto max-w-7xl px-4 md:px-6">
-        <Fade className="flex items-baseline justify-between gap-6 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-          <p>
-            {role} · {company}
-          </p>
-          <p className="hidden sm:block">
-            {city} · <LocalClock timeZone="Asia/Ulaanbaatar" /> UTC+8
-          </p>
-        </Fade>
-
-        <MagneticName
-          lines={lines}
-          className="mt-8 text-[clamp(2.75rem,13.2vw,11.5rem)] uppercase leading-[0.86] tracking-[-0.05em] md:mt-12"
-        />
-
-        <Rule delay={0.9} className="mt-10 md:mt-14" />
-
-        <div className="mt-8 grid gap-10 md:mt-10 md:grid-cols-12 md:gap-8">
-          <Fade delay={1} className="md:col-span-7">
-            <p className="text-2xl leading-[1.15] tracking-[-0.03em] sm:text-3xl md:text-4xl">
-              I build{" "}
-              <RotatingWords words={builds} className="text-foreground" />
-              <span className="hidden text-muted-foreground sm:inline">
-                {" "}
-                — end to end.
+          <HeroFade delay={0.1}>
+            <h1 className="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+              {firstName}
+              {restName.length > 0 ? (
+                <>
+                  <br />
+                  {restName.join(" ")}
+                </>
+              ) : null}
+              <span className="sr-only">
+                — {role} in {location}
               </span>
-            </p>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
-              Full-stack and AI agent developer based in {location}. Security
-              engineering on a GraphQL Federation platform by day; agentic
-              developer tooling, MCP servers and Next.js products the rest of
-              the time.
-              {profile?.available_for_freelance !== false
-                ? " Available for freelance and remote work."
-                : null}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
-              <Link
-                href="#projects"
-                className="group inline-flex items-center gap-2 font-medium text-foreground"
-              >
-                Selected work
-                <ArrowDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-              </Link>
-              <Link
-                href="/blog"
-                className="group inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Writing
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </Link>
-              <Link
-                href="#contact"
-                className="group inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Contact
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </Link>
-            </div>
-          </Fade>
+            </h1>
+          </HeroFade>
 
-          <Fade delay={1.15} className="md:col-span-5 md:pl-8">
-            {now.length > 0 ? (
-              <dl className="border-t border-border/60">
-                {now.map((a) => (
-                  <div
-                    key={a.id}
-                    className="grid grid-cols-[6.5rem_1fr] gap-4 border-b border-border/60 py-3 text-sm"
-                  >
-                    <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                      {a.label}
-                    </dt>
-                    <dd className="text-foreground">{a.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            ) : null}
+          <HeroFade delay={0.2}>
+            <p className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-primary" />
+              {role} <span aria-hidden="true">•</span> Based in {location}
+            </p>
+          </HeroFade>
 
-            {socialLinks.length > 0 ? (
-              <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em]">
-                {socialLinks.map((link) => (
-                  <li key={link.id}>
-                    <Link
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link.platform}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </Fade>
+          <HeroFade delay={0.3}>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {settings?.subtitle ??
+                "AI agents, platform engineering, and full-stack products — shipped end to end."}
+            </p>
+          </HeroFade>
+
+          <HeroFade
+            delay={0.4}
+            className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center"
+          >
+            <Link
+              href="#projects"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:brightness-110"
+            >
+              {settings?.hero_primary_cta ?? "View selected work"}
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="#contact"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border px-6 text-sm font-semibold transition-colors hover:bg-muted"
+            >
+              {settings?.hero_secondary_cta ?? "Start a conversation"}
+            </Link>
+          </HeroFade>
         </div>
+
+        <HeroFade delay={0.25} className="mx-auto lg:mx-0">
+          <div className="relative h-64 w-64 sm:h-80 sm:w-80">
+            <div className="relative h-full w-full overflow-hidden rounded-2xl">
+              <Image
+                src={profile?.profile_image || "/profile.jpg"}
+                alt={name}
+                fill
+                priority
+                sizes="(max-width: 640px) 256px, 320px"
+                className="object-cover object-top"
+              />
+            </div>
+            <p className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-border/60 bg-background/70 px-3.5 py-1 text-[11px] font-medium backdrop-blur-md">
+              {role} · {company}
+            </p>
+          </div>
+        </HeroFade>
       </div>
+
+      {showcaseVideo ? (
+        <div className="relative mt-12 border-t border-border/70 pt-8">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <span className="section-badge">Showcase</span>
+            <p className="hidden flex-1 px-4 text-sm text-muted-foreground sm:block">
+              erxes — the Experience OS I build on every day
+            </p>
+            {profile?.company_url ? (
+              <Link
+                href={profile.company_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-accent-foreground"
+              >
+                erxes.io
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            ) : null}
+          </div>
+          <ShowcaseVideo
+            src={showcaseVideo}
+            title="erxes platform showcase"
+            className="aspect-video"
+          />
+        </div>
+      ) : null}
     </section>
   );
 }

@@ -4,6 +4,8 @@ import Contact from "@/components/Contact";
 import Focus from "@/components/Focus";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
+import StackHighlights from "@/components/StackHighlights";
+import TechStack from "@/components/TechStack";
 import Writing from "@/components/Writing";
 import {
   getProfile,
@@ -125,7 +127,7 @@ export default async function PortfolioPage() {
     "@type": "ProfessionalService",
     "@id": `${SITE_URL}/#services`,
     name: `${profile?.name ?? "Amartuvshin Surenjav"} — Software Development`,
-    url: SITE_URL,
+    url: `${SITE_URL}/hire`,
     image: profile?.profile_image ?? profileImageUrl,
     description: seoDescription(profile),
     founder: { "@id": `${SITE_URL}/#person` },
@@ -146,7 +148,7 @@ export default async function PortfolioPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }}
@@ -159,29 +161,25 @@ export default async function PortfolioPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
       />
-      <Hero
-        stats={stats}
-        socialLinks={socialLinks}
-        settings={settings}
-        profile={profile}
-        activities={activities}
-      />
-      <Focus areas={focusAreas} settings={settings} />
-      <Projects projects={projects} settings={settings} />
-      <Writing settings={settings} />
+      <Hero profile={profile} settings={settings} />
+      <StackHighlights skills={skills} />
       <About
         profile={profile}
         settings={settings}
-        skills={skills}
+        stats={stats}
         workExperiences={workExperiences}
         educations={educations}
         activities={activities}
       />
+      <Focus areas={focusAreas} settings={settings} />
+      <TechStack skills={skills} settings={settings} />
+      <Projects projects={projects} settings={settings} />
+      <Writing settings={settings} />
       <Contact
         profile={profile}
         socialLinks={socialLinks}
         settings={settings}
       />
-    </main>
+    </>
   );
 }

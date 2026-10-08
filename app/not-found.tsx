@@ -16,7 +16,7 @@ const LINKS = [
 
 export default function NotFound() {
   return (
-    <main className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col">
       <section className="relative flex-1 overflow-hidden pt-28 pb-24 md:pt-40 md:pb-32">
         <div className="absolute top-0 -left-64 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
         <div className="absolute bottom-0 -right-64 w-96 h-96 bg-purple-500/10 rounded-full blur-[128px] pointer-events-none" />
@@ -47,6 +47,6 @@ export default function NotFound() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

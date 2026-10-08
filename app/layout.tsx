@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import TopNav from "@/components/top-nav";
+import AppShell from "@/components/app-shell";
 import FixedButtons from "@/components/fixed-buttons";
 import { ThemeProvider } from "@/components/theme-provider";
 import {
@@ -9,6 +9,7 @@ import {
   getProfile,
   getSiteSettings,
   getSkills,
+  getSocialLinks,
 } from "@/lib/cms";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
@@ -22,9 +23,10 @@ import {
   seoTitle,
 } from "@/lib/seo";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -109,7 +111,14 @@ export async function generateMetadata(): Promise<Metadata> {
       address: false,
       telephone: false,
     },
-    verification: {},
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION,
+      other: {
+        ...(process.env.BING_SITE_VERIFICATION
+          ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION }
+          : {}),
+      },
+    },
   };
 }
 
@@ -131,8 +140,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f6fb" },
+    { media: "(prefers-color-scheme: dark)", color: "#06090e" },
   ],
   colorScheme: "light dark",
 };
@@ -142,11 +151,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [profile, navLinks, skills] = await Promise.all([
-    getProfile().catch(() => null),
-    getNavigationLinks().catch(() => []),
-    getSkills().catch(() => []),
-  ]);
+  const [profile, navLinks, skills, socialLinks, settings] =
+    await Promise.all([
+      getProfile().catch(() => null),
+      getNavigationLinks().catch(() => []),
+      getSkills().catch(() => []),
+      getSocialLinks().catch(() => []),
+      getSiteSettings().catch(() => null),
+    ]);
 
   const personJsonLd = {
     "@context": "https://schema.org",
@@ -234,7 +246,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
+        className={`${jakarta.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground`}
         suppressHydrationWarning
       >
         <ThemeProvider
@@ -243,8 +255,14 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <TopNav profile={profile} navLinks={navLinks} />
-          {children}
+          <AppShell
+            profile={profile}
+            navLinks={navLinks}
+            socialLinks={socialLinks}
+            settings={settings}
+          >
+            {children}
+          </AppShell>
           <FixedButtons />
         </ThemeProvider>
         <SpeedInsights />
