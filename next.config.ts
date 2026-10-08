@@ -32,6 +32,16 @@ const nextConfig: NextConfig = {
         destination: "/hire",
         permanent: true,
       },
+      {
+        source: "/en",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/projects",
+        destination: "/#projects",
+        permanent: true,
+      },
     ];
   },
 };
