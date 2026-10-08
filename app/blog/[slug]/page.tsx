@@ -160,7 +160,7 @@ export default async function BlogPostPage({
   };
 
   return (
-    <main className="flex flex-col min-h-screen">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -170,11 +170,8 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      <article className="relative overflow-hidden pt-12 pb-32 md:pt-40 md:pb-32">
-        <div className="absolute top-0 -left-64 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
-        <div className="absolute top-1/3 -right-64 w-96 h-96 bg-purple-500/10 rounded-full blur-[128px] pointer-events-none" />
-
-        <div className="container mx-auto max-w-3xl px-4 md:px-6 relative z-10">
+      <article className="card-surface relative overflow-hidden p-6 sm:p-10">
+        <div className="relative mx-auto max-w-3xl">
           <Link
             href="/blog"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6 md:mb-12"
@@ -229,7 +226,7 @@ export default async function BlogPostPage({
           </header>
 
           {cover ? (
-            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl md:rounded-3xl border border-border/40 bg-muted/20 mb-10 md:mb-16">
+            <div className="relative aspect-video overflow-hidden rounded-2xl border border-border/40 bg-muted/20 mb-10 md:mb-16">
               <Image
                 src={cover}
                 alt={post.title}
@@ -257,7 +254,7 @@ export default async function BlogPostPage({
             </div>
           </footer>
 
-          <aside className="mt-12 flex gap-5 rounded-3xl border border-border/40 bg-card/90 p-6">
+          <aside className="mt-12 flex gap-5 rounded-2xl border border-border/40 bg-muted/60 p-6">
             <Image
               src="/profile.jpg"
               alt={profile?.name ?? "Amartuvshin Surenjav"}
@@ -300,7 +297,7 @@ export default async function BlogPostPage({
           ) : null}
         </div>
       </article>
-    </main>
+    </>
   );
 }
 
@@ -320,7 +317,7 @@ function RelatedSection({
         <span className="inline-block h-px w-8 align-middle bg-muted-foreground/50 mr-3" />
         {label}
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {posts.map((p) => (
           <RelatedCard key={p.id} post={p} />
         ))}
@@ -341,7 +338,7 @@ function RelatedCard({ post }: { post: RelatedPostSummary }) {
       href={`/blog/${post.slug}`}
       className="group block focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-2xl"
     >
-      <article className="relative h-full rounded-2xl border border-border/40 bg-card overflow-hidden transition-all duration-300 group-hover:border-border/80 group-hover:shadow-lg group-hover:-translate-y-0.5">
+      <article className="tile-surface relative h-full overflow-hidden transition-colors group-hover:border-primary/40">
         <div className="flex items-stretch">
           {cover ? (
             <div className="relative w-28 md:w-32 shrink-0 bg-muted/20 aspect-square">

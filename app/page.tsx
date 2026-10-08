@@ -4,6 +4,8 @@ import Contact from "@/components/Contact";
 import Focus from "@/components/Focus";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
+import StackHighlights from "@/components/StackHighlights";
+import TechStack from "@/components/TechStack";
 import Writing from "@/components/Writing";
 import {
   getProfile,
@@ -17,18 +19,21 @@ import {
   getStats,
   getSiteSettings,
 } from "@/lib/cms";
+import {
+  SEO_SERVICES,
+  SITE_URL,
+  seoAreaServed,
+  seoDescription,
+  seoOccupation,
+  seoTitle,
+} from "@/lib/seo";
 
 export const revalidate = 60;
 
-const SITE_URL = "https://amartuvshin.com";
-
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings().catch(() => null);
-  const title =
-    settings?.site_title ?? "Amartuvshin Surenjav — Software Engineer";
-  const description =
-    settings?.site_description ??
-    "Portfolio of Amartuvshin Surenjav, a software engineer in Ulaanbaatar building AI agents, platform features, and full-stack products.";
+  const profile = await getProfile().catch(() => null);
+  const title = seoTitle(profile);
+  const description = seoDescription(profile);
 
   return {
     title: { absolute: title },
@@ -102,10 +107,13 @@ export default async function PortfolioPage() {
     inLanguage: "en",
     mainEntity: {
       "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
       name: profile?.name ?? "Amartuvshin Surenjav",
       url: SITE_URL,
       image: profile?.profile_image ?? profileImageUrl,
+      description: seoDescription(profile),
       jobTitle: profile?.job_title?.split(" — ")[0] ?? "Software Engineer",
+      hasOccupation: seoOccupation(profile),
       address: {
         "@type": "PostalAddress",
         addressLocality: "Ulaanbaatar",
@@ -114,8 +122,33 @@ export default async function PortfolioPage() {
     },
   };
 
+  const servicesJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": `${SITE_URL}/#services`,
+    name: `${profile?.name ?? "Amartuvshin Surenjav"} — Software Development`,
+    url: `${SITE_URL}/hire`,
+    image: profile?.profile_image ?? profileImageUrl,
+    description: seoDescription(profile),
+    founder: { "@id": `${SITE_URL}/#person` },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Ulaanbaatar",
+      addressCountry: "MN",
+    },
+    areaServed: seoAreaServed(),
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Services",
+      itemListElement: SEO_SERVICES.map((service) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: service },
+      })),
+    },
+  };
+
   return (
-    <main className="flex min-h-screen flex-col">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }}
@@ -124,28 +157,29 @@ export default async function PortfolioPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsJsonLd) }}
       />
-      <Hero
-        stats={stats}
-        socialLinks={socialLinks}
-        settings={settings}
-        profile={profile}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
       />
-      <Focus areas={focusAreas} settings={settings} />
-      <Projects projects={projects} settings={settings} />
-      <Writing settings={settings} />
+      <Hero profile={profile} settings={settings} />
+      <StackHighlights skills={skills} />
       <About
         profile={profile}
         settings={settings}
-        skills={skills}
+        stats={stats}
         workExperiences={workExperiences}
         educations={educations}
         activities={activities}
       />
+      <Focus areas={focusAreas} settings={settings} />
+      <TechStack skills={skills} settings={settings} />
+      <Projects projects={projects} settings={settings} />
+      <Writing settings={settings} />
       <Contact
         profile={profile}
         socialLinks={socialLinks}
         settings={settings}
       />
-    </main>
+    </>
   );
 }
