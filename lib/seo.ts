@@ -27,6 +27,42 @@ export const SEO_KEYWORDS = [
   "erxes",
 ];
 
+// Cyrillic Mongolian queries — Mongolian users search in Cyrillic, so the
+// name and core service terms need Cyrillic variants to rank for them.
+export const SEO_NAME_MN = "Амартүвшин Сүрэнжав";
+
+export const SEO_MN_KEYWORDS = [
+  "Амартүвшин Сүрэнжав",
+  "Амартувшин Сүрэнжав",
+  "Амараа Сүрэнжав",
+  "программ хангамжийн инженер Монгол",
+  "программист Улаанбаатар",
+  "Монгол программист",
+  "вэб хөгжүүлэгч Монгол",
+  "вэб хөгжүүлэгч Улаанбаатар",
+  "вэб сайт хөгжүүлэх",
+  "вэб сайт захиалах",
+  "AI агент хөгжүүлэгч",
+  "хиймэл оюун ухаан хөгжүүлэгч",
+  "хөгжүүлэгч ажилд авах",
+  "фриланс хөгжүүлэгч Монгол",
+  "Next.js хөгжүүлэгч",
+];
+
+export const SEO_ALTERNATE_NAMES = [
+  "Amaraa",
+  "Amartuvshin",
+  "Амартүвшин Сүрэнжав",
+  "Амартувшин Сүрэнжав",
+  "Амартүвшин",
+  "Амараа",
+];
+
+// Short Mongolian-language summary rendered as visible on-page text so there
+// is real Cyrillic content for search engines to index.
+export const SEO_MN_SUMMARY =
+  "Амартүвшин Сүрэнжав — Монгол Улсын Улаанбаатар хотод ажилладаг программ хангамжийн инженер, вэб болон AI агент хөгжүүлэгч. Тэрээр erxes компанид AI агент болон платформын системүүдийг хөгжүүлдэг бөгөөд Next.js, React, TypeScript ашиглан вэб бүтээгдэхүүн, MCP сервер, агентлаг ажлын урсгал бүтээдэг. Фриланс болон алсын зайнаас ажиллах төслүүдэд нээлттэй.";
+
 export const SEO_OCCUPATIONS = [
   "Software Engineer",
   "Full-Stack Developer",
@@ -44,6 +80,12 @@ export const SEO_SERVICES = [
 
 export function seoName(profile: CMSProfile | null) {
   return profile?.name ?? "Amartuvshin Surenjav";
+}
+
+export function seoAlternateNames(profile: CMSProfile | null) {
+  return [
+    ...new Set([...(profile?.alternate_names ?? []), ...SEO_ALTERNATE_NAMES]),
+  ];
 }
 
 export function seoTitle(profile: CMSProfile | null) {

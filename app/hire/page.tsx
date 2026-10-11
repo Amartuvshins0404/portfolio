@@ -10,7 +10,7 @@ import {
   getStats,
 } from "@/lib/cms";
 import { getServiceContent } from "@/lib/directus";
-import { SEO_KEYWORDS, SITE_URL, seoAreaServed } from "@/lib/seo";
+import { SEO_KEYWORDS, SEO_MN_KEYWORDS, SITE_URL, seoAreaServed } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -37,6 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: [
       ...new Set([
         ...SEO_KEYWORDS,
+        ...SEO_MN_KEYWORDS,
         "hire software engineer Ulaanbaatar",
         "software consultant Mongolia",
         "technology consultant Ulaanbaatar",

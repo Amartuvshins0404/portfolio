@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Sidebar from "@/components/sidebar";
+import { SEO_NAME_MN } from "@/lib/seo";
 import type {
   CMSNavLink,
   CMSProfile,
@@ -33,6 +34,8 @@ export default function AppShell({
         <footer className="px-2 pb-2 text-xs text-muted-foreground">
           © {new Date().getFullYear()}{" "}
           {profile?.name ?? "Amartuvshin Surenjav"}
+          {" · "}
+          <span lang="mn">{SEO_NAME_MN}</span>
           {" · "}
           <Link
             href="/feed.xml"

@@ -22,6 +22,7 @@ import {
 import {
   SEO_SERVICES,
   SITE_URL,
+  seoAlternateNames,
   seoAreaServed,
   seoDescription,
   seoOccupation,
@@ -109,6 +110,7 @@ export default async function PortfolioPage() {
       "@type": "Person",
       "@id": `${SITE_URL}/#person`,
       name: profile?.name ?? "Amartuvshin Surenjav",
+      alternateName: seoAlternateNames(profile),
       url: SITE_URL,
       image: profile?.profile_image ?? profileImageUrl,
       description: seoDescription(profile),

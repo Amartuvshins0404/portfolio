@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/portfolio-motion";
 import { Counter } from "@/components/section-motion";
+import { SEO_MN_SUMMARY } from "@/lib/seo";
 import type {
   CMSActivity,
   CMSEducation,
@@ -54,6 +55,15 @@ export default function About({
                 {p}
               </p>
             ))}
+          </div>
+
+          <div lang="mn" className="mt-6 max-w-2xl border-t border-border/70 pt-5">
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+              Монгол хэлээр
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground sm:text-[17px]">
+              {SEO_MN_SUMMARY}
+            </p>
           </div>
 
           {stats.length > 0 ? (

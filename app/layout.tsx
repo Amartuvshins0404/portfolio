@@ -14,9 +14,11 @@ import {
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
   SEO_KEYWORDS,
+  SEO_MN_KEYWORDS,
   SEO_OCCUPATIONS,
   SEO_SERVICES,
   SITE_URL,
+  seoAlternateNames,
   seoAreaServed,
   seoDescription,
   seoOccupation,
@@ -45,7 +47,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = seoTitle(profile);
   const description = seoDescription(profile);
   const keywords = [
-    ...new Set([...SEO_KEYWORDS, ...(settings?.meta_keywords ?? [])]),
+    ...new Set([
+      ...SEO_KEYWORDS,
+      ...SEO_MN_KEYWORDS,
+      ...(settings?.meta_keywords ?? []),
+    ]),
   ];
 
   return {
@@ -165,7 +171,7 @@ export default async function RootLayout({
     "@type": "Person",
     "@id": `${SITE_URL}/#person`,
     name: profile?.name ?? "Amartuvshin Surenjav",
-    alternateName: profile?.alternate_names ?? [],
+    alternateName: seoAlternateNames(profile),
     url: "https://amartuvshin.com",
     mainEntityOfPage: SITE_URL,
     image: profile?.profile_image ?? `${SITE_URL}/profile.jpg`,
@@ -173,6 +179,7 @@ export default async function RootLayout({
     jobTitle: profile?.job_title?.split(" — ")[0] ?? "Software Engineer",
     hasOccupation: seoOccupation(profile),
     knowsLanguage: ["en", "mn"],
+    nationality: { "@type": "Country", name: "Mongolia" },
     worksFor: {
       "@type": "Organization",
       name: profile?.company ?? "erxes Mongolia LLC",
@@ -222,10 +229,10 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: profile?.name ?? "Amartuvshin Surenjav",
-    alternateName: profile?.alternate_names ?? ["Amaraa", "Amartuvshin"],
+    alternateName: seoAlternateNames(profile),
     description: seoDescription(profile),
     url: SITE_URL,
-    inLanguage: "en",
+    inLanguage: ["en", "mn"],
     publisher: {
       "@type": "Person",
       name: profile?.name ?? "Amartuvshin Surenjav",
