@@ -66,16 +66,56 @@ const SERVICE_SITE = {
   seo_title: "Hire a Full-Stack, Mobile & AI Agent Engineer in Mongolia | Amartuvshin Surenjav",
   seo_description:
     "Hire Amartuvshin Surenjav, an engineer in Ulaanbaatar, Mongolia, to build mobile apps, websites and AI agent workflows for enterprise systems. Open to freelance and contract work. Not sure what to build yet? Start with a System Decision Sprint.",
+  hero_eyebrow: "Full-stack, mobile & AI agent engineer · Ulaanbaatar",
   hero_title: "Mobile apps, websites and AI agents, built end to end.",
   hero_description:
     "I'm a full-stack, mobile and AI agent engineer in Ulaanbaatar, open to freelance and contract work. I build React Native and Expo apps, Next.js websites and AI agent workflows that plug into your existing systems. Not sure what to build yet? Start with a System Decision Sprint.",
   hero_primary_cta: "Discuss your project",
   hero_secondary_cta: "See what I build",
+  trust_note:
+    "You work with me directly, from the first call to launch. The code, accounts and data are yours from day one.",
   offer_eyebrow: "What I build",
   offer_title: "Mobile apps, websites and AI agents.",
   offer_description:
     "Hire me to build it end to end. If the right system isn't clear yet, start with a short paid System Decision Sprint.",
+  process_eyebrow: "How it works",
+  process_title: "From first call to launch.",
   proof_title: "Products I've built and shipped.",
+  apply_eyebrow: "Start a project",
+  apply_title: "Tell me what you want to build.",
+  apply_description:
+    "Email a few lines about your app, website or AI agent idea and your timeline. I reply within two business days to set up a free 30-minute call.",
+  footer_note: "Full-stack, mobile & AI agent engineer · Ulaanbaatar",
+};
+
+const SERVICE_CONTACT = { contact_email: "info@amartuvshin.com" };
+
+const PROCESS_STEPS = {
+  qualify: {
+    title: "Free 30-minute call",
+    description:
+      "We talk through what you want to build, who it is for and your timeline. You get a straight answer on fit.",
+  },
+  diagnose: {
+    title: "Scope and plan",
+    description:
+      "A written scope with features, stack, milestones and cost, agreed before any code is written.",
+  },
+  decide: {
+    title: "Build and demo",
+    description:
+      "I build in short cycles and share a live preview link, so you see progress and can change course early.",
+  },
+  deliver: {
+    title: "Launch",
+    description:
+      "Release to the App Store, Google Play or your production cloud, on your own accounts.",
+  },
+  transfer: {
+    title: "Hand over",
+    description:
+      "You keep the source code, accounts and docs. The goal is a product your team can run without me.",
+  },
 };
 
 const BUILD_OFFERS = [
@@ -138,9 +178,17 @@ const CONSULTING_OFFERS = [
   { slug: "software-proposal-review", sort: 6, featured: false },
 ];
 
-const FAQ_BUILD = {
-  question: /build the system yourself/i,
-  next: {
+const FAQS = {
+  "who-is-it-for": {
+    question: "Who do you work with?",
+    answer:
+      "Startups and companies that need a mobile app, website or AI agent workflow built and shipped. I work remotely, freelance or on contract. The System Decision Sprint suits operating companies of about 30–300 people with no senior technology lead.",
+  },
+  "free-call": {
+    answer:
+      "Yes. The first 30-minute call is free. We go through what you want to build, your timeline and budget, and whether I am the right fit.",
+  },
+  "do-you-build": {
     answer:
       "Yes. I build mobile apps, websites and AI agent workflows myself, end to end. For larger programs I can also bring in and lead specialists, while staying the accountable owner on your side.",
   },
@@ -160,6 +208,9 @@ const NEW_PROOF = {
 
 const PROOF_ORDER = ["erxes AI Agents", NEW_PROOF.copy.title, "Flint"];
 const PROOF_HIDDEN = ["Voices"];
+const PROOF_URLS = {
+  "erxes AI Agents": "https://amartuvshin.com/blog/erxes-ai-agents-plugin-case-study",
+};
 
 const planned = [];
 function plan(label, before, after, run) {
@@ -203,6 +254,18 @@ function withLocale(path, fields) {
 
 const localeRow = (item) => item.translations?.[0] ?? null;
 
+function planCopyByKey(collection, items, copies) {
+  for (const [key, next] of Object.entries(copies)) {
+    const item = items.find((candidate) => candidate.key === key);
+    const row = item && localeRow(item);
+    if (!row) {
+      console.warn(`${collection}: "${key}" not found; skipping`);
+      continue;
+    }
+    planTranslation(`${collection} "${key}"`, `/items/${collection}/${item.id}`, row, next);
+  }
+}
+
 async function planPortfolio() {
   const profile = await get("/items/profile");
   planPatch("profile", "/items/profile", profile, PROFILE);
@@ -222,11 +285,12 @@ async function planPortfolio() {
 }
 
 async function planHire() {
-  const site = await get(withLocale("/items/service_site", "id,translations.*"));
+  const site = await get(withLocale("/items/service_site", "id,contact_email,translations.*"));
   const siteRow = localeRow(site);
   if (!siteRow) throw new Error(`service_site has no ${LOCALE} translation`);
   const languageKey = siteRow.language;
   planTranslation("service_site", "/items/service_site", siteRow, SERVICE_SITE);
+  planPatch("service_site contact", "/items/service_site", site, SERVICE_CONTACT);
 
   const offers = await get(
     withLocale("/items/service_offers?limit=50", "id,slug,status,featured,sort,translations.*"),
@@ -271,17 +335,12 @@ async function planHire() {
   }
 
   const faqs = await get(withLocale("/items/service_faqs?limit=50", "id,key,translations.*"));
-  const faq = faqs.find((candidate) => FAQ_BUILD.question.test(localeRow(candidate)?.question ?? ""));
-  if (faq) {
-    planTranslation(
-      `service_faqs "${faq.key}"`,
-      `/items/service_faqs/${faq.id}`,
-      localeRow(faq),
-      FAQ_BUILD.next,
-    );
-  } else {
-    console.warn('service_faqs: no "build the system yourself" question found; skipping');
-  }
+  planCopyByKey("service_faqs", faqs, FAQS);
+
+  const steps = await get(
+    withLocale("/items/service_process_steps?limit=50", "id,key,translations.*"),
+  );
+  planCopyByKey("service_process_steps", steps, PROCESS_STEPS);
 
   const proof = await get(
     withLocale("/items/service_proof?limit=50", "id,key,status,url,sort,translations.*"),
@@ -321,6 +380,10 @@ async function planHire() {
         status: "draft",
       });
     }
+  }
+  for (const [title, url] of Object.entries(PROOF_URLS)) {
+    const item = proofByTitle(title);
+    if (item) planPatch(`service_proof "${title}" url`, `/items/service_proof/${item.id}`, item, { url });
   }
 }
 
