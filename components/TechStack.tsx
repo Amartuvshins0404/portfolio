@@ -10,16 +10,17 @@ export default function TechStack({
 }) {
   if (skills.length === 0) return null;
 
-  const items = skills.map((skill) => (
-    <li
-      key={skill.id}
-      title={skill.name}
-      className="flex h-10 items-center opacity-80 transition-opacity hover:opacity-100"
-    >
-      <TechIcon name={skill.name} className="h-8 w-8" />
-      <span className="sr-only">{skill.name}</span>
-    </li>
-  ));
+  const items = (labelled: boolean) =>
+    skills.map((skill) => (
+      <li
+        key={skill.id}
+        title={skill.name}
+        className="flex h-10 items-center opacity-80 transition-opacity hover:opacity-100"
+      >
+        <TechIcon name={skill.name} className="h-8 w-8" />
+        {labelled ? <span className="sr-only">{skill.name}</span> : null}
+      </li>
+    ));
 
   return (
     <section
@@ -29,13 +30,13 @@ export default function TechStack({
     >
       <div className="marquee-mask flex overflow-hidden [&:hover_ul]:[animation-play-state:paused]">
         <ul className="animate-marquee flex shrink-0 items-center gap-10 pr-10 motion-reduce:animate-none">
-          {items}
+          {items(true)}
         </ul>
         <ul
           aria-hidden="true"
           className="animate-marquee flex shrink-0 items-center gap-10 pr-10 motion-reduce:hidden"
         >
-          {items}
+          {items(false)}
         </ul>
       </div>
     </section>

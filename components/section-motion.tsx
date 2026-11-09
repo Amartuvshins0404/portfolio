@@ -64,13 +64,25 @@ export function Counter({
   const digits = String(value).split("");
   return (
     <span className={cn("inline-flex overflow-hidden", className)}>
+      <span className="sr-only">{value}</span>
       {digits.map((d, i) => {
         const n = Number(d);
         if (Number.isNaN(n) || reduceMotion) {
-          return <span key={i}>{d}</span>;
+          return (
+            <span
+              key={i}
+              aria-hidden="true"
+              data-digit={d}
+              className="before:content-[attr(data-digit)]"
+            />
+          );
         }
         return (
-          <span key={i} className="relative inline-block h-[1em] leading-none">
+          <span
+            key={i}
+            aria-hidden="true"
+            className="relative inline-block h-[1em] leading-none"
+          >
             <motion.span
               className="flex flex-col"
               initial={{ y: 0 }}
@@ -79,9 +91,11 @@ export function Counter({
               transition={{ duration: 1.4, delay: 0.1 + i * 0.12, ease }}
             >
               {Array.from({ length: 10 }, (_, k) => (
-                <span key={k} className="h-[1em] leading-none">
-                  {k}
-                </span>
+                <span
+                  key={k}
+                  data-digit={k}
+                  className="h-[1em] leading-none before:content-[attr(data-digit)]"
+                />
               ))}
             </motion.span>
           </span>

@@ -10,12 +10,13 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { CMSProfile, CMSStat } from "@/lib/cms";
+import type { CMSProfile, CMSSiteSettings, CMSStat } from "@/lib/cms";
 import type {
   ServiceOffer,
   ServiceProcessStep,
   ServiceSite,
 } from "@/lib/directus";
+import { seoAvailability } from "@/lib/seo";
 
 const processIcons = {
   qualify: Handshake,
@@ -27,11 +28,13 @@ const processIcons = {
 
 export function ServiceHero({
   profile,
+  settings,
   stats,
   site,
   featuredOffer,
 }: {
   profile: CMSProfile | null;
+  settings: CMSSiteSettings | null;
   stats: CMSStat[];
   site: ServiceSite | null;
   featuredOffer: ServiceOffer | null;
@@ -39,6 +42,8 @@ export function ServiceHero({
   const visibleStats = stats.slice(0, 3);
   const contactEmail =
     site?.contact_email ?? profile?.email ?? "amaraaamka0404@gmail.com";
+  const availability = seoAvailability(profile, settings);
+  const location = profile?.location ?? "Ulaanbaatar, Mongolia";
 
   return (
     <section
@@ -60,7 +65,12 @@ export function ServiceHero({
 
       <div className="container mx-auto grid min-h-[calc(100svh-96px)] max-w-7xl items-center gap-12 px-4 pb-20 pt-28 md:px-6 lg:grid-cols-[1.08fr_0.72fr] lg:gap-20 lg:pb-28 lg:pt-36">
         <div className="max-w-4xl">
-
+          {availability ? (
+            <p className="mb-7 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-3.5 py-1.5 text-xs font-medium backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              {availability} · {location}
+            </p>
+          ) : null}
           <h1 className="max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.06em] sm:text-6xl md:text-7xl lg:text-[5.4rem]">
             {site?.hero_title ??
               "Define the right system. Lead it until it works."}
@@ -159,7 +169,7 @@ export function ServiceHero({
                       Outcome
                     </span>
                     <strong className="mt-1 block text-sm font-medium leading-snug">
-                      A defensible next decision
+                      {featuredOffer.outcome}
                     </strong>
                   </div>
                 ) : null}

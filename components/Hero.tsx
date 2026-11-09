@@ -8,6 +8,7 @@ import {
   type CMSProfile,
   type CMSSiteSettings,
 } from "@/lib/cms";
+import { seoAvailability } from "@/lib/seo";
 
 export default function Hero({
   profile,
@@ -22,6 +23,7 @@ export default function Hero({
   const company = profile?.company ?? "erxes";
   const [firstName, ...restName] = name.split(" ");
   const showcaseVideo = heroVideoUrl(settings);
+  const availability = seoAvailability(profile, settings);
 
   return (
     <section
@@ -61,7 +63,7 @@ export default function Hero({
           <HeroFade delay={0.3}>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               {settings?.subtitle ??
-                "AI agents, platform engineering, and full-stack products — shipped end to end."}
+                "I build mobile apps, websites and AI agent workflows for startups and enterprise teams, from first prototype to production."}
             </p>
           </HeroFade>
 
@@ -97,8 +99,17 @@ export default function Hero({
                 className="object-cover object-top"
               />
             </div>
-            <p className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-border/60 bg-background/70 px-3.5 py-1 text-[11px] font-medium backdrop-blur-md">
-              {role} · {company}
+            <p className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border border-border/60 bg-background/70 px-3.5 py-1 text-[11px] font-medium backdrop-blur-md">
+              {availability ? (
+                <>
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  {availability}
+                </>
+              ) : (
+                <>
+                  {role} · {company}
+                </>
+              )}
             </p>
           </div>
         </HeroFade>
