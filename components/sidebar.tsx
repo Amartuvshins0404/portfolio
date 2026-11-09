@@ -29,6 +29,7 @@ import type {
   CMSSiteSettings,
   CMSSocialLink,
 } from "@/lib/cms";
+import { seoAvailability } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const fallbackLinks: CMSNavLink[] = [
@@ -91,6 +92,7 @@ export default function Sidebar({
   profile,
   navLinks,
   socialLinks,
+  settings,
 }: {
   profile: CMSProfile | null;
   navLinks: CMSNavLink[];
@@ -105,7 +107,7 @@ export default function Sidebar({
   const name = profile?.name ?? "Amartuvshin Surenjav";
   const role = profile?.job_title ?? "Software Engineer";
   const email = profile?.email ?? "info@amartuvshin.com";
-  const available = profile?.available_for_freelance ?? true;
+  const availability = seoAvailability(profile, settings);
 
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (prevPathname !== pathname) {
@@ -195,7 +197,7 @@ export default function Sidebar({
           <span
             className={cn(
               "absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-card",
-              available ? "bg-emerald-500" : "bg-muted-foreground"
+              availability ? "bg-emerald-500" : "bg-muted-foreground"
             )}
           />
         </span>
@@ -238,12 +240,23 @@ export default function Sidebar({
                 priority
                 className="relative h-28 w-28 rounded-full border-4 border-card object-cover object-top shadow-lg"
               />
-              <span className="absolute bottom-1 right-1 h-4 w-4 rounded-full border-[3px] border-card bg-emerald-500" />
+              <span
+                className={cn(
+                  "absolute bottom-1 right-1 h-4 w-4 rounded-full border-[3px] border-card",
+                  availability ? "bg-emerald-500" : "bg-muted-foreground"
+                )}
+              />
             </div>
             <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {role}
             </p>
             <p className="mt-1.5 text-2xl font-bold tracking-tight">{name}</p>
+            {availability ? (
+              <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                {availability}
+              </p>
+            ) : null}
           </div>
 
           <div className="mt-5 flex flex-col items-center lg:mt-4">

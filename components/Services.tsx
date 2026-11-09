@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Compass, Scale, ScanSearch } from "lucide-react";
+import {
+  AppWindow,
+  ArrowUpRight,
+  Bot,
+  Compass,
+  Scale,
+  ScanSearch,
+  Smartphone,
+} from "lucide-react";
 import { Reveal, TiltArticle, TiltCard } from "@/components/portfolio-motion";
 import type {
   ServiceFaq,
@@ -11,6 +19,9 @@ import type {
 import { cn } from "@/lib/utils";
 
 const offerIcons = {
+  "mobile-app-development": Smartphone,
+  "web-app-development": AppWindow,
+  "enterprise-ai-agents": Bot,
   "system-decision-sprint": Compass,
   "software-vendor-selection": Scale,
   "software-proposal-review": ScanSearch,

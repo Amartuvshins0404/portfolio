@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { CMSProfile, CMSSiteSettings, CMSSocialLink } from "@/lib/cms";
 import type { ServiceSite } from "@/lib/directus";
+import { seoAvailability } from "@/lib/seo";
 
 export default function Contact({
   profile,
@@ -23,6 +24,7 @@ export default function Contact({
     "Let’s build something worth shipping.";
   const description =
     site?.apply_description ?? settings?.contact_description ?? null;
+  const availability = seoAvailability(profile, settings ?? null);
 
   return (
     <section id="contact" className="card-surface p-6 sm:p-10">
@@ -35,9 +37,15 @@ export default function Contact({
           {description}
         </p>
       ) : null}
+      {availability ? (
+        <p className="mt-8 flex items-center gap-2 text-sm font-medium">
+          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+          {availability}
+        </p>
+      ) : null}
       <Link
         href={`mailto:${email}`}
-        className="mt-8 inline-block break-all text-2xl font-semibold tracking-tight underline decoration-border decoration-2 underline-offset-8 transition-colors hover:decoration-primary sm:text-3xl"
+        className={`${availability ? "mt-3" : "mt-8"} inline-block break-all text-2xl font-semibold tracking-tight underline decoration-border decoration-2 underline-offset-8 transition-colors hover:decoration-primary sm:text-3xl`}
       >
         {email}
       </Link>

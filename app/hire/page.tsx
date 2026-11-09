@@ -15,9 +15,9 @@ import { SEO_KEYWORDS, SEO_MN_KEYWORDS, SITE_URL, seoAreaServed } from "@/lib/se
 export const revalidate = 60;
 
 const FALLBACK_TITLE =
-  "Hire a Software Engineer in Ulaanbaatar, Mongolia — Amartuvshin Surenjav";
+  "Hire a Full-Stack, Mobile & AI Agent Engineer in Mongolia — Amartuvshin Surenjav";
 const FALLBACK_DESCRIPTION =
-  "Hire Amartuvshin Surenjav, a full-stack software engineer and independent technology consultant in Ulaanbaatar, Mongolia. AI agents, Next.js/TypeScript products, and platform engineering — available for freelance, contract, and remote work.";
+  "Hire Amartuvshin Surenjav, a full-stack, mobile and AI agent engineer in Ulaanbaatar, Mongolia, to build websites, mobile apps (React Native, Expo) and AI agent workflows for enterprise systems. Open to freelance, contract and remote work.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const [content, profile] = await Promise.all([
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const name = profile?.name ?? "Amartuvshin Surenjav";
   const title =
     content?.site.seo_title ??
-    `Hire a Software Engineer in Ulaanbaatar, Mongolia — ${name}`;
+    `Hire a Full-Stack, Mobile & AI Agent Engineer in Mongolia — ${name}`;
   const description = content?.site.seo_description ?? FALLBACK_DESCRIPTION;
 
   return {
@@ -90,7 +90,12 @@ export default async function HirePage() {
     name: site?.seo_title ?? FALLBACK_TITLE,
     description: site?.seo_description ?? FALLBACK_DESCRIPTION,
     url: `${SITE_URL}/hire`,
-    serviceType: "Software engineering and technology consulting",
+    serviceType: [
+      "Mobile app development",
+      "Web app development",
+      "AI agent development",
+      "Technology consulting",
+    ],
     provider: { "@id": `${SITE_URL}/#person` },
     areaServed: seoAreaServed(),
     hasOfferCatalog:
@@ -172,6 +177,7 @@ export default async function HirePage() {
       />
       <ServiceHero
         profile={profile}
+        settings={settings}
         stats={stats}
         site={site}
         featuredOffer={featuredOffer}

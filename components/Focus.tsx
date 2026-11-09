@@ -8,7 +8,7 @@ const FALLBACK_FOCUS_AREAS: Pick<
   "title" | "line" | "keywords" | "href"
 >[] = [
   {
-    title: "AI Agents in Products",
+    title: "Enterprise AI Agents",
     line: "erxes-agent: durable agents that call permission-checked tools across an enterprise platform, with human approval where it matters.",
     keywords: ["erxes-agent", "Mastra", "GraphQL Federation"],
     href: "/blog/erxes-ai-agents-plugin-case-study",
@@ -20,9 +20,9 @@ const FALLBACK_FOCUS_AREAS: Pick<
     href: "/blog",
   },
   {
-    title: "Full-Stack Products",
-    line: "Next.js, TypeScript, and PostgreSQL products shipped end to end.",
-    keywords: ["Next.js", "TypeScript", "PostgreSQL"],
+    title: "Web & Mobile Apps",
+    line: "Next.js websites and web apps, and React Native / Expo mobile apps, shipped end to end.",
+    keywords: ["Next.js", "React Native", "Expo"],
     href: "/blog?type=case-studies",
   },
 ];
@@ -45,7 +45,7 @@ export default function Focus({
       </Reveal>
       <h2 className="mt-5 max-w-3xl text-2xl font-bold tracking-tight sm:text-3xl">
         {settings?.focus_title ??
-          "AI agents in products, agentic developer workflows, and full-stack systems."}
+          "AI agents for enterprise, web and mobile apps, and agentic developer workflows."}
       </h2>
       <div className="mt-8 grid gap-8 border-t border-border/70 pt-8 md:grid-cols-3 md:gap-0 md:divide-x md:divide-border/70">
         {list.map((area, i) => (
